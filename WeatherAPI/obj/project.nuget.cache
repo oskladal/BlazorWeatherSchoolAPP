@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "zat2tX8TjMxMxHr+v6ly0L7WqGHCY5ezoNH/Bq8fau4I2IOcD8DjVFjoYP42ja20yP4TjzYXH2SmXjd0k7rQ0A==",
+  "success": true,
+  "projectFilePath": "/Users/ondrejskladal/Documents/BlazorWeatherSchoolAPP/BlazorWeatherSchoolAPP/WeatherAPI/WeatherAPI.csproj",
+  "expectedPackageFiles": [
+    "/Users/ondrejskladal/.nuget/packages/microsoft.extensions.apidescription.server/3.0.0/microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "/Users/ondrejskladal/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
+    "/Users/ondrejskladal/.nuget/packages/swashbuckle.aspnetcore/6.2.3/swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "/Users/ondrejskladal/.nuget/packages/swashbuckle.aspnetcore.swagger/6.2.3/swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "/Users/ondrejskladal/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.2.3/swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "/Users/ondrejskladal/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.2.3/swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
