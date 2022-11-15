@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿// Kde dochází k zapínání programu - spuštění - přidávání modulů 
+
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using BlazorWeatherSchoolAPP.Data;
+using WeatherAPI;
+using DBConnect;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,8 +12,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
-
+//Vytvoření instanci connectAPI a registroval ji do služeb, kde je možné ji vytáhnout v kóud.
+// Builder.Configuration - obsahuji proměnný který jsem si definovali
+builder.Services.AddOptions();
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<ConnectAPI>();
+builder.Services.AddSingleton<WeatherDB>();
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -29,4 +39,6 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
+
+
 
