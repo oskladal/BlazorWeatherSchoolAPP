@@ -1,33 +1,40 @@
 {
   "format": 1,
   "restore": {
-    "/Users/ondrejskladal/Documents/BlazorWeatherSchoolAPP/BlazorWeatherSchoolAPP/DBConnect/DBConnect.csproj": {}
+    "C:\\Users\\Pavel\\dev\\WeatherAPP\\DBConnect\\DBConnect.csproj": {}
   },
   "projects": {
-    "/Users/ondrejskladal/Documents/BlazorWeatherSchoolAPP/BlazorWeatherSchoolAPP/DBConnect/DBConnect.csproj": {
+    "C:\\Users\\Pavel\\dev\\WeatherAPP\\DBConnect\\DBConnect.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/ondrejskladal/Documents/BlazorWeatherSchoolAPP/BlazorWeatherSchoolAPP/DBConnect/DBConnect.csproj",
+        "projectUniqueName": "C:\\Users\\Pavel\\dev\\WeatherAPP\\DBConnect\\DBConnect.csproj",
         "projectName": "DBConnect",
-        "projectPath": "/Users/ondrejskladal/Documents/BlazorWeatherSchoolAPP/BlazorWeatherSchoolAPP/DBConnect/DBConnect.csproj",
-        "packagesPath": "/Users/ondrejskladal/.nuget/packages/",
-        "outputPath": "/Users/ondrejskladal/Documents/BlazorWeatherSchoolAPP/BlazorWeatherSchoolAPP/DBConnect/obj/",
+        "projectPath": "C:\\Users\\Pavel\\dev\\WeatherAPP\\DBConnect\\DBConnect.csproj",
+        "packagesPath": "C:\\Users\\Pavel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Pavel\\dev\\WeatherAPP\\DBConnect\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "/Users/ondrejskladal/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Pavel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Users\\Pavel\\Dropbox\\WORK\\Projects_Core_5.0\\EmailSender\\bin\\Release\\net5.0\\publish": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "/Users/ondrejskladal/Documents/BlazorWeatherSchoolAPP/BlazorWeatherSchoolAPP/WeatherAPI/WeatherAPI.csproj": {
-                "projectPath": "/Users/ondrejskladal/Documents/BlazorWeatherSchoolAPP/BlazorWeatherSchoolAPP/WeatherAPI/WeatherAPI.csproj"
+              "C:\\Users\\Pavel\\dev\\WeatherAPP\\WeatherAPI\\WeatherAPI.csproj": {
+                "projectPath": "C:\\Users\\Pavel\\dev\\WeatherAPP\\WeatherAPI\\WeatherAPI.csproj"
               }
             }
           }
@@ -43,6 +50,10 @@
           "targetAlias": "net6.0",
           "dependencies": {
             "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Binder": {
               "target": "Package",
               "version": "[7.0.0, )"
             },
@@ -71,26 +82,33 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.402/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/ondrejskladal/Documents/BlazorWeatherSchoolAPP/BlazorWeatherSchoolAPP/WeatherAPI/WeatherAPI.csproj": {
+    "C:\\Users\\Pavel\\dev\\WeatherAPP\\WeatherAPI\\WeatherAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/ondrejskladal/Documents/BlazorWeatherSchoolAPP/BlazorWeatherSchoolAPP/WeatherAPI/WeatherAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Pavel\\dev\\WeatherAPP\\WeatherAPI\\WeatherAPI.csproj",
         "projectName": "WeatherAPI",
-        "projectPath": "/Users/ondrejskladal/Documents/BlazorWeatherSchoolAPP/BlazorWeatherSchoolAPP/WeatherAPI/WeatherAPI.csproj",
-        "packagesPath": "/Users/ondrejskladal/.nuget/packages/",
-        "outputPath": "/Users/ondrejskladal/Documents/BlazorWeatherSchoolAPP/BlazorWeatherSchoolAPP/WeatherAPI/obj/",
+        "projectPath": "C:\\Users\\Pavel\\dev\\WeatherAPP\\WeatherAPI\\WeatherAPI.csproj",
+        "packagesPath": "C:\\Users\\Pavel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Pavel\\dev\\WeatherAPP\\WeatherAPI\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "/Users/ondrejskladal/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Pavel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Users\\Pavel\\Dropbox\\WORK\\Projects_Core_5.0\\EmailSender\\bin\\Release\\net5.0\\publish": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -116,6 +134,10 @@
             "Microsoft.Extensions.Options": {
               "target": "Package",
               "version": "[7.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
             }
           },
           "imports": [
@@ -134,7 +156,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.402/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

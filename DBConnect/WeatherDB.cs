@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using WeatherAPI.Models;
@@ -6,31 +7,56 @@ using WeatherAPI.Models;
 namespace DBConnect;
 public class WeatherDB
 {
-    private IMongoCollection<Sensor> _468230;
-    public WeatherDB(IConfiguration config)
-    {
+    // Seznam kolekcí/tabulek podle nastavení v appsettings.json 
+    private Dictionary<string, IMongoCollection<Sensor>> _collections;
 
+    public WeatherDB(IOptions<List<SensorConfig>> sensorsConfiguration, IConfiguration config)
+    {
+        // Konverze _id na string (_id je klíč mongodb databáze.... https://orangematter.solarwinds.com/2019/12/22/what-is-mongodbs-id-field-and-how-to-use-it/)
         var pack = new ConventionPack { new StringIdStoredAsObjectIdConvention() };
         pack.Add(new IgnoreExtraElementsConvention(true));
-
         ConventionRegistry.Register("Custom Convention", pack, t => true);
+
+        // Připojení k databázi
         var client = new MongoClient(config["DBurl"]);
         var database = client.GetDatabase("MeteorologicalStationValues");
-        _468230 = database.GetCollection<Sensor>("_468230");
 
-
-;    }
-
-
-    public void SaveData_468230(Sensor data)
-    {
-        _468230.InsertOneAsync(data);
+        // Seznam kolekcí/tabulek podle nastavení v appsettings.json 
+        _collections = new Dictionary<string, IMongoCollection<Sensor>>();
+        if (sensorsConfiguration.Value != null)
+        {
+            foreach (var sensor in sensorsConfiguration.Value)
+            {
+                _collections.Add(sensor.Id, database.GetCollection<Sensor>("sensor_" + sensor.Id));
+            }
+        }
     }
 
-    public async Task<List<Sensor>>GwtFunckingAllShitFrom_468230()
+    // Ukládá do databáze data ze sensoru
+    public async Task SaveSensorData(Sensor data)
     {
-        var filtetr = Builders<Sensor>.Filter.Empty;
-        return await _468230.Find<Sensor>(filtetr).ToListAsync();
+        IMongoCollection<Sensor>? collection;
+        _collections.TryGetValue(data.lsid.ToString(), out collection);
+        if (collection != null)
+        {
+            await collection.InsertOneAsync(data);
+        }
+    }
+
+    // Načte všechny data sensoru
+    public async Task<List<Sensor>?> GetSensorData(string sensorId)
+    {
+        IMongoCollection<Sensor>? collection;
+        _collections.TryGetValue(sensorId, out collection);
+        if (collection != null)
+        {
+            var filter = Builders<Sensor>.Filter.Empty;
+            return await collection.Find<Sensor>(filter).ToListAsync();
+        }
+        else
+        {
+            return null;
+        }
     }
 }
 

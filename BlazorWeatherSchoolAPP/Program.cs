@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.Web;
 using BlazorWeatherSchoolAPP.Data;
 using WeatherAPI;
 using DBConnect;
+using WeatherAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,12 +13,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
-//Vytvoření instanci connectAPI a registroval ji do služeb, kde je možné ji vytáhnout v kóud.
+
 // Builder.Configuration - obsahuji proměnný který jsem si definovali
 builder.Services.AddOptions();
+
+// Namapování konfigurace na objekt
+builder.Services.Configure<List<SensorConfig>>(builder.Configuration.GetSection("Sensors"));
+
 builder.Services.AddHttpClient();
+
+//Vytvoření instanci connectAPI a registroval ji do služeb, kde je možné ji vytáhnout v kódu.
 builder.Services.AddSingleton<ConnectAPI>();
 builder.Services.AddSingleton<WeatherDB>();
+
 var app = builder.Build();
 
 

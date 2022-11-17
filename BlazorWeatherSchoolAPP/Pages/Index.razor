@@ -2,44 +2,59 @@
 @inject ConnectAPI Api
 @inject WeatherDB Db
 
-<button @onclick="getstation"> GET Station</button>
+<button class="form-control" @onclick="getstation">GET Station</button>
 
-<textarea>@navrat_krale</textarea>
+<textarea class="form-control">@actualSensorResponse</textarea>
 
 <div>
-    @if(_loadedSracky != null)
+    @if (_loadedData != null)
     {
-
-
-        @foreach(var sracka in _loadedSracky)
-            {
-
-                <div>@sracka.data_structure_type</div>
-            }
+        @foreach (var dataRow in _loadedData)
+        {
+            <div class="row pt-2 border-top">
+                <div class="col-12">
+                    Sensor Id: @dataRow.lsid
+                </div>
+                <div class="col-12">
+                    @foreach(var data in dataRow.data[0])
+                    {
+                        <div>
+                            <b>@data.Key :</b> @data.Value
+                        </div>
+                    }
+                </div>
+            </div>
+        }
     }
 </div>
 
-@code {
-    string navrat_krale = "";
-    public List<Sensor> srackyZApi;
-    public List<Sensor> _loadedSracky;
+@code 
+{
+    public string? actualSensorResponse;
+    public List<Sensor>? srackyZApi;
+    public List<Sensor>? _loadedData;
 
+    // Načte data z api a uloží do databáze
     async void getstation()
     {
-        var srackaZapi = await Api.getstation();
-        Db.SaveData_468230( srackaZapi.sensors[0]);
-        GetData();
-        
+        // Načtení dat
+        var apiData = await Api.getstation();
+        // uložení do db
+        await Db.SaveSensorData(apiData.sensors[0]);
+        // aktualizace všech dat
+        await GetData();
     }
 
     protected override async void OnInitialized()
     {
-        GetData();
+        await GetData();
     }
 
-    public async void GetData()
+    public async Task GetData()
     {
-        _loadedSracky = await Db.GwtFunckingAllShitFrom_468230();
+        // Načte data ze sensoru
+        _loadedData = await Db.GetSensorData("468230");
+        // Toto aktualizuje UI
         StateHasChanged();
     }
 }

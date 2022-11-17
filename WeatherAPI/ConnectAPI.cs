@@ -4,15 +4,17 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using WeatherAPI.Models;
 using static System.Net.WebRequestMethods;
 
 namespace WeatherAPI;
 public class ConnectAPI
 {
-    private string _API_Key;
-    private string _API_Secret;
+    private string? _API_Key;
+    private string? _API_Secret;
     private HttpClient _Client;
+
     public ConnectAPI(IConfiguration config, HttpClient client)
     {
         _API_Key = config["API_Key"];
@@ -20,11 +22,6 @@ public class ConnectAPI
         _Client = client;
     }
 
-    public string timeunix()
-    {
-        long unixTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
-        return unixTime.ToString();
-    }
 
     public string getsignature(string time, string? stationid = null)
     {
@@ -42,15 +39,16 @@ public class ConnectAPI
         return BitConverter.ToString(hash).Replace("-", string.Empty);
     }
 
-    public async Task<Sensors_response> getstation()
+
+    public async Task<Sensors_response?> getstation()
     {
-        var time = timeunix();
+        var time = GetUnixTimestamp();
         //var urlAPI = $"https://api.weatherlink.com/v2/stations?api-key={_API_Key}&api-signature={getsignature(time)}&t={time}";
         var urlAPI = $"https://api.weatherlink.com/v2/current/124952?api-key={_API_Key}&api-signature={getsignature(time, "124952")}&t={time}";
         var result = await _Client.GetAsync(urlAPI);
-        
-        string data =  await result.Content.ReadAsStringAsync();
-        var response = JsonSerializer.Deserialize<Sensors_response>(data);
+
+        string data = await result.Content.ReadAsStringAsync();
+        var response = JsonConvert.DeserializeObject<Sensors_response>(data);
 
         return response;
     }
@@ -70,6 +68,13 @@ public class ConnectAPI
                          .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
                          .ToArray();
     }
+
+    public string GetUnixTimestamp()
+    {
+        long unixTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
+        return unixTime.ToString();
+    }
+
 }
 
 
