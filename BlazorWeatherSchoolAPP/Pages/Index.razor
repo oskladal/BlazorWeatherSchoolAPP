@@ -1,10 +1,59 @@
 ﻿@page "/"
+@inject ConnectAPI Api
+@inject WeatherDB Db
 
-<PageTitle>Index</PageTitle>
+<button class="form-control" @onclick="getstation">GET Station</button>
 
-<h1>Hello, world!</h1>
+<textarea class="form-control">@actualSensorResponse</textarea>
 
-Welcome to your new app.
+<div>
+    @if (_loadedData != null)
+    {
+        @foreach (var dataRow in _loadedData)
+        {
+            <div class="row pt-2 border-top">
+                <div class="col-12">
+                    Sensor Id: @dataRow.sensor_type
+                </div>
+                <div class="col-12">
+                    @foreach(var data in dataRow.data)
+                    {
+                        <div>
+                            <b>@data.Key :</b> @data.Value
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code 
+{
+    public string? actualSensorResponse;
+    public List<Sensor>? _loadedData;
 
+    // Načte data z api a uloží do databáze
+    async void getstation()
+    {
+        // Načtení dat
+        var apiData = await Api.getstation();
+        // uložení do db
+        await Db.SaveSensorData((Sensor)apiData.sensors[0]);
+        // aktualizace všech dat
+        await GetData();
+    }
+
+    protected override async void OnInitialized()
+    {
+        await GetData();
+    }
+
+    public async Task GetData()
+    {
+        // Načte data ze sensoru
+        _loadedData = await Db.GetSensorData("243");
+        // Toto aktualizuje UI
+        StateHasChanged();
+    }
+}
