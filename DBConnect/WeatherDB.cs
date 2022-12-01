@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
@@ -27,7 +28,7 @@ public class WeatherDB
         {
             foreach (var sensor in sensorsConfiguration.Value)
             {
-                _collections.Add(sensor.Id, database.GetCollection<Sensor>("sensor_" + sensor.Id));
+                _collections.Add(sensor.sensor_type, database.GetCollection<Sensor>("sensor_" + sensor.sensor_type));
             }
         }
     }
@@ -36,7 +37,7 @@ public class WeatherDB
     public async Task SaveSensorData(Sensor data)
     {
         IMongoCollection<Sensor>? collection;
-        _collections.TryGetValue(data.lsid.ToString(), out collection);
+        _collections.TryGetValue(data.sensor_type.ToString(), out collection);
         if (collection != null)
         {
             await collection.InsertOneAsync(data);
@@ -44,10 +45,10 @@ public class WeatherDB
     }
 
     // Načte všechny data sensoru
-    public async Task<List<Sensor>?> GetSensorData(string sensorId)
+    public async Task<List<Sensor>?> GetSensorData(string sensor_type)
     {
         IMongoCollection<Sensor>? collection;
-        _collections.TryGetValue(sensorId, out collection);
+        _collections.TryGetValue(sensor_type, out collection);
         if (collection != null)
         {
             var filter = Builders<Sensor>.Filter.Empty;

@@ -44,6 +44,9 @@ public class ConnectAPI
     {
         var time = GetUnixTimestamp();
         //var urlAPI = $"https://api.weatherlink.com/v2/stations?api-key={_API_Key}&api-signature={getsignature(time)}&t={time}";
+        //var urlAPI  = $"https://api.weatherlink.com/v2/sensors?api-key={_API_Key}&api-signature={getsignature(time)}&t={time}";
+        //var urlAPI = $"https://api.weatherlink.com/v2/stations/560714?api-key={_API_Key}&api-signature={getsignature(time, "560714")}&t={time}";
+        //var urlAPI = $"https://api.weatherlink.com/v2/current/15017?api-key={_API_Key}&api-signature={getsignature(time, "15017")}&t={time}";
         var urlAPI = $"https://api.weatherlink.com/v2/current/124952?api-key={_API_Key}&api-signature={getsignature(time, "124952")}&t={time}";
         var result = await _Client.GetAsync(urlAPI);
 
@@ -59,14 +62,6 @@ public class ConnectAPI
         var message = Encoding.UTF8.GetBytes(data);
         var hash = new HMACSHA256(Encoding.UTF8.GetBytes(secret));
         return hash.ComputeHash(message);
-    }
-
-    public static byte[] StringToByteArray(string hex)
-    {
-        return Enumerable.Range(0, hex.Length)
-                         .Where(x => x % 2 == 0)
-                         .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-                         .ToArray();
     }
 
     public string GetUnixTimestamp()

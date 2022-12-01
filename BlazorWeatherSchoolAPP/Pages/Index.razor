@@ -13,10 +13,10 @@
         {
             <div class="row pt-2 border-top">
                 <div class="col-12">
-                    Sensor Id: @dataRow.lsid
+                    Sensor Id: @dataRow.sensor_type
                 </div>
                 <div class="col-12">
-                    @foreach(var data in dataRow.data[0])
+                    @foreach(var data in dataRow.data)
                     {
                         <div>
                             <b>@data.Key :</b> @data.Value
@@ -31,7 +31,6 @@
 @code 
 {
     public string? actualSensorResponse;
-    public List<Sensor>? srackyZApi;
     public List<Sensor>? _loadedData;
 
     // Načte data z api a uloží do databáze
@@ -40,7 +39,7 @@
         // Načtení dat
         var apiData = await Api.getstation();
         // uložení do db
-        await Db.SaveSensorData(apiData.sensors[0]);
+        await Db.SaveSensorData((Sensor)apiData.sensors[0]);
         // aktualizace všech dat
         await GetData();
     }
@@ -53,7 +52,7 @@
     public async Task GetData()
     {
         // Načte data ze sensoru
-        _loadedData = await Db.GetSensorData("468230");
+        _loadedData = await Db.GetSensorData("243");
         // Toto aktualizuje UI
         StateHasChanged();
     }
