@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddHostedService<BackgroundWorkerService>();
 
 // Builder.Configuration - obsahuji proměnný který jsem si definovali
 builder.Services.AddOptions();
