@@ -6,27 +6,7 @@
 
 <textarea class="form-control">@actualSensorResponse</textarea>
 
-<div>
-    @if (_loadedData != null)
-    {
-        @foreach (var dataRow in _loadedData)
-        {
-            <div class="row pt-2 border-top">
-                <div class="col-12">
-                    Sensor Id: @dataRow.sensor_type
-                </div>
-                <div class="col-12">
-                    @foreach(var data in dataRow.data)
-                    {
-                        <div>
-                            <b>@data.Key :</b> @data.Value
-                        </div>
-                    }
-                </div>
-            </div>
-        }
-    }
-</div>
+
 
 @code 
 {
