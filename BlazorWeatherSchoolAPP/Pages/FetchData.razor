@@ -3,47 +3,67 @@
 <PageTitle>Weather forecast</PageTitle>
 
 @using BlazorWeatherSchoolAPP.Data
+@using DBConnect.Models 
 @inject WeatherForecastService ForecastService
+@inject WeatherDB dataDB
 
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from a service.</p>
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+
+
+    
+<RadzenChart>
+
+    <RadzenLineSeries Smooth="true" Data="@vice_hodnot" CategoryProperty="ts" Title="Teplota" LineType="LineType.Solid" ValueProperty="temp_in">
+        <RadzenMarkers MarkerType="MarkerType.Circle" />
+    </RadzenLineSeries>
+    <RadzenLineSeries Smooth="true" Data="@vice_hodnot" CategoryProperty="ts" Title="Vlhkost" LineType="LineType.Solid" ValueProperty="hum_in">
+        <RadzenMarkers MarkerType="MarkerType.Circle" />
+    </RadzenLineSeries>
+    <RadzenValueAxis>
+        <RadzenGridLines Visible="true" />
+        <RadzenAxisTitle Text="Teplota" />
+    </RadzenValueAxis>
+    <RadzenCategoryAxis Formatter=@(value => ((DateTime)value).ToLocalTime().ToString("g")) Padding="20" Step="@TimeSpan.FromHours(1)" />
+</RadzenChart>
+
+    <p>
+        <label class="mt-3"><RadzenCheckBox @bind-Value=@showValue /> Show the pointer value</label>
+    </p>
+
+    <RadzenArcGauge Style="width: 100%; height: 250px;">
+        <RadzenArcGaugeScale Step="20" Min="-20" Max="60" MinorStep="2" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
+            <RadzenArcGaugeScaleValue Value=jedna_hodnota.temp_in ShowValue=@showValue>
+                <Template Context="pointer">
+                    <h4>
+                        @pointer.Value <sup>km/h</sup>
+                    </h4>
+                </Template>
+            </RadzenArcGaugeScaleValue>
+        </RadzenArcGaugeScale>
+    </RadzenArcGauge>
+
+
+   
+
 
 @code {
-    private WeatherForecast[]? forecasts;
+
+    public Quantities243 jedna_hodnota;
+    public List<Quantities243> vice_hodnot;
+
+    bool showValue = true;
+    double value = 100;
+    IEnumerable<GaugeTickPosition> tickPositions = Enum.GetValues(typeof(GaugeTickPosition)).Cast<GaugeTickPosition>();
+    GaugeTickPosition tickPosition = GaugeTickPosition.Outside;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+
+        jedna_hodnota = await dataDB.Get();
+        vice_hodnot = await dataDB.GetMore(new DateTime(2023, 2, 14, 20, 0, 0), new DateTime(2023, 2, 14, 23, 06,0));
     }
 }
 

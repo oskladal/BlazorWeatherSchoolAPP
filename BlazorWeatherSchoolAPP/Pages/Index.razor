@@ -2,27 +2,14 @@
 @inject ConnectAPI Api
 @inject WeatherDB Db
 
-<button class="form-control" @onclick="getstation">GET Station</button>
-
-<textarea class="form-control">@actualSensorResponse</textarea>
 
 
 
-@code 
-{
+@code
+{/*
     public string? actualSensorResponse;
     public List<Sensor>? _loadedData;
 
-    // Načte data z api a uloží do databáze
-    async void getstation()
-    {
-        // Načtení dat
-        var apiData = await Api.getstation();
-        // uložení do db
-        await Db.SaveSensorData((Sensor)apiData.sensors[0]);
-        // aktualizace všech dat
-        await GetData();
-    }
 
     protected override async void OnInitialized()
     {
@@ -32,8 +19,9 @@
     public async Task GetData()
     {
         // Načte data ze sensoru
-        _loadedData = await Db.GetSensorData("243");
+        _loadedData = await Db.GetSensorData("242");
         // Toto aktualizuje UI
         StateHasChanged();
     }
+ */
 }

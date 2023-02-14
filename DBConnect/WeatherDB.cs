@@ -9,8 +9,7 @@ using DBConnect.Models;
 namespace DBConnect;
 public class WeatherDB
 {
-    // Seznam kolekcí/tabulek podle nastavení v appsettings.json 
-    private Dictionary<string, IMongoCollection<Sensor>> _collections;
+    // Seznam kolekcí/tabulek 
     private IMongoCollection<Quantities243> _quantities243;
     private IMongoCollection<Quantities242> _quantities242;
     private IMongoCollection<Quantities46> _quantities46;
@@ -28,15 +27,6 @@ public class WeatherDB
         var client = new MongoClient(config["DBurl"]);
         var database = client.GetDatabase("MeteorologicalStationValues");
 
-        // Seznam kolekcí/tabulek podle nastavení v appsettings.json 
-        _collections = new Dictionary<string, IMongoCollection<Sensor>>();
-        if (sensorsConfiguration.Value != null)
-        {
-            foreach (var sensor in sensorsConfiguration.Value)
-            {
-                _collections.Add(sensor.sensor_type, database.GetCollection<Sensor>("sensor_" + sensor.sensor_type));
-            }
-        }
         
 
         _quantities243 = database.GetCollection<Quantities243>("sensor_" + 243);
@@ -45,20 +35,8 @@ public class WeatherDB
         _quantities56 = database.GetCollection<Quantities56>("sensor_" + 56);
         _quantities326 = database.GetCollection<Quantities326>("sensor_" + 326);
 
-
     }
 
-    // Ukládá do databáze data ze sensoru
-    public async Task SaveSensorData(Sensor data)
-    {
-        IMongoCollection<Sensor>? collection;
-        _collections.TryGetValue(data.sensor_type.ToString(), out collection);
-        if (collection != null)
-        {
-            await collection.InsertOneAsync(data);
-        }
-    }
-    
 
     public async Task SaveNewSensorData243(Quantities243 data)
     {
@@ -91,20 +69,32 @@ public class WeatherDB
     }
 
     // Načte všechny data sensoru
-    public async Task<List<Sensor>?> GetSensorData(string sensor_type)
+
+    public async Task<Quantities243> Get()
     {
-        IMongoCollection<Sensor>? collection;
-        _collections.TryGetValue(sensor_type, out collection);
-        if (collection != null)
-        {
-            var filter = Builders<Sensor>.Filter.Empty;
-            return await collection.Find<Sensor>(filter).ToListAsync();
-        }
-        else
-        {
-            return null;
-        }
+        //prázdnej filtr
+        var filter = Builders<Quantities243>.Filter.Empty;
+        //bere podle podledního id 
+        var sort = Builders<Quantities243>.Sort.Descending("_id");
+        // dává data
+        var data = await _quantities243.Find<Quantities243>(filter).Sort(sort).FirstOrDefaultAsync();
+
+        return data;
+
     }
+
+    public async Task<List<Quantities243>> GetMore(DateTime zacatek, DateTime konec)
+    {
+        //prázdnej filtr
+        var filter = Builders<Quantities243>.Filter.Gt(x => x.ts, zacatek.ToUniversalTime());
+        filter &= Builders<Quantities243>.Filter.Lt(x => x.ts, konec.ToUniversalTime());
+        // dává data
+        var data = await _quantities243.Find<Quantities243>(filter).ToListAsync();
+
+        return data;
+
+    }
+
 }
 
 

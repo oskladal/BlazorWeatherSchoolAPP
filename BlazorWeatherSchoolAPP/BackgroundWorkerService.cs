@@ -65,13 +65,10 @@ public class BackgroundWorkerService : BackgroundService
 
             Quantities243 newData243 = new Quantities243();
             newData243.temp_in = FarenhaiToCelsius(apiData.sensors[0].data[0]["temp_in"]);
-            newData243.heat_index_in = FarenhaiToCelsius(apiData.sensors[0].data[0]["heat_index_in"]);
-            newData243.dew_point_in = FarenhaiToCelsius(apiData.sensors[0].data[0]["dew_point_in"]);
-            newData243.hum_in = FarenhaiToCelsius(apiData.sensors[0].data[0]["hum_in"]);
+            newData243.hum_in = Dot(apiData.sensors[0].data[0]["hum_in"]);
             newData243.ts = UnixSecondsToDateTime(long.Parse(apiData.sensors[0].data[0]["ts"]));
 
             Quantities242 newData242 = new Quantities242();
-            newData242.bar_absolute = InchToHpa(apiData.sensors[1].data[0]["bar_absolute"]);
             newData242.bar_sea_level = InchToHpa(apiData.sensors[1].data[0]["bar_sea_level"]);
             newData242.bar_trend = InchToHpa(apiData.sensors[1].data[0]["bar_trend"]);
             newData242.ts = UnixSecondsToDateTime(long.Parse(apiData.sensors[1].data[0]["ts"]));
@@ -104,11 +101,12 @@ public class BackgroundWorkerService : BackgroundService
             newData326.aqi_type = apiData.sensors[6].data[0]["aqi_type"];
             newData326.aqi_val = Dot(apiData.sensors[6].data[0]["aqi_val"]);
             newData326.aqi_desc = apiData.sensors[6].data[0]["aqi_desc"];
+            newData326.pm_10_24_hour = Dot(apiData.sensors[6].data[0]["pm_10_24_hour"]);
+            newData326.pm_2p5_24_hour = Dot(apiData.sensors[6].data[0]["pm_2p5_24_hour"]);
             newData326.ts = UnixSecondsToDateTime(long.Parse(apiData.sensors[6].data[0]["ts"]));
 
             Quantities56 newData56 = new Quantities56();
             newData56.moist_soil_1 = Dot(apiData.sensors[4].data[0]["moist_soil_1"]);
-            newData56.tx_id = Dot(apiData.sensors[4].data[0]["tx_id"]);
             newData56.temp_1 = FarenhaiToCelsius(apiData.sensors[4].data[0]["temp_1"]);
             newData56.ts = UnixSecondsToDateTime(long.Parse(apiData.sensors[4].data[0]["ts"]));
 
@@ -121,7 +119,7 @@ public class BackgroundWorkerService : BackgroundService
             await _Db.SaveNewSensorData326(newData326);
 
 
-            await Task.Delay(20000, stoppingToken);
+            await Task.Delay(300000, stoppingToken);
         }
     }
 }

@@ -4,14 +4,11 @@ namespace DBConnect.Models
     public class Quantities243
     {
         public double temp_in { get; set; }
-        public double heat_index_in { get; set; }
-        public double dew_point_in { get; set; }
         public double hum_in { get; set; }
         public DateTime ts { get; set; }
     }
     public class Quantities242
     {
-        public double bar_absolute { get; set; }
         public double bar_sea_level { get; set; }
         public double bar_trend { get; set; }
         public DateTime ts { get; set; }
@@ -43,15 +40,16 @@ namespace DBConnect.Models
         public double pm_1 { get; set; }
         public double pm_2p5 { get; set; }
         public double pm_10 { get; set; }
-        public string aqi_type { get; set; }
+        public string? aqi_type { get; set; }
         public double aqi_val { get; set; }
-        public string aqi_desc { get; set; }
+        public string? aqi_desc { get; set; }
+        public double pm_10_24_hour { get; set; }
+        public double pm_2p5_24_hour { get; set; }
         public DateTime ts { get; set; }
     }
     public class Quantities56
     {
         public double moist_soil_1 { get; set; }
-        public double tx_id { get; set; }
         public double temp_1 { get; set; }
         public DateTime ts { get; set; }
     }

@@ -6,6 +6,7 @@ using BlazorWeatherSchoolAPP.Data;
 using WeatherAPI;
 using DBConnect;
 using WeatherAPI.Models;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,14 @@ builder.Services.AddHttpClient();
 //Vytvoření instanci connectAPI a registroval ji do služeb, kde je možné ji vytáhnout v kódu.
 builder.Services.AddSingleton<ConnectAPI>();
 builder.Services.AddSingleton<WeatherDB>();
+
+
+
+builder.Services.AddScoped<DialogService>();
+builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<TooltipService>();
+builder.Services.AddScoped<ContextMenuService>();
+
 
 var app = builder.Build();
 
