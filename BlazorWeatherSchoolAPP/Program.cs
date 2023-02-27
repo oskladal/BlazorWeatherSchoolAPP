@@ -7,6 +7,11 @@ using WeatherAPI;
 using DBConnect;
 using WeatherAPI.Models;
 using Radzen;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
+using Blazorise.Charts.DataLabels;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,15 +33,28 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<ConnectAPI>();
 builder.Services.AddSingleton<WeatherDB>();
 
+//Mudblazor
+builder.Services.AddMudServices();
 
 
+// Pro přidání Radzen
 builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
 
+// Přidání Blazorise
+builder.Services
+    .AddBlazorise(options =>
+    {
+        options.Immediate = true;
+    })
+    .AddBootstrapProviders()
+    .AddFontAwesomeIcons();
+
 
 var app = builder.Build();
+
 
 
 // Configure the HTTP request pipeline.

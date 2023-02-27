@@ -3,7 +3,7 @@
 <PageTitle>Weather forecast</PageTitle>
 
 @using BlazorWeatherSchoolAPP.Data
-@using DBConnect.Models 
+@using DBConnect.Models
 @inject WeatherForecastService ForecastService
 @inject WeatherDB dataDB
 
@@ -13,9 +13,22 @@
 
 
 
-    
-<RadzenChart>
 
+
+<div class="rz-p-12 rz-text-align-center">
+    <MudDateRangePicker @ref="_picker" Label="Vyberte rozsah..." @bind-DateRange="@RozsahDat" AutoClose="@_autoClose" Color="MudBlazor.Color.Success">
+        <PickerActions>
+            <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Vymazat</MudButton>
+            <MudButton OnClick="@(() => _picker.Close(false))">Zrušit</MudButton>
+            <MudButton Color="MudBlazor.Color.Primary" OnClick="@(() => _picker.Close())">Potvrdit</MudButton>
+        </PickerActions>
+    </MudDateRangePicker>
+    <MudSwitch @bind-Checked="@_autoClose" Color="MudBlazor.Color.Secondary">Automatické uzavření okna</MudSwitch>
+</div>
+
+
+
+<RadzenChart>
     <RadzenLineSeries Smooth="true" Data="@vice_hodnot" CategoryProperty="ts" Title="Teplota" LineType="LineType.Solid" ValueProperty="temp_in">
         <RadzenMarkers MarkerType="MarkerType.Circle" />
     </RadzenLineSeries>
@@ -24,35 +37,40 @@
     </RadzenLineSeries>
     <RadzenValueAxis>
         <RadzenGridLines Visible="true" />
-        <RadzenAxisTitle Text="Teplota" />
+        <RadzenAxisTitle Text="Teplota (°C)" />
+        <RadzenAxisTitle Text="Vlhkost (%)" />
     </RadzenValueAxis>
     <RadzenCategoryAxis Formatter=@(value => ((DateTime)value).ToLocalTime().ToString("g")) Padding="20" Step="@TimeSpan.FromHours(1)" />
 </RadzenChart>
 
-    <p>
-        <label class="mt-3"><RadzenCheckBox @bind-Value=@showValue /> Show the pointer value</label>
-    </p>
+<p>
+    <label class="mt-3"><RadzenCheckBox @bind-Value=@showValue /> Show the pointer value</label>
+</p>
 
-    <RadzenArcGauge Style="width: 100%; height: 250px;">
-        <RadzenArcGaugeScale Step="20" Min="-20" Max="60" MinorStep="2" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
-            <RadzenArcGaugeScaleValue Value=jedna_hodnota.temp_in ShowValue=@showValue>
-                <Template Context="pointer">
-                    <h4>
-                        @pointer.Value <sup>km/h</sup>
-                    </h4>
-                </Template>
-            </RadzenArcGaugeScaleValue>
-        </RadzenArcGaugeScale>
-    </RadzenArcGauge>
+<RadzenArcGauge Style="width: 100%; height: 250px;">
+    <RadzenArcGaugeScale Step="20" Min="-20" Max="60" MinorStep="2" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
+        <RadzenArcGaugeScaleValue Value=posledni_zaznam.temp_in ShowValue=@showValue>
+            <Template Context="pointer">
+                <h4>
+                    @pointer.Value <sup>°C</sup>
+                </h4>
+            </Template>
+        </RadzenArcGaugeScaleValue>
+    </RadzenArcGaugeScale>
+</RadzenArcGauge>
 
+<RadzenDataGrid Data="@posledni_zaznam" TItem="Quantities243">
 
-   
+</RadzenDataGrid>
 
 
 @code {
 
-    public Quantities243 jedna_hodnota;
+    public Quantities243 posledni_zaznam;
+    public Quantities243 prvni_zaznam;
     public List<Quantities243> vice_hodnot;
+
+    public DateRange RozsahDat;
 
     bool showValue = true;
     double value = 100;
@@ -61,9 +79,26 @@
 
     protected override async Task OnInitializedAsync()
     {
+        RozsahDat = new DateRange(DateTime.Now.AddDays(-1).Date, DateTime.Now.Date);
+        DateTime start = RozsahDat.Start.Value;
+        DateTime end = RozsahDat.End.Value;
 
-        jedna_hodnota = await dataDB.Get();
-        vice_hodnot = await dataDB.GetMore(new DateTime(2023, 2, 14, 20, 0, 0), new DateTime(2023, 2, 14, 23, 06,0));
+        posledni_zaznam = await dataDB.Get_High();
+        prvni_zaznam = await dataDB.Get_Low();
+        vice_hodnot = await dataDB.GetMore(start.ToLocalTime(), end.ToLocalTime());
     }
+
+    private MudDateRangePicker _picker;
+    private bool _autoClose;
+
+
+
+
 }
+
+
+
+
+
+
 

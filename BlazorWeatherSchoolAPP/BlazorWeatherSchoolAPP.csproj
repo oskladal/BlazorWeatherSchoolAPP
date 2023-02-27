@@ -17,11 +17,27 @@
   <ItemGroup>
     <None Remove="Models\" />
     <None Remove="Radzen.Blazor" />
+    <None Remove="Blazorise" />
+    <None Remove="Blazorise.Bootstrap" />
+    <None Remove="Blazorise.Icons.FontAwesome" />
+    <None Remove="Blazorise.Charts" />
+    <None Remove="Blazorise.Components" />
+    <None Remove="Blazorise.Charts.DataLabels" />
+    <None Remove="BlazorDateRangePicker" />
+    <None Remove="MudBlazor" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Radzen.Blazor" Version="4.7.0" />
+    <PackageReference Include="Blazorise" Version="1.2.0" />
+    <PackageReference Include="Blazorise.Bootstrap" Version="1.2.0" />
+    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.2.0" />
+    <PackageReference Include="Blazorise.Components" Version="1.2.0" />
+    <PackageReference Include="Blazorise.Charts.DataLabels" Version="1.2.0" />
+    <PackageReference Include="Blazorise.Charts" Version="1.2.0" />
+    <PackageReference Include="BlazorDateRangePicker" Version="4.3.0" />
+    <PackageReference Include="MudBlazor" Version="6.1.9" />
   </ItemGroup>
 </Project>

@@ -11,7 +11,7 @@
     "BlazorWeatherSchoolAPP": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:7828",
+      "applicationUrl": "http://localhost:35911",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

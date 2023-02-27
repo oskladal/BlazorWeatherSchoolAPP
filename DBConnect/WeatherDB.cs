@@ -70,14 +70,27 @@ public class WeatherDB
 
     // Načte všechny data sensoru
 
-    public async Task<Quantities243> Get()
+    public async Task<Quantities243> Get_High()
     {
         //prázdnej filtr
         var filter = Builders<Quantities243>.Filter.Empty;
-        //bere podle podledního id 
+        //bere podle posledního id 
         var sort = Builders<Quantities243>.Sort.Descending("_id");
         // dává data
         var data = await _quantities243.Find<Quantities243>(filter).Sort(sort).FirstOrDefaultAsync();
+
+        return data;
+
+    }
+
+    public async Task<Quantities243> Get_Low()
+    {
+        //prázdnej filtr
+        var filter = Builders<Quantities243>.Filter.Empty;
+        //bere podle prvního id 
+        var sort_low = Builders<Quantities243>.Sort.Ascending("_id");
+        // dává data
+        var data = await _quantities243.Find<Quantities243>(filter).Sort(sort_low).FirstOrDefaultAsync();
 
         return data;
 
