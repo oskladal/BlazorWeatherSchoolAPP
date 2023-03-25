@@ -5,21 +5,36 @@ using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using WeatherAPI.Models;
 using DBConnect.Models;
+using System.Reflection;
+using MongoDB.Bson;
 
 namespace DBConnect;
+
+public class CollectionBuilder<T> where T : class
+{
+    public IMongoCollection<T> Get(IMongoDatabase database, string collectionName)
+    {
+        return database.GetCollection<T>(collectionName);
+    }
+}
+
 public class WeatherDB
 {
     // Seznam kolekcí/tabulek 
-    private IMongoCollection<Quantities243> _quantities243;
+    /*private IMongoCollection<Quantities243> _quantities243;
     private IMongoCollection<Quantities242> _quantities242;
     private IMongoCollection<Quantities46> _quantities46;
     private IMongoCollection<Quantities56> _quantities56;
-    private IMongoCollection<Quantities326> _quantities326;
+    private IMongoCollection<Quantities326> _quantities326;*/
+
+    // Kolekce pro všechna data
+    private IMongoCollection<Quantities> _quantities;
 
     public WeatherDB(IOptions<List<SensorConfig>> sensorsConfiguration, IConfiguration config)
     {
         // Konverze _id na string (_id je klíč mongodb databáze.... https://orangematter.solarwinds.com/2019/12/22/what-is-mongodbs-id-field-and-how-to-use-it/)
         var pack = new ConventionPack { new StringIdStoredAsObjectIdConvention() };
+        // konverze aby názvy začínaly malím písmenem podle JSON specifikace 
         pack.Add(new IgnoreExtraElementsConvention(true));
         ConventionRegistry.Register("Custom Convention", pack, t => true);
 
@@ -27,86 +42,72 @@ public class WeatherDB
         var client = new MongoClient(config["DBurl"]);
         var database = client.GetDatabase("MeteorologicalStationValues");
 
-        
-
-        _quantities243 = database.GetCollection<Quantities243>("sensor_" + 243);
-        _quantities242 = database.GetCollection<Quantities242>("sensor_" + 242);
-        _quantities46 = database.GetCollection<Quantities46>("sensor_" + 46);
-        _quantities56 = database.GetCollection<Quantities56>("sensor_" + 56);
-        _quantities326 = database.GetCollection<Quantities326>("sensor_" + 326);
-
+        // kolekce kde jsou všechna data sensorů
+        _quantities = database.GetCollection<Quantities>("sensor_data");
     }
 
+    /*---------------------------------------------------------------*/
+    /*---------------------------------------------------------------*/
 
-    public async Task SaveNewSensorData243(Quantities243 data)
+    /// <summary>
+    /// Ukládá data všech sensorů
+    /// </summary>
+    /// <param name="data">Data sensorů</param>
+    /// <returns>void</returns>
+    public async Task SaveSensorsData(Quantities data)
     {
-        await _quantities243.InsertOneAsync(data);
-        
+        await _quantities.InsertOneAsync(data);
     }
 
-    public async Task SaveNewSensorData242(Quantities242 data)
+    /// <summary>
+    /// Vrací data ze všech sensorů podle data
+    /// </summary>
+    /// <param name="from">Datum od</param>
+    /// <param name="to">Datum do</param>
+    /// <returns>Vyfiltrovaná data</returns>
+    public async Task<List<Quantities>> GetSensorsData(DateTime from, DateTime to)
     {
-        await _quantities242.InsertOneAsync(data);
-
+        // Filter data od
+        var filter = Builders<Quantities>.Filter.Gt(x => x.Created, from.ToUniversalTime());
+        // Filter data do
+        filter &= Builders<Quantities>.Filter.Lt(x => x.Created, to.ToUniversalTime());
+        // Vrací vyfiltrovaná data všech sensorů
+        return await _quantities.Find<Quantities>(filter).ToListAsync();
     }
 
-    public async Task SaveNewSensorData46(Quantities46 data)
+    /// <summary>
+    /// Vrátí minimální a maximální datum 
+    /// </summary>
+    /// <returns>Mnimální a maximální datum</returns>
+    public async Task<(DateTime Min, DateTime Max)> GetMinMaxDate()
     {
-        await _quantities46.InsertOneAsync(data);
+        var filter = Builders<Quantities>.Filter.Empty;
+        // řazení 
+        var sortDescending = Builders<Quantities>.Sort.Descending("_id");
+        var sortAscending = Builders<Quantities>.Sort.Ascending("_id");
 
+        var minValue = await _quantities.Find<Quantities>(filter).Sort(sortAscending).Limit(1).FirstOrDefaultAsync();
+        var maxValue = await _quantities.Find<Quantities>(filter).Sort(sortDescending).Limit(1).FirstOrDefaultAsync();
+
+        return new(minValue.Created.ToLocalTime().Date, maxValue.Created.ToLocalTime().Date);
     }
 
-    public async Task SaveNewSensorData56(Quantities56 data)
+    /// <summary>
+    /// Vrací poslední záznam
+    /// </summary>
+    /// <returns>Poslední záznam</returns>
+    public async Task<Quantities> GetLastSensorData()
     {
-        await _quantities56.InsertOneAsync(data);
+        var filter = Builders<Quantities>.Filter.Empty;
 
+        var sortDescending = Builders<Quantities>.Sort.Descending("_id");
+        return await _quantities.Find<Quantities>(filter).Sort(sortDescending).Limit(1).FirstOrDefaultAsync();
     }
 
-    public async Task SaveNewSensorData326(Quantities326 data)
-    {
-        await _quantities326.InsertOneAsync(data);
+    //TODO: Preprocessing dat. Kvůli tomu aby se nemusela pokaždé tahat všechna data (průměry a tak)
 
-    }
-
-    // Načte všechny data sensoru
-
-    public async Task<Quantities243> Get_High()
-    {
-        //prázdnej filtr
-        var filter = Builders<Quantities243>.Filter.Empty;
-        //bere podle posledního id 
-        var sort = Builders<Quantities243>.Sort.Descending("_id");
-        // dává data
-        var data = await _quantities243.Find<Quantities243>(filter).Sort(sort).FirstOrDefaultAsync();
-
-        return data;
-
-    }
-
-    public async Task<Quantities243> Get_Low()
-    {
-        //prázdnej filtr
-        var filter = Builders<Quantities243>.Filter.Empty;
-        //bere podle prvního id 
-        var sort_low = Builders<Quantities243>.Sort.Ascending("_id");
-        // dává data
-        var data = await _quantities243.Find<Quantities243>(filter).Sort(sort_low).FirstOrDefaultAsync();
-
-        return data;
-
-    }
-
-    public async Task<List<Quantities243>> GetMore(DateTime zacatek, DateTime konec)
-    {
-        //prázdnej filtr
-        var filter = Builders<Quantities243>.Filter.Gt(x => x.ts, zacatek.ToUniversalTime());
-        filter &= Builders<Quantities243>.Filter.Lt(x => x.ts, konec.ToUniversalTime());
-        // dává data
-        var data = await _quantities243.Find<Quantities243>(filter).ToListAsync();
-
-        return data;
-
-    }
+    /*---------------------------------------------------------------*/
+    /*---------------------------------------------------------------*/
 
 }
 

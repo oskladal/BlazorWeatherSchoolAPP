@@ -16,7 +16,7 @@ public class BackgroundWorkerService : BackgroundService
     readonly WeatherDB _Db;
 
     public BackgroundWorkerService(ILogger<BackgroundWorkerService> logger, ConnectAPI Api, WeatherDB Db)
-    {   
+    {
         _logger = logger;
         _Api = Api;
         _Db = Db;
@@ -31,25 +31,25 @@ public class BackgroundWorkerService : BackgroundService
     public double FarenhaiToCelsius(string way)
     {
         var newset = 5 * (double.Parse(way, CultureInfo.InvariantCulture) - 32) / 9;
-        return Math.Round(newset, 3);
+        return Math.Round(newset, 1);
     }
 
     public double InchToHpa(string way)
     {
         var newset = (double.Parse(way, CultureInfo.InvariantCulture)) * 33.86;
-        return Math.Round(newset, 3);
+        return Math.Round(newset, 1);
     }
 
     public double MilesToKm(string way)
     {
         var newset = (double.Parse(way, CultureInfo.InvariantCulture)) * 1.6093427;
-        return Math.Round(newset, 3);
+        return Math.Round(newset, 1);
     }
 
     public double Dot(string way)
     {
         var newset = (double.Parse(way, CultureInfo.InvariantCulture));
-        return Math.Round(newset, 3);
+        return Math.Round(newset, 1);
     }
 
 
@@ -110,15 +110,23 @@ public class BackgroundWorkerService : BackgroundService
             newData56.temp_1 = FarenhaiToCelsius(apiData.sensors[4].data[0]["temp_1"]);
             newData56.ts = UnixSecondsToDateTime(long.Parse(apiData.sensors[4].data[0]["ts"]));
 
+            /*-----------------------------------------------------*/
 
-            // uložení do db
-            await _Db.SaveNewSensorData243(newData243);
-            await _Db.SaveNewSensorData242(newData242);
-            await _Db.SaveNewSensorData46(newData46);
-            await _Db.SaveNewSensorData56(newData56);
-            await _Db.SaveNewSensorData326(newData326);
+            // Objekt kde jsou všechna data
+            Quantities quantities = new Quantities
+            {
+                Created = DateTime.Now,
+                Quantities242 = newData242,
+                Quantities243 = newData243,
+                Quantities46 = newData46,
+                Quantities56 = newData56,
+                Quantities326 = newData326
+            };
 
+            // uložení do DB
+            await _Db.SaveSensorsData(quantities);
 
+            // Doba po které bude docházet k ukládání
             await Task.Delay(300000, stoppingToken);
         }
     }
