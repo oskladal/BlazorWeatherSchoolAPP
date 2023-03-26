@@ -39,5 +39,7 @@
     <PackageReference Include="Blazorise.Charts" Version="1.2.0" />
     <PackageReference Include="BlazorDateRangePicker" Version="4.3.0" />
     <PackageReference Include="MudBlazor" Version="6.1.9" />
+    <PackageReference Include="Google.Apis.Translate.v2" Version="1.60.0.875" />
+    <PackageReference Include="Google.Cloud.Translation.V2" Version="3.1.0" />
   </ItemGroup>
 </Project>

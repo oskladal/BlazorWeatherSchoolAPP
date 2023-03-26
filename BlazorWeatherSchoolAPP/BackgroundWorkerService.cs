@@ -52,8 +52,6 @@ public class BackgroundWorkerService : BackgroundService
         return Math.Round(newset, 1);
     }
 
-
-
     protected async override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)

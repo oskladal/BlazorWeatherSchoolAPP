@@ -4,6 +4,8 @@
     border-spacing: 0;
     border-radius: 3px;
     overflow: hidden;
+    border: 1px solid;
+    border-color: #d5d8db;
 }
 
 
@@ -14,3 +16,28 @@
 .bold-font {
     font-weight: bold;
 }
+
+.table-my-value tbody tr td:nth-child(even) {
+    font-weight: bold;
+}
+
+.table-my-value .green_one {
+    background-color: #50F1E7;
+}
+
+.table-my-value .green_two {
+    background-color: #52CCAB;
+}
+
+.table-my-value .yellow {
+    background-color: #F1E642;
+}
+
+.table-my-value .orange {
+    background-color: #FF5052;
+}
+
+.table-my-value .brown {
+    background-color: #970033;
+}
+
