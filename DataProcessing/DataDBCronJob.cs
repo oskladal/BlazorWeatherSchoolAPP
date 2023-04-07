@@ -1,60 +1,74 @@
-﻿// Kde dochází k zapínání programu - spuštění - přidávání modulů 
-
-using System.Threading;
-using BlazorWeatherSchoolAPP;
-using WeatherAPI;
-using DBConnect;
-using WeatherAPI.Models;
-using Microsoft.AspNetCore.Components;
-using DBConnect.Models;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
+using DBConnect;
+using DBConnect.Models;
+using Microsoft.AspNetCore.Builder;
+using WeatherAPI;
 
-public class BackgroundWorkerService : BackgroundService
+namespace DataProcessing
 {
-    readonly ILogger<BackgroundWorkerService> _logger;
-    readonly ConnectAPI _Api;
-    readonly WeatherDB _Db;
-
-    public BackgroundWorkerService(ILogger<BackgroundWorkerService> logger, ConnectAPI Api, WeatherDB Db)
+    public class DataDBCronJob : CronJobService
     {
-        _logger = logger;
-        _Api = Api;
-        _Db = Db;
-    }
+        readonly ILogger<DataDBCronJob> _logger;
+        readonly ConnectAPI _Api;
+        readonly WeatherDB _Db;
 
-    public DateTime UnixSecondsToDateTime(long timestamp)
-    {
-        var offset = DateTimeOffset.FromUnixTimeSeconds(timestamp).LocalDateTime;
-        return offset;
-    }
 
-    public double FarenhaiToCelsius(string way)
-    {
-        var newset = 5 * (double.Parse(way, CultureInfo.InvariantCulture) - 32) / 9;
-        return Math.Round(newset, 1);
-    }
+        public DataDBCronJob(IScheduleConfig<DataDBCronJob> config, ILogger<DataDBCronJob> logger, WeatherDB Db, ConnectAPI Api)
+            : base(config.CronExpression, config.TimeZoneInfo)
+        {
+            _logger = logger;
+            _Api = Api;
+            _Db = Db;
+        }
+    
 
-    public double InchToHpa(string way)
-    {
-        var newset = (double.Parse(way, CultureInfo.InvariantCulture)) * 33.86;
-        return Math.Round(newset, 1);
-    }
+        public override Task StartAsync(CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("CronJob DataDB Start");
+            return base.StartAsync(cancellationToken);
+        }
 
-    public double MilesToKm(string way)
-    {
-        var newset = (double.Parse(way, CultureInfo.InvariantCulture)) * 1.6093427;
-        return Math.Round(newset, 1);
-    }
+        public override Task StopAsync(CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("CronJob DataDB Stop");
+            return base.StopAsync(cancellationToken);
+        }
 
-    public double Dot(string way)
-    {
-        var newset = (double.Parse(way, CultureInfo.InvariantCulture));
-        return Math.Round(newset, 1);
-    }
+        public DateTime UnixSecondsToDateTime(long timestamp)
+        {
+            var offset = DateTimeOffset.FromUnixTimeSeconds(timestamp).LocalDateTime;
+            return offset;
+        }
 
-    protected async override Task ExecuteAsync(CancellationToken stoppingToken)
-    {
-        while (!stoppingToken.IsCancellationRequested)
+        public double FarenhaiToCelsius(string way)
+        {
+            var newset = 5 * (double.Parse(way, CultureInfo.InvariantCulture) - 32) / 9;
+            return Math.Round(newset, 1);
+        }
+
+        public double InchToHpa(string way)
+        {
+            var newset = (double.Parse(way, CultureInfo.InvariantCulture)) * 33.86;
+            return Math.Round(newset, 1);
+        }
+
+        public double MilesToKm(string way)
+        {
+            var newset = (double.Parse(way, CultureInfo.InvariantCulture)) * 1.6093427;
+            return Math.Round(newset, 1);
+        }
+
+        public double Dot(string way)
+        {
+            var newset = (double.Parse(way, CultureInfo.InvariantCulture));
+            return Math.Round(newset, 1);
+        }
+
+        public override async Task DoWork(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Sace mongoDB at:{time}", DateTimeOffset.Now);
 
@@ -64,6 +78,8 @@ public class BackgroundWorkerService : BackgroundService
             Quantities243 newData243 = new Quantities243();
             newData243.temp_in = FarenhaiToCelsius(apiData.sensors[0].data[0]["temp_in"]);
             newData243.hum_in = Dot(apiData.sensors[0].data[0]["hum_in"]);
+            newData243.dew_point_in = FarenhaiToCelsius(apiData.sensors[0].data[0]["dew_point_in"]);
+            newData243.heat_index_in = FarenhaiToCelsius(apiData.sensors[0].data[0]["heat_index_in"]);
             newData243.ts = UnixSecondsToDateTime(long.Parse(apiData.sensors[0].data[0]["ts"]));
 
             Quantities242 newData242 = new Quantities242();
@@ -80,6 +96,9 @@ public class BackgroundWorkerService : BackgroundService
             newData46.rain_rate_last_mm = MilesToKm(apiData.sensors[2].data[0]["rain_rate_last_mm"]);
             newData46.uv_index = Dot(apiData.sensors[2].data[0]["uv_index"]);
             newData46.solar_rad = Dot(apiData.sensors[2].data[0]["solar_rad"]);
+            newData46.rainfall_last_15_min_mm = Dot(apiData.sensors[2].data[0]["rainfall_last_15_min_mm"]);
+            newData46.rainfall_last_60_min_mm = Dot(apiData.sensors[2].data[0]["rainfall_last_60_min_mm"]);
+            newData46.rainfall_last_24_hr_mm = Dot(apiData.sensors[2].data[0]["rainfall_last_24_hr_mm"]);
             newData46.rainfall_daily_mm = Dot(apiData.sensors[2].data[0]["rainfall_daily_mm"]);
             newData46.rainfall_monthly_mm = Dot(apiData.sensors[2].data[0]["rainfall_monthly_mm"]);
             newData46.rainfall_year_mm = Dot(apiData.sensors[2].data[0]["rainfall_year_mm"]);
@@ -96,11 +115,13 @@ public class BackgroundWorkerService : BackgroundService
             newData326.pm_1 = Dot(apiData.sensors[6].data[0]["pm_1"]);
             newData326.pm_2p5 = Dot(apiData.sensors[6].data[0]["pm_2p5"]);
             newData326.pm_10 = Dot(apiData.sensors[6].data[0]["pm_10"]);
+            newData326.pm_10_24_hour = Dot(apiData.sensors[6].data[0]["pm_10_24_hour"]);
+            newData326.pm_2p5_24_hour = Dot(apiData.sensors[6].data[0]["pm_2p5_24_hour"]);
+            newData326.pm_10_1_hour = Dot(apiData.sensors[6].data[0]["pm_10_1_hour"]);
+            newData326.pm_2p5_1_hour = Dot(apiData.sensors[6].data[0]["pm_2p5_1_hour"]);
             newData326.aqi_type = apiData.sensors[6].data[0]["aqi_type"];
             newData326.aqi_val = Dot(apiData.sensors[6].data[0]["aqi_val"]);
             newData326.aqi_desc = apiData.sensors[6].data[0]["aqi_desc"];
-            newData326.pm_10_24_hour = Dot(apiData.sensors[6].data[0]["pm_10_24_hour"]);
-            newData326.pm_2p5_24_hour = Dot(apiData.sensors[6].data[0]["pm_2p5_24_hour"]);
             newData326.ts = UnixSecondsToDateTime(long.Parse(apiData.sensors[6].data[0]["ts"]));
 
             Quantities56 newData56 = new Quantities56();
@@ -114,6 +135,7 @@ public class BackgroundWorkerService : BackgroundService
             Quantities quantities = new Quantities
             {
                 Created = DateTime.Now,
+                SensorFirstTime = newData243.ts,
                 Quantities242 = newData242,
                 Quantities243 = newData243,
                 Quantities46 = newData46,
@@ -122,12 +144,10 @@ public class BackgroundWorkerService : BackgroundService
             };
 
             // uložení do DB
-            await _Db.SaveSensorsData(quantities);
-
-            // Doba po které bude docházet k ukládání
-            await Task.Delay(300000, stoppingToken);
+            try { await _Db.SaveSensorsData(quantities); } catch { }; ;
+            return;
         }
+
     }
 }
-
 

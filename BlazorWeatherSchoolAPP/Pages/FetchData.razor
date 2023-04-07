@@ -1,12 +1,28 @@
 ﻿@page "/fetchdata"
+@layout MainLayout
+
+@using System.Globalization;
+@using System.Linq;
 
 <PageTitle>Weather forecast</PageTitle>
 
-@using BlazorWeatherSchoolAPP.Data
 @using DBConnect.Models
-@inject WeatherForecastService ForecastService
 @inject WeatherDB dataDB
-@using System.Drawing
+
+@inject IJSRuntime JS
+
+
+@using BlazorWeatherSchoolAPP.Source;
+
+<figure class="highcharts-figure">
+    <div id="graf1"></div>
+    <p class="highcharts-description">
+        This chart shows how data labels can be added to the data series. This
+        can increase readability and comprehension for small datasets.
+    </p>
+</figure>
+
+
 
 <h1>Meteo aplikace VŠCHT</h1>
 
@@ -156,15 +172,28 @@
     <RadzenCategoryAxis Formatter="@FormatDate" />
 </RadzenChart>
 
-<p>
-    <label class="mt-3"><RadzenCheckBox @bind-Value=@showValue /> Show the pointer value</label>
-</p>
+
+@*<RadzenChart>
+    <RadzenColumnSeries Data="@last_data" CategoryProperty="Created" Title="Teplota vnitřní" LineType="LineType.Dashed" ValueProperty="Quantities243.temp_in">
+        </RadzenColumnSeries>
+        <RadzenColumnSeries Data="@last_data" CategoryProperty="Created" Title="Teplota venkovní" ValueProperty="Quantities46.temp">
+        </RadzenColumnSeries>
+        <RadzenValueAxis Formatter="@FormatAsCelsius">
+            <RadzenGridLines Visible="true" />
+            <RadzenAxisTitle Text="Teplota (°C)" />
+        </RadzenValueAxis>
+    </RadzenChart>*@
+
+
+
+
+
 
 @if (last_data != null)
 {
     <RadzenArcGauge Style="width: 100%; height: 250px;">
         <RadzenArcGaugeScale Step="20" Min="-20" Max="60" MinorStep="2" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
-            <RadzenArcGaugeScaleValue Value=last_data.Quantities243.temp_in ShowValue=@showValue>
+            <RadzenArcGaugeScaleValue Value=last_data.Quantities243.temp_in ShowValue=true>
                 <Template Context="pointer">
                     <h4>
                         @pointer.Value <sup>°C</sup>
@@ -204,21 +233,32 @@
     public DateRange? mesic = new DateRange(DateTime.Now.AddMonths(-1).Date, DateTime.Now.Date);
     public DateRange? rok = new DateRange(DateTime.Now.AddYears(-1).Date, DateTime.Now.Date);
 
+    Timer timer;
 
 
     // Načítání dat
     protected override async Task OnInitializedAsync()
     {
         // Načtení dat při prvním spuštění
-        await LoadData();
-        var timer = new System.Threading.Timer((_) =>
+        timer = new System.Threading.Timer((_) =>
         {
 
             InvokeAsync(async () =>
             {
+            
                 await LoadData();
             });
-        }, null, 0, 60000);
+        }, null, 0, 300000);
+    }
+
+
+
+    // Spouští JS funkci, která renderuje graf
+    public async Task RenderCharts(List<Quantities> quantities)
+    {
+        var chart = GraphsGenerator.BasicGraph(quantities);
+        await JS.InvokeAsync<string>("RenderCharts", chart);
+
     }
 
     public async Task LoadData()
@@ -228,10 +268,11 @@
         MinMaxDate = await dataDB.GetMinMaxDate();
 
         // Data pro graf
-        if (RozsahDat == null) { rozsahdat = den; }
-        DateTime start = RozsahDat.Start.Value;
-        DateTime end = RozsahDat.End.Value.AddHours(23).AddMinutes(59).AddSeconds(59);
+        if (rozsahdat == null) { rozsahdat = den; }
+        DateTime start = rozsahdat.Start.Value;
+        DateTime end = rozsahdat.End.Value.AddHours(23).AddMinutes(59).AddSeconds(59);
         graph_data = await dataDB.GetSensorsData(start, end);
+
 
         // Poslední záznam
         last_data = await dataDB.GetLastSensorData();
@@ -239,6 +280,9 @@
 
         // překlad
         translatedText_desc = TranslateText(table_data[0].Quantities326.aqi_desc);
+
+
+        await RenderCharts(graph_data);
 
         StateHasChanged();
     }
@@ -291,7 +335,8 @@
         }
     }
 
-}
+
+    }
 
 
 

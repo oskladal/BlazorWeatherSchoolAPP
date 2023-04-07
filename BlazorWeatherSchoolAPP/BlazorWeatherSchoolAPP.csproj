@@ -25,9 +25,16 @@
     <None Remove="Blazorise.Charts.DataLabels" />
     <None Remove="BlazorDateRangePicker" />
     <None Remove="MudBlazor" />
+    <None Remove="Data\" />
+    <None Remove="Source\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Data\" />
+    <Folder Include="wwwroot\HightChartJS\" />
+    <Folder Include="Source\" />
+    <Folder Include="Data\" />
+    <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Radzen.Blazor" Version="4.7.0" />
@@ -41,5 +48,15 @@
     <PackageReference Include="MudBlazor" Version="6.1.9" />
     <PackageReference Include="Google.Apis.Translate.v2" Version="1.60.0.875" />
     <PackageReference Include="Google.Cloud.Translation.V2" Version="3.1.0" />
+    <PackageReference Include="Highsoft.Highstock" Version="10.3.3.1" />
+    <PackageReference Include="Highsoft.Highcharts" Version="10.3.3.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\HightChartJS\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Data\foto\logo.png">
+      <Link>logo.png</Link>
+    </None>
   </ItemGroup>
 </Project>

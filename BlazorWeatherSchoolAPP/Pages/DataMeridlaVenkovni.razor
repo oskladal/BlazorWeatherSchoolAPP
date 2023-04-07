@@ -1,0 +1,169 @@
+﻿@page "/datameridlavenkovni"
+@layout MainLayout
+
+@using DBConnect.Models
+@inject WeatherDB dataDB
+
+
+    <RadzenContentContainer Name="main">
+        <ChildContent>
+            @if (last_data != null)
+            {
+                <RadzenRow>
+                    <RadzenColumn>
+                        <div>
+                            <RadzenCard Style="width: 100%; margin: 0 auto; ">
+                                <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H6">Rychlost větru</RadzenText>
+                                <RadzenArcGauge Style="width: 100%; height: 120px; margin-top: -30px;">
+                                    <RadzenArcGaugeScale Step="20" Min="-20" Max="60" MinorStep="2" Radius="1.4" TickPosition=0 Y="0.9" Margin="0">
+                                        <RadzenArcGaugeScaleValue Value=last_data.Quantities46.wind_speed_last ShowValue=true>
+                                            <Template Context="pointer">
+                                                <h6>
+                                                    @pointer.Value <sup>Km/hod</sup>
+                                                </h6>
+                                            </Template>
+                                        </RadzenArcGaugeScaleValue>
+                                    </RadzenArcGaugeScale>
+                                </RadzenArcGauge>
+                            </RadzenCard>
+                        </div>
+                    </RadzenColumn>
+                    <br />
+                    <RadzenColumn>
+                        <div>
+                            <RadzenCard Style="width: 100%; margin: 0 auto; ">
+                                <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H6">Teplota</RadzenText>
+                                <RadzenArcGauge Style="width: 100%; height: 120px; margin-top: -30px;">
+                                    <RadzenArcGaugeScale Step="20" Min="-20" Max="60" MinorStep="2" Radius="1.4" TickPosition=0 Y="0.9" Margin="0">
+                                        <RadzenArcGaugeScaleValue Value=last_data.Quantities46.temp ShowValue=true>
+                                            <Template Context="pointer">
+                                                <h6>
+                                                    @pointer.Value <sup>°C</sup>
+                                                </h6>
+                                            </Template>
+                                        </RadzenArcGaugeScaleValue>
+                                    </RadzenArcGaugeScale>
+                                </RadzenArcGauge>
+                            </RadzenCard>
+                        </div>
+                    </RadzenColumn>
+                </RadzenRow>
+                <br />
+                <RadzenRow>
+                    <RadzenColumn>
+                        <div>
+                            <RadzenCard Style="width: 100%; margin: 0 auto; ">
+                                <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H6">Chladný vítr</RadzenText>
+                                <RadzenArcGauge Style="width: 100%; height: 120px; margin-top: -30px;">
+                                    <RadzenArcGaugeScale Step="20" Min="-20" Max="60" MinorStep="2" Radius="1.4" TickPosition=0 Y="0.9" Margin="0">
+                                        <RadzenArcGaugeScaleValue Value=last_data.Quantities46.wind_chill ShowValue=true>
+                                            <Template Context="pointer">
+                                                <h6>
+                                                    @pointer.Value <sup>°C</sup>
+                                                </h6>
+                                            </Template>
+                                        </RadzenArcGaugeScaleValue>
+                                    </RadzenArcGaugeScale>
+                                </RadzenArcGauge>
+                            </RadzenCard>
+                        </div>
+                    </RadzenColumn>
+                    <br />
+                    <RadzenColumn>
+                        <div>
+                            <RadzenCard Style="width: 100%; margin: 0 auto; ">
+                                <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H6">UV index</RadzenText>
+                                <RadzenArcGauge Style="width: 100%; height: 120px; margin-top: -30px;">
+                                    <RadzenArcGaugeScale Step="20" Min="-20" Max="60" MinorStep="2" Radius="1.4" TickPosition=0 Y="0.9" Margin="0">
+                                        <RadzenArcGaugeScaleValue Value=last_data.Quantities46.uv_index ShowValue=true>
+                                            <Template Context="pointer">
+                                                <h6>
+                                                    @pointer.Value <sup></sup>
+                                                </h6>
+                                            </Template>
+                                        </RadzenArcGaugeScaleValue>
+                                    </RadzenArcGaugeScale>
+                                </RadzenArcGauge>
+                            </RadzenCard>
+                        </div>
+                    </RadzenColumn>
+                </RadzenRow>
+                <br />
+                <RadzenRow>
+                    <RadzenColumn>
+                        <div>
+                            <RadzenCard Style="width: 100%; margin: 0 auto; ">
+                                <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H6">Intenzita záření</RadzenText>
+                                <RadzenArcGauge Style="width: 100%; height: 120px; margin-top: -30px;">
+                                    <RadzenArcGaugeScale Step="20" Min="-20" Max="60" MinorStep="2" Radius="1.4" TickPosition=0 Y="0.9" Margin="0">
+                                        <RadzenArcGaugeScaleValue Value=last_data.Quantities46.solar_rad ShowValue=true>
+                                            <Template Context="pointer">
+                                                <h6>
+                                                    @pointer.Value <sup>W/m&sup2</sup>
+                                                </h6>
+                                            </Template>
+                                        </RadzenArcGaugeScaleValue>
+                                    </RadzenArcGaugeScale>
+                                </RadzenArcGauge>
+                            </RadzenCard>
+                        </div>
+                    </RadzenColumn>
+                    <br />
+                    <RadzenColumn>
+                        <div>
+                            <RadzenCard Style="width: 100%; margin: 0 auto; ">
+                                <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H6">Intenzita dešťových srážek</RadzenText>
+                                <RadzenArcGauge Style="width: 100%; height: 120px; margin-top: -30px;">
+                                    <RadzenArcGaugeScale Step="20" Min="-20" Max="60" MinorStep="2" Radius="1.4" TickPosition=0 Y="0.9" Margin="0">
+                                        <RadzenArcGaugeScaleValue Value=last_data.Quantities46.rain_rate_last_mm ShowValue=true>
+                                            <Template Context="pointer">
+                                                <h6>
+                                                    @pointer.Value <sup>mm/hod</sup>
+                                                </h6>
+                                            </Template>
+                                        </RadzenArcGaugeScaleValue>
+                                    </RadzenArcGaugeScale>
+                                </RadzenArcGauge>
+                            </RadzenCard>
+                        </div>
+                    </RadzenColumn>
+                </RadzenRow>
+            }
+        </ChildContent>
+    </RadzenContentContainer>
+
+
+@code {
+
+    public Quantities last_data;
+
+    Timer timer;
+
+    // Načítání dat
+    protected override async Task OnInitializedAsync()
+    {
+        // Načtení dat při prvním spuštění
+        timer = new System.Threading.Timer((_) =>
+        {
+
+            InvokeAsync(async () =>
+            {
+
+                await LoadData();
+            });
+        }, null, 0, 300000);
+    }
+
+    public async Task LoadData()
+    {
+
+
+        // Poslední záznam
+        last_data = await dataDB.GetLastSensorData();
+
+
+        StateHasChanged();
+    }
+
+}
+

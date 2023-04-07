@@ -1,24 +1,218 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider/>
-<MudDialogProvider/>
-<MudSnackbarProvider/>
+@using DBConnect.Models
+@inject WeatherDB dataDB
+@inject IJSRuntime JSRuntime
+@using Microsoft.JSInterop
+@inject IDialogService DialogService
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<RadzenDialog />
+<RadzenNotification />
+<RadzenTooltip />
+<RadzenContextMenu />
 
 <PageTitle>BlazorWeatherSchoolAPP</PageTitle>
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<RadzenLayout style="height: 100%">
+    <RadzenHeader>
+        <RadzenStack Orientation="Radzen.Orientation.Horizontal" Wrap="Radzen.FlexWrap.Wrap" AlignItems="Radzen.AlignItems.Center" Gap="0">
+            <RadzenSidebarToggle Click="@(() => sidebar1Expanded = !sidebar1Expanded)" />
+            <RadzenLabel Text="Meteorologická aplikace VŠCHT" />
+            @if (last_data != null)
+            {
+                <RadzenText Style="text-align: right; color: white; margin-left: auto; padding-right: 10px">Poslední čas měření: @last_data.SensorFirstTime.ToLocalTime()</RadzenText>
+            }
+        </RadzenStack>
+    </RadzenHeader>
+    <RadzenSidebar @bind-Expanded="@sidebar1Expanded">
+        <ChildContent>
+            <RadzenPanelMenu>
+                <ChildContent>
+                    <RadzenPanelMenuItem Text="Domovská stránka" Icon="home" Path="uvodnistrana" />
+                    <RadzenPanelMenuItem Text="Data" Icon="date_range">
+                        <ChildContent>
+                            <RadzenPanelMenuItem Text="Venkovní měřidla" Icon="label_outline" Path="datameridlavenkovni" />
+                            <RadzenPanelMenuItem Text="Vniřní měřidla" Icon="label_outline" Path="fetchdata" />
+                            <RadzenPanelMenuItem Text="Porovnání" Icon="label_outline" Path="dataporovnani" />
+                            <RadzenPanelMenuItem Text="Rekordy" Icon="label_outline" Path="datarekordy" />
+                            <RadzenPanelMenuItem Text="Volný výběr měsíc" Icon="label_outline" Path="datavolnyvybermr" />
+                            <RadzenPanelMenuItem Text="Volný výběr den" Icon="label_outline" Path="datavyberdmr" />
+                        </ChildContent>
+                    </RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Text="Grafy" Icon="donut_small">
+                        <ChildContent>
+                            <RadzenPanelMenuItem Text="Vnitřní" Icon="label_outline" Path="grafvnitrni" />
+                            <RadzenPanelMenuItem Text="Venkovní" Icon="label_outline" Path="grafvenkovni" />
+                            <RadzenPanelMenuItem Text="Volný výběr veličiny" Icon="label_outline" Path="grafvybervelicinu" />
+                            <RadzenPanelMenuItem Text="Historické" Icon="label_outline" Path="grafhistoriebuttonmesicvyber" />
+                        </ChildContent>
+                    </RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Text="Informace k projektu" Icon="offline_pin" Path="infoprojekt" />
+                </ChildContent>
+            </RadzenPanelMenu>
+            <div class="rz-p-4">
+                <RadzenContentContainer Name="main">
+                    <ChildContent>
+                        @if (last_data != null)
+                        {
+                            <div>
+                                <RadzenCard Style="width: 100%; margin: 0 auto; ">
+                                    <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H6">Teplota vnitřní Weatherlink Live</RadzenText>
+                                    <RadzenArcGauge Style="width: 100%; height: 120px; margin-top: -30px;">
+                                        <RadzenArcGaugeScale Step="20" Min="-20" Max="60" MinorStep="2" Radius="1.4" TickPosition=0 Y="0.9" Margin="0">
+                                            <RadzenArcGaugeScaleValue Value=last_data.Quantities243.temp_in ShowValue=true>
+                                                <Template Context="pointer">
+                                                    <h6>
+                                                        @pointer.Value <sup>°C</sup>
+                                                    </h6>
+                                                </Template>
+                                            </RadzenArcGaugeScaleValue>
+                                        </RadzenArcGaugeScale>
+                                    </RadzenArcGauge>
+                                </RadzenCard>
+                            </div>
+                            <br />
+                            <div>
+                                <RadzenCard Style="width: 100%; margin: 0 auto; ">
+                                    <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H6">Teplota vnitřní AirLink</RadzenText>
+                                    <RadzenArcGauge Style="width: 100%; height: 120px; margin-top: -30px;">
+                                        <RadzenArcGaugeScale Step="20" Min="-20" Max="60" MinorStep="2" Radius="1.4" TickPosition=0 Y="0.9" Margin="0">
+                                            <RadzenArcGaugeScaleValue Value=last_data.Quantities326.temp ShowValue=true>
+                                                <Template Context="pointer">
+                                                    <h6>
+                                                        @pointer.Value <sup>°C</sup>
+                                                    </h6>
+                                                </Template>
+                                            </RadzenArcGaugeScaleValue>
+                                        </RadzenArcGaugeScale>
+                                    </RadzenArcGauge>
+                                </RadzenCard>
+                            </div>
+                            <br />
+                            <div>
+                                <RadzenCard Style="width: 100%; margin: 0 auto; ">
+                                    <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H6">Teplota venkovní</RadzenText>
+                                    <RadzenArcGauge Style="width: 100%; height: 120px; margin-top: -30px;">
+                                        <RadzenArcGaugeScale Step="20" Min="-20" Max="60" MinorStep="2" Radius="1.4" TickPosition=0 Y="0.9" Margin="0">
+                                            <RadzenArcGaugeScaleValue Value=last_data.Quantities46.temp ShowValue=true>
+                                                <Template Context="pointer">
+                                                    <h6>
+                                                        @pointer.Value <sup>°C</sup>
+                                                    </h6>
+                                                </Template>
+                                            </RadzenArcGaugeScaleValue>
+                                        </RadzenArcGaugeScale>
+                                    </RadzenArcGauge>
+                                </RadzenCard>
+                            </div>
+                        }
+                    </ChildContent>
+                </RadzenContentContainer>
+            </div>
+        </ChildContent>
+    </RadzenSidebar>
+    <RadzenBody>
+        <ChildContent>
+            <RadzenContentContainer Name="main">
+                @Body
+            </RadzenContentContainer>
+        </ChildContent>
+    </RadzenBody>
+    <RadzenFooter>
+        <RadzenRow Gap="1rem">
+            <RadzenColumn Offset="1">
+                <iframe style="width: 110%; height: 200px; border-radius: 3px; " src="https://frame.mapy.cz/s/hokahekevo"></iframe>
+            </RadzenColumn>
+            <RadzenColumn Offset="1" Size="2">
+                <RadzenText class="rz-color-base-400" TextAlign="TextAlign.Left" TextStyle="TextStyle.Overline">
+                    <b>Vytvořil:</b><br />
+                    Ondřej Skládal<br />
+                    <br />
+                    <b>V rámci diplomové práce:</b><br />
+                    Komunikace s aplikačním rozhraním meteorologické stanice a vizualizace dat<br />
+                    <br />
+                    <b>Kontaktujte mě s připomínkami:</b>
+                </RadzenText>
+                <MudButton Style="@($"color:{Colors.Grey.Lighten1}; background:{Colors.Grey.Darken4};")" Variant="MudBlazor.Variant.Filled" OnClick="@((e) => OpenDialog())">Emailový formulář</MudButton>
+            </RadzenColumn>
+            <RadzenColumn Offset="1">
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
+                <RadzenStack Orientation="Radzen.Orientation.Vertical" Wrap="Radzen.FlexWrap.Wrap" Class=" rz-p-2">
+                    <RadzenText class="rz-color-base-400" TextAlign="TextAlign.Left" TextStyle="TextStyle.Overline">
+                        VŠCHT Praha<br />
+                        Technická 5<br />
+                        166 28 Praha 6 – Dejvice<br />
+                        IČ: 60461373<br />
+                        DIČ: CZ60461373<br />
+                    </RadzenText>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
 
+                    <RadzenText class="rz-color-base-400 " TextAlign="TextAlign.Left" TextStyle="TextStyle.Overline">Sledujte nás:</RadzenText>
+                    <RadzenStack Orientation="Radzen.Orientation.Horizontal" Wrap="Radzen.FlexWrap.Wrap" Class="icon-preview ">
+                        <div><MudLink Href="https://www.facebook.com/vscht"><MudIcon Style="@($"color:{Colors.Grey.Darken4};")" Icon="@Icons.Custom.Brands.Facebook" Title="Facebook " Size="MudBlazor.Size.Large" /></MudLink></div>
+                        <div><MudLink Href="https://www.instagram.com/vschtpraha/"><MudIcon Style="@($"color:{Colors.Grey.Darken4};")" Icon="@Icons.Custom.Brands.Instagram" Title="Instagram" Size="MudBlazor.Size.Large" /></MudLink></div>
+                        <div><MudLink Href="https://twitter.com/vscht"><MudIcon Style="@($"color:{Colors.Grey.Darken4};")" Icon="@Icons.Custom.Brands.Twitter" Title="Twitter" /></MudLink></div>
+                        <div><MudLink Href="https://www.youtube.com/user/VSCHTPraha"><MudIcon Style="@($"color:{Colors.Grey.Darken4};")" Icon="@Icons.Custom.Brands.YouTube" Title="YouTube" Size="MudBlazor.Size.Large" /></MudLink></div>
+                    </RadzenStack>
+                </RadzenStack>
+            </RadzenColumn>
+        </RadzenRow>
+    </RadzenFooter>
+</RadzenLayout>
+
+
+
+
+
+@code {
+    bool sidebar1Expanded = true;
+
+    public Quantities last_data;
+
+    Timer timer;
+
+    // Načítání dat
+    protected override async Task OnInitializedAsync()
+    {
+        // Načtení dat při prvním spuštění
+        timer = new System.Threading.Timer((_) =>
+        {
+
+            InvokeAsync(async () =>
+            {
+
+                await LoadData();
+            });
+        }, null, 0, 300000);
+    }
+
+    public async Task LoadData()
+    {
+
+
+        // Poslední záznam
+        last_data = await dataDB.GetLastSensorData();
+
+
+        StateHasChanged();
+    }
+
+    // Nastavení k dialogu
+    private void OpenDialog()
+    {
+        MudBlazor.DialogOptions options = new MudBlazor.DialogOptions()
+        {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true,
+            DisableBackdropClick = false,
+            NoHeader = false,
+            Position = MudBlazor.DialogPosition.Center,
+            CloseOnEscapeKey = true
+        };
+        DialogService.Show<Pages.DialogEmail>("Připomínky a dotazy",options);
+    }
+}

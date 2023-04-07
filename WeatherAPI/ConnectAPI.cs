@@ -23,7 +23,7 @@ public class ConnectAPI
     }
 
 
-    public string getsignature(string time, string? stationid = null)
+    public string getsignature(string time, string? stationid = null, int? start=0, int? stop=0)
     {
         string data = "";
         if (stationid == null)
@@ -32,7 +32,14 @@ public class ConnectAPI
         }
         else
         {
-            data = "api-key" + _API_Key + "station-id" + stationid + "t" + time;
+            if (start != 0)
+            {
+                data = "api-key" + _API_Key + "end-timestamp" + stop + "start-timestamp" + start + "station-id" + stationid + "t" + time;
+            }
+            else {
+                data = "api-key" + _API_Key + "station-id" + stationid + "t" + time;
+            }
+            
         }
         //vracení podpisu
         var hash = HashHMACHex(_API_Secret, data);
@@ -44,6 +51,18 @@ public class ConnectAPI
     {
         var time = GetUnixTimestamp();
         var urlAPI = $"https://api.weatherlink.com/v2/current/124952?api-key={_API_Key}&api-signature={getsignature(time, "124952")}&t={time}";
+        var result = await _Client.GetAsync(urlAPI);
+
+        string data = await result.Content.ReadAsStringAsync();
+        var response = JsonConvert.DeserializeObject<Sensors_response>(data);
+
+        return response;
+    }
+
+    public async Task<Sensors_response?> gethistorystation(int start, int stop)
+    {
+        var time = GetUnixTimestamp();
+        var urlAPI = $"https://api.weatherlink.com/v2/historic/124952?api-key={_API_Key}&api-signature={getsignature(time, "124952", start, stop)}&t={time}&start-timestamp={start}&end-timestamp={stop}";
         var result = await _Client.GetAsync(urlAPI);
 
         string data = await result.Content.ReadAsStringAsync();

@@ -20,15 +20,11 @@ public class CollectionBuilder<T> where T : class
 
 public class WeatherDB
 {
-    // Seznam kolekcí/tabulek 
-    /*private IMongoCollection<Quantities243> _quantities243;
-    private IMongoCollection<Quantities242> _quantities242;
-    private IMongoCollection<Quantities46> _quantities46;
-    private IMongoCollection<Quantities56> _quantities56;
-    private IMongoCollection<Quantities326> _quantities326;*/
-
     // Kolekce pro všechna data
     private IMongoCollection<Quantities> _quantities;
+    private IMongoCollection<Quantities> _quantitiesAwg;
+    private IMongoCollection<Quantities> _historicalquantities;
+
 
     public WeatherDB(IOptions<List<SensorConfig>> sensorsConfiguration, IConfiguration config)
     {
@@ -37,6 +33,7 @@ public class WeatherDB
         // konverze aby názvy začínaly malím písmenem podle JSON specifikace 
         pack.Add(new IgnoreExtraElementsConvention(true));
         ConventionRegistry.Register("Custom Convention", pack, t => true);
+        ConventionRegistry.Register("IgnoreIfNullConvention", new ConventionPack { new IgnoreIfDefaultConvention(true) }, t => true);
 
         // Připojení k databázi
         var client = new MongoClient(config["DBurl"]);
@@ -44,6 +41,7 @@ public class WeatherDB
 
         // kolekce kde jsou všechna data sensorů
         _quantities = database.GetCollection<Quantities>("sensor_data");
+        _quantitiesAwg = database.GetCollection<Quantities>("sensor_data_průměry");
     }
 
     /*---------------------------------------------------------------*/
@@ -59,6 +57,14 @@ public class WeatherDB
         await _quantities.InsertOneAsync(data);
     }
 
+    // uloží data a v případě že záznam již je, provede přepis, pokud není založí nový
+    public async Task SaveSensorsDataAWG(Quantities data)
+    {
+        await _quantitiesAwg.ReplaceOneAsync(filter: new BsonDocument("SensorFirstTime", data.SensorFirstTime
+            ), options: new ReplaceOptions { IsUpsert = true }, replacement: data);
+    }
+
+
     /// <summary>
     /// Vrací data ze všech sensorů podle data
     /// </summary>
@@ -68,12 +74,23 @@ public class WeatherDB
     public async Task<List<Quantities>> GetSensorsData(DateTime from, DateTime to)
     {
         // Filter data od
-        var filter = Builders<Quantities>.Filter.Gt(x => x.Created, from.ToUniversalTime());
+        var filter = Builders<Quantities>.Filter.Gt(x => x.SensorFirstTime, from.ToUniversalTime());
         // Filter data do
-        filter &= Builders<Quantities>.Filter.Lt(x => x.Created, to.ToUniversalTime());
+        filter &= Builders<Quantities>.Filter.Lt(x => x.SensorFirstTime, to.ToUniversalTime());
         // Vrací vyfiltrovaná data všech sensorů
         return await _quantities.Find<Quantities>(filter).ToListAsync();
     }
+
+    public async Task<List<Quantities>> GetSensorsDataAwg(DateTime from, DateTime to)
+    {
+        // Filter data od
+        var filter = Builders<Quantities>.Filter.Gt(x => x.Quantities243.ts, from.ToUniversalTime());
+        // Filter data do
+        filter &= Builders<Quantities>.Filter.Lt(x => x.Quantities243.ts, to.ToUniversalTime());
+        // Vrací vyfiltrovaná data všech sensorů
+        return await _quantitiesAwg.Find<Quantities>(filter).ToListAsync();
+    }
+
 
     /// <summary>
     /// Vrátí minimální a maximální datum 
@@ -83,13 +100,13 @@ public class WeatherDB
     {
         var filter = Builders<Quantities>.Filter.Empty;
         // řazení 
-        var sortDescending = Builders<Quantities>.Sort.Descending("_id");
-        var sortAscending = Builders<Quantities>.Sort.Ascending("_id");
+        var sortDescending = Builders<Quantities>.Sort.Descending("SensorFirstTime");
+        var sortAscending = Builders<Quantities>.Sort.Ascending("SensorFirstTime");
 
         var minValue = await _quantities.Find<Quantities>(filter).Sort(sortAscending).Limit(1).FirstOrDefaultAsync();
         var maxValue = await _quantities.Find<Quantities>(filter).Sort(sortDescending).Limit(1).FirstOrDefaultAsync();
 
-        return new(minValue.Created.ToLocalTime().Date, maxValue.Created.ToLocalTime().Date);
+        return new(minValue.SensorFirstTime.ToLocalTime().Date, maxValue.SensorFirstTime.ToLocalTime().Date);
     }
 
     /// <summary>
@@ -103,6 +120,38 @@ public class WeatherDB
         var sortDescending = Builders<Quantities>.Sort.Descending("_id");
         return await _quantities.Find<Quantities>(filter).Sort(sortDescending).Limit(1).FirstOrDefaultAsync();
     }
+
+  
+    public async Task<Quantities> GetToDaySensorDataMax(string vel)
+    {
+
+        // Filter data od
+        var filter = Builders<Quantities>.Filter.Gt(x => x.SensorFirstTime, DateTime.Now.Date.ToUniversalTime());
+        // Filter data do
+        filter &= Builders<Quantities>.Filter.Lt(x => x.SensorFirstTime, DateTime.Now.ToUniversalTime());
+
+        var Max = Builders<Quantities>.Sort.Descending(vel);
+        // Vrací maximální hodnotu podle veličiny
+        return await _quantities.Find<Quantities>(filter).Sort(Max).Limit(1).FirstOrDefaultAsync();
+
+
+    }
+
+    public async Task<Quantities> GetToDaySensorDataMin(string vel)
+    {
+
+        // Filter data od
+        var filter = Builders<Quantities>.Filter.Gt(x => x.SensorFirstTime, DateTime.Now.Date.ToUniversalTime());
+        // Filter data do
+        filter &= Builders<Quantities>.Filter.Lt(x => x.SensorFirstTime, DateTime.Now.ToUniversalTime());
+
+        var Min = Builders<Quantities>.Sort.Ascending(vel);
+        // Vrací minimální hodnotu podle veličiny
+        var document = await _quantities.Find<Quantities>(filter).Sort(Min).Limit(1).FirstOrDefaultAsync();
+        return document;
+
+    }
+
 
     //TODO: Preprocessing dat. Kvůli tomu aby se nemusela pokaždé tahat všechna data (průměry a tak)
 

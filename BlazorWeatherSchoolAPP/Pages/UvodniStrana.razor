@@ -1,0 +1,232 @@
+﻿@page "/uvodnistrana"
+@layout MainLayout
+
+
+@using DBConnect.Models
+@inject WeatherDB dataDB
+
+<RadzenContentContainer Name="main">
+    <RadzenCard Style="width: 100%; " >
+        <ChildContent>
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H4">Úvodní stránka meteorologické aplikace VŠCHT</RadzenText>
+            <p>
+                Vítejte v aplikaci pro komunikaci s meteorologickou stanicí Davis Vintage pro 2 plus.
+                S její pomocí můžete snadno a rychle získat aktuální data o počasí a sledovat jeho vliv na okolí.
+                Aplikace využívá zařízení WeatherlinkLive a Airlink, stejně jako senzory teploty a vlhkosti půdy, aby poskytovala přesné a spolehlivé informace.
+
+                Věřím, že tato aplikace bude pro Vás užitečná a pomůže Vám lépe porozumět místnímu počasí a jeho vlivu na Vaše projekty a aktivity.
+                Pokud máte jakékoli dotazy nebo návrhy na vylepšení, neváhejte mě kontaktovat. Doufám, že tuto aplikaci oceníte stejně jako já.
+            </p>
+            <br />
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny:</RadzenText>
+            @if (last_data != null)
+            {
+                <table class="table table-my-value">
+                    <tr>
+                        <td colspan="4" class="table-secondary bold-font">Teplota a vlhkost</td>
+                    </tr>
+                    <tbody class="table-group-divider ">
+                        <tr>
+                            <td>Teplota vnitřní WeaherLinkLive</td>
+                            <td>@last_data.Quantities243.temp_in °C</td>
+                            <td>Vlhkost vnitřní WeatherLinkLive</td>
+                            <td>@last_data.Quantities243.hum_in %</td>
+                        </tr>
+                        <tr>
+                            <td>Rosný bod WeaherLinkLive</td>
+                            <td>@last_data.Quantities243.dew_point_in °C</td>
+                            <td>Heat index WeaherLinkLive</td>
+                            <td>@last_data.Quantities243.heat_index_in °C</td>
+                        </tr>
+                        <tr>
+                            <td>Teplota vnitřní AirLink</td>
+                            <td>@last_data.Quantities326.temp °C</td>
+                            <td>Vlhkost vnitřní AirLink</td>
+                            <td>@last_data.Quantities326.hum %</td>
+                        </tr>
+                        <tr>
+                            <td>Rosný bod AirLink</td>
+                            <td>@last_data.Quantities326.dew_point °C</td>
+                            <td>Heat index Airlink</td>
+                            <td>@last_data.Quantities326.heat_index °C</td>
+                        </tr>
+                    </tbody>
+                    <tr>
+                        <td colspan="4" class="table-secondary bold-font">Tlak</td>
+                    </tr>
+                    <tbody class="table-group-divider">
+                        <tr>
+                            <td>Tlak na hladině moře</td>
+                            <td>@last_data.Quantities242.bar_sea_level hPa</td>
+                            <td>Tlaková tendence</td>
+                            <td>@last_data.Quantities242.bar_trend hPa</td>
+                        </tr>
+                    </tbody>
+                    <tr>
+                        <td colspan="4" class="table-secondary bold-font">Kvalita ovzduší</td>
+                    </tr>
+                    <tbody class="table-group-divider">
+                        <tr>
+                            <td>PM1 AirLink</td>
+                            <td>@last_data.Quantities326.pm_1 μg/m&sup3</td>
+                            <td>PM2,5 AirLink</td>
+                            <td>@last_data.Quantities326.pm_2p5 μg/m&sup3</td>
+                        </tr>
+                        <tr>
+                            <td>PM10 AirLink</td>
+                            <td>@last_data.Quantities326.pm_10 μg/m&sup3</td>
+                            <td class="@color_description">Index kvality ovzduší AQI AirLink</td>
+                            <td class="@color_description">@last_data.Quantities326.aqi_val (@translatedText_desc)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Venkovní veličiny:</RadzenText>
+                <table class="table table-my-value">
+                    <tr>
+                        <td colspan="4" class="table-secondary bold-font">Teplota a vlhkost</td>
+                    </tr>
+                    <tbody class="table-group-divider ">
+                        <tr>
+                            <td>Teplota</td>
+                            <td>@last_data.Quantities46.temp °C</td>
+                            <td>Vlhkost</td>
+                            <td>@last_data.Quantities46.hum %</td>
+                        </tr>
+                        <tr>
+                            <td>Rosný bod</td>
+                            <td>@last_data.Quantities46.dew_point °C</td>
+                            <td>Heat index</td>
+                            <td>@last_data.Quantities46.heat_index °C</td>
+                        </tr>
+                        <tr>
+                            <td>Chlad větru</td>
+                            <td>@last_data.Quantities46.wind_chill °C</td>
+                        </tr>
+                    </tbody>
+                    <tr>
+                        <td colspan="4" class="table-secondary bold-font">Sluneční záření a UV index</td>
+                    </tr>
+                    <tbody class="table-group-divider">
+                        <tr>
+                            <td>Intenzita slunečního záření</td>
+                            <td>@last_data.Quantities46.solar_rad W/m&sup2</td>
+                            <td>UV index</td>
+                            <td>@last_data.Quantities46.uv_index</td>
+                        </tr>
+                    </tbody>
+                    <tr>
+                        <td colspan="4" class="table-secondary bold-font">Srážky</td>
+                    </tr>
+                    <tbody class="table-group-divider">
+                        <tr>
+                            <td>Intenzita dešťových srážek</td>
+                            <td>@last_data.Quantities46.rain_rate_last_mm mm/hod</td>
+                            <td>Hodinnové dešťové srážky</td>
+                            <td>@last_data.Quantities46.rainfall_last_60_min_mm mm</td>
+                        </tr>
+                        <tr>
+                            <td>Denní dešťové srážky</td>
+                            <td>@last_data.Quantities46.rainfall_daily_mm mm</td>
+                            <td>Měsíční dešťové srážky</td>
+                            <td>@last_data.Quantities46.rainfall_monthly_mm mm</td>
+                        </tr>
+                        <tr>
+                            <td>Roční dešťové srážky</td>
+                            <td>@last_data.Quantities46.rainfall_year_mm mm</td>
+                        </tr>
+                    </tbody>
+                    <tr>
+                        <td colspan="4" class="table-secondary bold-font">Vítr</td>
+                    </tr>
+                    <tbody class="table-group-divider">
+                        <tr>
+                            <td>Aktuální rychlost větru</td>
+                            <td>@last_data.Quantities46.wind_speed_last km/h</td>
+                            <td>Průměrná rychlost větru 10 min</td>
+                            <td>@last_data.Quantities46.wind_speed_avg_last_10_min km/h</td>
+                        </tr>
+                        <tr>
+                            <td>Aktuální směr větru</td>
+                            <td>@last_data.Quantities46.wind_dir_last °</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            }
+        </ChildContent>
+    </RadzenCard>
+</RadzenContentContainer>
+
+@code {
+    public Quantities last_data;
+    public Quantities[] table_data;
+
+    public String translatedText_desc;
+
+
+
+    // Načítání dat
+    protected override async Task OnInitializedAsync()
+    {
+        // Načtení dat při prvním spuštění
+        await LoadData();
+        var timer = new System.Threading.Timer((_) =>
+        {
+
+            InvokeAsync(async () =>
+            {
+                await LoadData();
+            });
+        }, null, 0, 60000);
+    }
+
+    public async Task LoadData()
+    {
+
+        // Poslední záznam
+        last_data = await dataDB.GetLastSensorData();
+        table_data = new Quantities[] { last_data };
+
+        // překlad
+        translatedText_desc = TranslateText(table_data[0].Quantities326.aqi_desc);
+
+        //test = await dataDB.GetToDaySensorDataMax("Quantities46.temp");
+        //test2 = await dataDB.GetToDaySensorDataMin("Quantities46.temp") ;
+
+        StateHasChanged();
+    }
+
+    private bool _autoClose;
+
+
+
+    public String color_description;
+
+    // Překlad description
+    string TranslateText(string inputText)
+    {
+        switch (inputText)
+        {
+            case "Good":
+                color_description = "green_one";
+                return "Dobrý";
+            case "Fair":
+                color_description = "green_two";
+                return "Spravedlivý";
+            case "Moderate":
+                color_description = "yellow";
+                return "Mírný";
+            case "Poor":
+                color_description = "orange";
+                return "Špatný";
+            case "Very poor":
+                color_description = "brown";
+                return "Velmi špatný";
+            default:
+                color_description = "green_one";
+                return "Dobré";
+        }
+    }
+}
+
