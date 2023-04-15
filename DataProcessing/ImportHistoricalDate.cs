@@ -95,8 +95,8 @@ namespace DataProcessing
                     OneResult.Quantities243 = new Quantities243();
                     OneResult.Quantities243.temp_in = FarenhaiToCelsius(apiData.sensors[0].data[k]["temp_in_last"]);
                     OneResult.Quantities243.hum_in = Dot(apiData.sensors[0].data[k]["hum_in_last"]);
-                    OneResult.Quantities243.dew_point_in = FarenhaiToCelsius(apiData.sensors[6].data[k]["dew_point_in"]);
-                    OneResult.Quantities243.heat_index_in = FarenhaiToCelsius(apiData.sensors[6].data[k]["heat_index_in"]);
+                    OneResult.Quantities243.dew_point_in = FarenhaiToCelsius(apiData.sensors[0].data[k]["dew_point_in"]);
+                    OneResult.Quantities243.heat_index_in = FarenhaiToCelsius(apiData.sensors[0].data[k]["heat_index_in"]);
                     OneResult.Quantities243.ts = UnixSecondsToDateTime(long.Parse(apiData.sensors[0].data[k]["ts"]));
                     HistoryResult.Add(OneResult);
                 }
@@ -125,9 +125,11 @@ namespace DataProcessing
                     HistoryResult[k].Quantities46.wind_chill = FarenhaiToCelsius(apiData.sensors[2].data[k]["wind_chill_last"]);
                     HistoryResult[k].Quantities46.ts = UnixSecondsToDateTime(long.Parse(apiData.sensors[2].data[k]["ts"]));
                 }
-
+                Console.WriteLine(i);
+                if (i < 9) { Console.WriteLine(apiData.sensors[6].data.Count()); };
                 for (int k = 0; k < apiData.sensors[6].data.Count(); k++)
                 {
+                    if (k > HistoryResult.Count - 1) { break; }
                     HistoryResult[k].Quantities326 = new Quantities326();
                     HistoryResult[k].Quantities326.temp = FarenhaiToCelsius(apiData.sensors[6].data[k]["temp_avg"]);
                     HistoryResult[k].Quantities326.hum = Dot(apiData.sensors[6].data[k]["hum_last"]);

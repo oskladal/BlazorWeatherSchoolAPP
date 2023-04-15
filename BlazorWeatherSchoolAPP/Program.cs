@@ -12,6 +12,9 @@ using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using Blazorise.Charts.DataLabels;
 using MudBlazor.Services;
+using BlazorWeatherSchoolAPP.Source;
+using Microsoft.Extensions.Configuration;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +31,7 @@ builder.Services.AddHttpClient();
 //Vytvoření instanci connectAPI a registroval ji do služeb, kde je možné ji vytáhnout v kódu.
 builder.Services.AddSingleton<ConnectAPI>();
 builder.Services.AddSingleton<WeatherDB>();
+builder.Services.AddSingleton<EmailSend>();
 
 //Mudblazor
 builder.Services.AddMudServices();

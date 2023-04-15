@@ -21,7 +21,10 @@
     <RadzenHeader>
         <RadzenStack Orientation="Radzen.Orientation.Horizontal" Wrap="Radzen.FlexWrap.Wrap" AlignItems="Radzen.AlignItems.Center" Gap="0">
             <RadzenSidebarToggle Click="@(() => sidebar1Expanded = !sidebar1Expanded)" />
-            <RadzenLabel Text="Meteorologická aplikace VŠCHT" />
+            <RadzenStack AlignItems="Radzen.AlignItems.Normal"  >
+                <RadzenImage Path="/img/logo.png" Style="width: 4rem;" />
+            </RadzenStack>
+            <RadzenLabel style="margin-left: 1rem;" Text="Meteorologická aplikace VŠCHT" />
             @if (last_data != null)
             {
                 <RadzenText Style="text-align: right; color: white; margin-left: auto; padding-right: 10px">Poslední čas měření: @last_data.SensorFirstTime.ToLocalTime()</RadzenText>
@@ -36,11 +39,11 @@
                     <RadzenPanelMenuItem Text="Data" Icon="date_range">
                         <ChildContent>
                             <RadzenPanelMenuItem Text="Venkovní měřidla" Icon="label_outline" Path="datameridlavenkovni" />
-                            <RadzenPanelMenuItem Text="Vniřní měřidla" Icon="label_outline" Path="fetchdata" />
-                            <RadzenPanelMenuItem Text="Porovnání" Icon="label_outline" Path="dataporovnani" />
+                            <RadzenPanelMenuItem Text="Vniřní měřidla" Icon="label_outline" Path="datameridlavnitrni" />
+                            <RadzenPanelMenuItem Text="Historická" Icon="label_outline" Path="datahistoricka" />
                             <RadzenPanelMenuItem Text="Rekordy" Icon="label_outline" Path="datarekordy" />
                             <RadzenPanelMenuItem Text="Volný výběr měsíc" Icon="label_outline" Path="datavolnyvybermr" />
-                            <RadzenPanelMenuItem Text="Volný výběr den" Icon="label_outline" Path="datavyberdmr" />
+                            <RadzenPanelMenuItem Text="Volný výběr den" Icon="label_outline" Path="fetchdata" />
                         </ChildContent>
                     </RadzenPanelMenuItem>
                     <RadzenPanelMenuItem Text="Grafy" Icon="donut_small">

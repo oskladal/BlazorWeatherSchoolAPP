@@ -21,6 +21,11 @@
     font-weight: bold;
 }
 
+table.table-my-value.record tbody tr td:nth-child(n+2):nth-child(-n+4),
+table.table-my-value.record tbody tr td:nth-child(n+6):nth-child(-n+8) {
+    font-weight: bold;
+}
+
 .table-my-value .green_one {
     background-color: #50F1E7;
 }
@@ -29,15 +34,35 @@
     background-color: #52CCAB;
 }
 
-.table-my-value .yellow {
+.yellow {
     background-color: #F1E642;
 }
 
-.table-my-value .orange {
+.orange {
     background-color: #FF5052;
 }
 
-.table-my-value .brown {
+.brown {
+    background-color: #970033;
+}
+
+.green_one {
+    background-color: #50F1E7;
+}
+
+.green_two {
+    background-color: #52CCAB;
+}
+
+.yellow {
+    background-color: #F1E642;
+}
+
+.orange {
+    background-color: #FF5052;
+}
+
+.brown {
     background-color: #970033;
 }
 
@@ -147,6 +172,8 @@
     gap: 0.7rem;
     width: 50px;
 }
+
+
 
 
 

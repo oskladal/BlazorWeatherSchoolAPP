@@ -46,14 +46,14 @@ namespace DataProcessing
 
 
                 await _Db.SaveSensorsDataAWG(variableAws(denidata));
-                _logger.LogInformation("Sace mongoDB AWG at:{time}", DateTimeOffset.Now);
+                _logger.LogInformation("Sace mongoDB week AWG at:{time}", DateTimeOffset.Now);
                 currentDate = currentDate.AddDays(-1); ;
             }
         }
 
         public override Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("CronJob AvgMinMax Stop");
+            _logger.LogInformation("CronJob week AvgMinMax Stop");
             return base.StopAsync(cancellationToken);
         }
 
@@ -115,6 +115,7 @@ namespace DataProcessing
                 hum_max = denidata.OrderByDescending(x => x.Quantities46.hum).First().Quantities46.hum,
                 hum_ts_min = denidata.OrderBy(x => x.Quantities46.hum).First().Quantities46.ts,
                 hum_ts_max = denidata.OrderByDescending(x => x.Quantities46.hum).First().Quantities46.ts,
+                rain_rate_last_mm = AwgData(denidata.Select(x => x.Quantities46.rain_rate_last_mm).ToList()),
                 rain_rate_last_mm_min = denidata.OrderBy(x => x.Quantities46.rain_rate_last_mm).First().Quantities46.rain_rate_last_mm,
                 rain_rate_last_mm_max = denidata.OrderByDescending(x => x.Quantities46.rain_rate_last_mm).First().Quantities46.rain_rate_last_mm,
                 rainrate_ts_min = denidata.OrderBy(x => x.Quantities46.rain_rate_last_mm).First().Quantities46.ts,

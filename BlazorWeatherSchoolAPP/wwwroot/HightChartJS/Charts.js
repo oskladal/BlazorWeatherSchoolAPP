@@ -6,3 +6,10 @@ function RenderCharts(data) {
 
     Highcharts.stockChart('graf1', JSON.parse(data));
 }
+
+function RenderChartsNew(data, graf_id) {
+
+    Highcharts.chart(graf_id, JSON.parse(data));
+
+    
+}

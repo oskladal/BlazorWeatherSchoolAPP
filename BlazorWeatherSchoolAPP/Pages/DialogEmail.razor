@@ -2,6 +2,9 @@
 @using System.ComponentModel.DataAnnotations
 @using System.Net.Mail
 @using Microsoft.Extensions.Configuration;
+@using Source
+@inject EmailSend email;
+@inject NotificationService NotificationService;
 
 <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
     <MudDialog>
@@ -16,9 +19,10 @@
                           @bind-Value="model.TextField" />
         </DialogContent>
         <DialogActions>
+            
             <MudButton Variant="MudBlazor.Variant.Filled" OnClick="Cancel">Zrušit</MudButton>
             <MudButton StartIcon="@Icons.Material.Filled.Delete" Variant="MudBlazor.Variant.Filled" Color="MudBlazor.Color.Secondary" OnClick="@(()=>form.Reset())">Vymazat</MudButton>
-            <MudButton EndIcon="@Icons.Material.Filled.Send" Color="MudBlazor.Color.Primary" Disabled="@(!success)">Odeslat Email</MudButton>
+            <MudButton EndIcon="@Icons.Material.Filled.Send" Color="MudBlazor.Color.Primary" OnClick="SendEmail" Disabled="@(!success)">Odeslat Email</MudButton>
 
         </DialogActions>
     </MudDialog>
@@ -29,77 +33,50 @@
 
 @code {
 
-// Proměnné sloužící pro ukládání stavu vyplněných polí - zda je validní či nikoliv
-bool success;
-string[] errors = { };
-MudForm form;
+    // Proměnné sloužící pro ukládání stavu vyplněných polí - zda je validní či nikoliv
+    bool success;
+    string[] errors = { };
+    MudForm form;
 
 
-// Proměnná pro zavření dialogu při kliknutí mimo dialog
-bool isDialogOpen = false;
+    // Proměnná pro zavření dialogu při kliknutí mimo dialog
+    bool isDialogOpen = false;
 
-// zde se ukládají data z formuláře
-DataTable model = new DataTable();
+    // zde se ukládají data z formuláře
+    DataTable model = new DataTable();
 
-// Nastavení pro tlačítko cancel/zrušit a zavření po odeslání
-[CascadingParameter] MudDialogInstance MudDialog { get; set; }
-void Cancel() => MudDialog.Cancel();
-void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    // Nastavení pro tlačítko cancel/zrušit a zavření po odeslání
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    void Cancel() => MudDialog.Cancel();
 
-// Podmínka pro vstup do textové pole - omezení vstupu
-private IEnumerable<string> TextStrength(string pw)
-{
-    if (string.IsNullOrWhiteSpace(pw))
+    // Podmínka pro vstup do textové pole - omezení vstupu
+    private IEnumerable<string> TextStrength(string pw)
     {
-        yield return "Toto pole je povinné.";
-        yield break;
-    }
-    if (pw.Length < 40)
-        yield return "Text musí být delší než 40 znaků.";
-    if (pw.Length > 600)
-        yield return "Text nesmí přesahovat 600 znaků";
-}
-
-// struktura ukládaných dat z formuláře
-public class DataTable
-{
-    public string Email { get; set; }
-    public string TextField { get; set; }
-}
-
-    
-private void SendEmail(DataTable form, IConfiguration config)
-{
-    try
-    {
-        using (MailMessage mail = new MailMessage())
+        if (string.IsNullOrWhiteSpace(pw))
         {
-            // Nastavení adresy odesílatele
-            mail.From = new MailAddress(config["Email"]);
-
-            // Nastavení adresy příjemce
-            mail.To.Add(config["Email"]);
-
-            // Nastavení předmětu zprávy
-            mail.Subject = "Dotaz WeatherAplikace VŠCHT";
-
-            // Nastavení obsahu zprávy
-            mail.Body = form.TextField + "Z emailu: " + form.Email;
-
-            // Odeslání zprávy
-            using (SmtpClient smtpClient = new SmtpClient("smtp.server.com", 587))
-            {
-                smtpClient.Credentials = new System.Net.NetworkCredential(config["Email"], config["EmailKey"]);
-                smtpClient.EnableSsl = true;
-                smtpClient.Send(mail);
-            }
+            yield return "Toto pole je povinné.";
+            yield break;
         }
+        if (pw.Length < 40)
+            yield return "Text musí být delší než 40 znaků.";
+        if (pw.Length > 600)
+            yield return "Text nesmí přesahovat 600 znaků";
     }
-    catch (Exception)
+
+
+    public void SendEmail()
     {
-        throw;
+        email.SendEmail(model);
+        string msg = email.Message;
+        ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = msg, Duration = 4000 });
+        MudDialog.Close(DialogResult.Ok(true));
     }
-}
+
+    void ShowNotification(NotificationMessage message)
+    {
+        NotificationService.Notify(message);
+
+    }
 
 }
 

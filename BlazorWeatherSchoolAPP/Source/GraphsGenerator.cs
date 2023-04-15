@@ -9,6 +9,7 @@ using Highsoft.Web.Mvc.Stocks;
 using Highsoft.Web.Mvc.Stocks.Rendering;
 
 
+
 //using Highsoft.Web.Mvc.Charts;
 //using Highsoft.Web.Mvc.Charts.Rendering;
 
@@ -107,9 +108,6 @@ namespace BlazorWeatherSchoolAPP.Source
                         
                         
                     }
-
-
-
                 },
 
                 Time = new Time {
@@ -139,12 +137,12 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 }
             };
+            chartOptions.ID = "graf1";
+
             var renderer = new HighstockRenderer(chartOptions);
             string chart = renderer.GetJsonOptionsForBlazor();
             return chart;
-
-
         }
-	}
+    }
 }
 

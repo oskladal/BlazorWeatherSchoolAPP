@@ -1,22 +1,32 @@
-﻿@page "/uvodnistrana"
+﻿@page "/datahistoricka"
 @layout MainLayout
+
 
 
 @using DBConnect.Models
 @inject WeatherDB dataDB
 
 <RadzenContentContainer Name="main">
-    <RadzenCard Style="width: 100%; " >
+    <RadzenCard Style="width: 100%; ">
         <ChildContent>
-            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H4">Úvodní stránka meteorologické aplikace VŠCHT</RadzenText>
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H4">Tabulky historických záznamů</RadzenText>
             <p>
-                Vítejte v aplikaci pro komunikaci s meteorologickou stanicí Davis Vintage pro 2 plus.
-                S její pomocí můžete snadno a rychle získat aktuální data o počasí a sledovat jeho vliv na okolí.
-                Aplikace využívá zařízení WeatherlinkLive a Airlink, stejně jako senzory teploty a vlhkosti půdy, aby poskytovala přesné a spolehlivé informace.
-
-                Věřím, že tato aplikace bude pro Vás užitečná a pomůže Vám lépe porozumět místnímu počasí a jeho vlivu na Vaše projekty a aktivity.
-                Pokud máte jakékoli dotazy nebo návrhy na vylepšení, neváhejte mě kontaktovat. Doufám, že tuto aplikaci oceníte stejně jako já.
+                Tabulky na této stránce zobrazují historické hodnoty měřených veličin. Je možné zvolit den a hodinu v kalendáři a zobrazí se nám data z tohoto dne v danou hodinu.
+                Zobrazují se hodnoty nejbližší vyšší podle zadaného času. Data starší než 13.4.2023 byla do databáze importována zpětně a obsahují záznami v delších časových okamžicích,
+                zároveň neobsahují úplně všechna data jako jsou aktuálně sbíraná.
+                Nejstarší data jsou z 15.11.2022 s vyjímkou dat o vlastnostech půdy, zde jsou nejstarší data z 1.12.2022. Další vyjímkou jsou data o srážkách, zde jsou záznami až z 13.4.2023. 
             </p>
+            <br />
+            <RadzenRow>
+                <RadzenColumn>
+                    <RadzenDatePicker Min="MinMaxDate.Min" Max="MinMaxDate.Max" @bind-Value=@Start ShowTime="true" ShowSeconds="true" HoursStep="1.5" MinutesStep="5" DateFormat="dd/MM/yyyy HH:mm" />
+                </RadzenColumn>
+                <RadzenColumn>
+                    @if (last_data != null) { 
+                    <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H6">Reálný čás měření: @last_data.SensorFirstTime.ToLocalTime()</RadzenText>
+                        }
+                </RadzenColumn>
+            </RadzenRow>
             <br />
             <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny:</RadzenText>
             @if (last_data != null)
@@ -58,8 +68,6 @@
                         <tr>
                             <td>Tlak na hladině moře</td>
                             <td>@last_data.Quantities242.bar_sea_level hPa</td>
-                            <td>Tlaková tendence</td>
-                            <td>@last_data.Quantities242.bar_trend hPa</td>
                         </tr>
                     </tbody>
                     <tr>
@@ -115,6 +123,7 @@
                             <td>@last_data.Quantities46.uv_index</td>
                         </tr>
                     </tbody>
+                    @if (last_data.Quantities46.rainfall_year_mm != 0) { 
                     <tr>
                         <td colspan="4" class="table-secondary bold-font">Srážky</td>
                     </tr>
@@ -136,6 +145,7 @@
                             <td>@last_data.Quantities46.rainfall_year_mm mm</td>
                         </tr>
                     </tbody>
+                        }
                     <tr>
                         <td colspan="4" class="table-secondary bold-font">Vítr</td>
                     </tr>
@@ -151,6 +161,7 @@
                             <td>@last_data.Quantities46.wind_dir_last °</td>
                         </tr>
                     </tbody>
+                    @if (last_data.Quantities56 != null) {
                     <tr>
                         <td colspan="4" class="table-secondary bold-font">Půda</td>
                     </tr>
@@ -162,19 +173,25 @@
                             <td>@last_data.Quantities56.moist_soil_1 %</td>
                         </tr>
                     </tbody>
+                        }
                 </table>
 
-            }
+                }
         </ChildContent>
     </RadzenCard>
 </RadzenContentContainer>
 
 @code {
     public Quantities last_data;
-    public Quantities[] table_data;
 
     public String translatedText_desc;
 
+    public (DateTime? Min, DateTime? Max) MinMaxDate;
+
+    // Rozsahy pro výběr dat
+    private DateTime? start;
+    DateTime end = DateTime.Now;
+    public DateTime? Start { get { return start; } set { start = value; LoadData(); } }
 
 
     // Načítání dat
@@ -195,19 +212,26 @@
     public async Task LoadData()
     {
 
+        // Minimální a maximílní datum pro volení rozsahu
+        MinMaxDate = await dataDB.GetMinMaxDate();
+
+
+        if (start == null) { start = DateTime.Now.AddMinutes(-10); }
+        if (start == null) { start = new DateTime(2023, 4, 1, 12, 10, 0); }
+        DateTime start1 = start.Value;
+
         // Poslední záznam
-        last_data = await dataDB.GetLastSensorData();
-        table_data = new Quantities[] { last_data };
+        last_data = await dataDB.GetDataTableHistory(start1,end);
 
         // překlad
-        translatedText_desc = TranslateText(table_data[0].Quantities326.aqi_desc);
+        translatedText_desc = TranslateText(last_data.Quantities326.aqi_desc);
 
         //test = await dataDB.GetToDaySensorDataMax("Quantities46.temp");
         //test2 = await dataDB.GetToDaySensorDataMin("Quantities46.temp") ;
 
         StateHasChanged();
     }
-
+    private MudDatePicker _picker;
     private bool _autoClose;
 
 
@@ -240,4 +264,6 @@
         }
     }
 }
+
+
 

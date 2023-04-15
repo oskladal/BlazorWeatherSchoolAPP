@@ -1,8 +1,140 @@
 ﻿@page "/datavolnyvybermr"
 @layout MainLayout
-<h3>Component1</h3>
+ą
+
+
+@using DBConnect.Models
+@inject WeatherDB dataDB
+
+<RadzenContentContainer Name="main">
+    <RadzenCard Style="width: 100%; ">
+        <ChildContent>
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H4">Tabulka měsíčního výpisu</RadzenText>
+            <p>
+                Tabulka zobratuje základní meteorologické veličny v rámci jednoho vybraného měsíce. Zobrazuje maxima, minima a průměry.
+            </p>
+            <br />
+            <RadzenRow>
+                <RadzenColumn>
+                    <MudDatePicker Label="Vyber měsíc a rok" @bind-Date="@Start" OpenTo="OpenTo.Month" MinDate="MinMaxDate.Min" MaxDate="MinMaxDate.Max" FixDay="1" DateFormat="yyyy/MM" />
+                </RadzenColumn>
+                <RadzenColumn>
+                    @if (last_data_awg != null)
+                    {
+                        <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H6">Měsíc a rok měření: @last_data_awg[0].SensorFirstTime.Date.ToString("MM/yyyy")</RadzenText>
+                    }
+                </RadzenColumn>
+            </RadzenRow>
+            <br />
+            @*Teplota, tlak, vlhkost, rychlost větru, smět větru, denní srážky*@
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny:</RadzenText>
+            @if (last_data_awg != null)
+            {
+                <RadzenDataGrid Data="@last_data_awg" TItem="Quantities">
+                    <Columns>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Create" Title="Datum">
+                            <Template Context="last_data_awg">
+                                @last_data_awg.SensorFirstTime.ToString("dd/MM")
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities243.temp_in" Title="Teplota WeatherLinkLive" />
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities243.hum_in" Title="Vlhkost WeatherLinkLive" />
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities242.bar_sea_level" Title="Tlak na hladinu moře" />
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities242.bar_trend" Title="Tlaková tendence" />
+
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities326.temp" Title="Teplota AirLink" />
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities326.hum" Title="Vlhkost Airlink" />
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities326.dew_point" Title="Rosný bod AirLink" />
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities326.heat_index" Title="Heat index Airlink" />
+                    </Columns>
+                </RadzenDataGrid>
+              
+            }
+        </ChildContent>
+    </RadzenCard>
+</RadzenContentContainer>
 
 @code {
+    public List<Quantities> last_data_awg;
+   
+    public (DateTime? Min, DateTime? Max) MinMaxDate;
 
+    // Rozsahy pro výběr dat
+    private DateTime? start;
+    
+    public DateTime? Start { get { return start; } set { start = value; LoadData(); } }
+
+
+    // Načítání dat
+    protected override async Task OnInitializedAsync()
+    {
+        // Načtení dat při prvním spuštění
+        await LoadData();
+        var timer = new System.Threading.Timer((_) =>
+        {
+
+            InvokeAsync(async () =>
+            {
+                await LoadData();
+            });
+        }, null, 0, 60000);
+    }
+
+    public async Task LoadData()
+    {
+        // Minimální a maximílní datum pro volení rozsahu
+        MinMaxDate = await dataDB.GetMinMaxDate();
+
+
+        if (start == null) { start = DateTime.Now.Date.AddDays(1 - DateTime.Now.Day); }
+        if (start == null) { start = new DateTime(2023, 3, 1, 00, 00, 0); }
+
+        DateTime start1 = start.Value;
+        DateTime end1 = start1.AddMonths(1);
+
+        // Poslední záznam
+        last_data_awg = await dataDB.GetSensorsDataAwg(start1,end1);
+
+        StateHasChanged();
+    }
+    private MudDatePicker _picker;
+    private bool _autoClose;
+
+    string[] TranslateTextWithNumber()
+    {
+        double inputnumber = last_data_awg[0].Quantities326.aqi_val;
+        if (inputnumber <= 10) { return new string[] { "Dobré", "green_one" }; }
+        else if (inputnumber <= 20) { return new string[] { "Spravedlivý", "green_two" }; }
+        else if (inputnumber <= 25) { return new string[] { "Mírný", "yellow" }; }
+        else if (inputnumber <= 50) { return new string[] { "Špatný", "orange" }; }
+        else if (inputnumber <= 800) { return new string[] { "Velmi špatný", "brown" }; }
+        else { return new string[] { "Dobré", "green_one" }; }
+
+    }
+
+    // Překlad description
+    string[] TranslateText(string inputText)
+    {
+        switch (inputText)
+        {
+            case "Good":
+                return new string[] { "Dobré", "green_one" };
+            case "Fair":
+                return new string[] { "Spravedlivý", "green_two" };
+            case "Moderate":
+                return new string[] { "Mírný", "yellow" };
+            case "Poor":
+                return new string[] { "Špatný", "orange" };
+            case "Very poor":
+                return new string[] { "Velmi špatný", "brown" };
+            default:
+                return new string[] { "Dobré", "green_one" };
+        }
+    }
 }
+
+
+
+
+
 
