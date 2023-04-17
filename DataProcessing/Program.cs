@@ -24,7 +24,7 @@ builder.Services.AddSingleton<WeatherDB>();
 builder.Services.AddCronJob<AvgMinMaxCronHour>(c =>
 {
     c.TimeZoneInfo = TimeZoneInfo.Local;
-    c.CronExpression = @"*/56 * * * *";
+    c.CronExpression = @"*/6 * * * *";
 });
 
 builder.Services.AddCronJob<AvgMinMaxCronJobWeek>(c =>

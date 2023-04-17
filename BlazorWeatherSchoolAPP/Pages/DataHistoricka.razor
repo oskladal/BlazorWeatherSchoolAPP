@@ -217,11 +217,15 @@
 
 
         if (start == null) { start = DateTime.Now.AddMinutes(-10); }
-        if (start == null) { start = new DateTime(2023, 4, 1, 12, 10, 0); }
+
         DateTime start1 = start.Value;
 
         // Poslední záznam
         last_data = await dataDB.GetDataTableHistory(start1,end);
+        if (last_data == null) { start = new DateTime(2023, 4, 1, 12, 10, 0);
+            start1 = start.Value;
+            last_data = await dataDB.GetDataTableHistory(start1, end);
+        }
 
         // překlad
         translatedText_desc = TranslateText(last_data.Quantities326.aqi_desc);

@@ -5,12 +5,23 @@
     border-radius: 3px;
     overflow: hidden;
     border: 1px solid;
-    border-color: #d5d8db;
+/*    border-color: #d5d8db;*/
 }
 
 
 .table-my-value tbody tr:hover {
     background-color: #f5f5f5;
+}
+
+.table-my-volny tbody tr:hover {
+        background-color: #f5f5f5;
+        font-weight: bold;
+    }
+
+.table-my-volny {
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid;
 }
 
 .bold-font {
@@ -26,13 +37,13 @@ table.table-my-value.record tbody tr td:nth-child(n+6):nth-child(-n+8) {
     font-weight: bold;
 }
 
-.table-my-value .green_one {
+/*.table-my-value .green_one {
     background-color: #50F1E7;
 }
 
 .table-my-value .green_two {
     background-color: #52CCAB;
-}
+}*/
 
 .yellow {
     background-color: #F1E642;

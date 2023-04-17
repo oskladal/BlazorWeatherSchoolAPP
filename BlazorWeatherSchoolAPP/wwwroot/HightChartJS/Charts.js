@@ -1,10 +1,8 @@
 ﻿// Data retrieved https://en.wikipedia.org/wiki/List_of_cities_by_average_temperature
 
-function RenderCharts(data) {
+function RenderCharts(data, graf_id) {
 
-    //Highcharts.chart('graf1', JSON.parse(data));
-
-    Highcharts.stockChart('graf1', JSON.parse(data));
+    Highcharts.stockChart(graf_id, JSON.parse(data));
 }
 
 function RenderChartsNew(data, graf_id) {

@@ -130,7 +130,7 @@ namespace DataProcessing
                 solar_rad_max = denidata.OrderByDescending(x => x.Quantities46.solar_rad).First().Quantities46.solar_rad,
                 solarrad_ts_min = denidata.OrderBy(x => x.Quantities46.solar_rad).First().Quantities46.ts,
                 solarrad_ts_max = denidata.OrderByDescending(x => x.Quantities46.solar_rad).First().Quantities46.ts,
-                rainfall_last_15_min_mm = AwgData(denidata.Select(x => x.Quantities46.rainfall_last_15_min_mm).ToList()),
+                rainfall_daily_mm = denidata.Select(x => x.Quantities46.rainfall_daily_mm).ToList().Last(),
                 dew_point = denidata[denidata.Count - 1].Quantities46.dew_point,
                 dew_point_min = denidata.OrderBy(x => x.Quantities46.dew_point).First().Quantities46.dew_point,
                 dew_point_max = denidata.OrderByDescending(x => x.Quantities46.dew_point).First().Quantities46.dew_point,
@@ -233,6 +233,11 @@ namespace DataProcessing
 
         }
 
+        public double SumData(List<double> way)
+        {
+            double sum = way.Sum();
+            return Math.Round(sum, 1);
+        }
     }
 }
 

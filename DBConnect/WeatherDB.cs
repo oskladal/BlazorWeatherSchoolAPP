@@ -77,8 +77,10 @@ public class WeatherDB
         var filter = Builders<Quantities>.Filter.Gt(x => x.SensorFirstTime, from.ToUniversalTime());
         // Filter data do
         filter &= Builders<Quantities>.Filter.Lt(x => x.SensorFirstTime, to.ToUniversalTime());
+
+        var sortAscending = Builders<Quantities>.Sort.Ascending("SensorFirstTime");
         // Vrací vyfiltrovaná data všech sensorů
-        return await _quantities.Find<Quantities>(filter).ToListAsync();
+        return await _quantities.Find<Quantities>(filter).Sort(sortAscending).ToListAsync();
     }
 
     public async Task<List<Quantities>> GetSensorsDataAwg(DateTime from, DateTime to)
@@ -87,8 +89,11 @@ public class WeatherDB
         var filter = Builders<Quantities>.Filter.Gt(x => x.SensorFirstTime, from.ToUniversalTime());
         // Filter data do
         filter &= Builders<Quantities>.Filter.Lt(x => x.SensorFirstTime, to.ToUniversalTime());
+
+        var sortAscending = Builders<Quantities>.Sort.Ascending("SensorFirstTime");
+
         // Vrací vyfiltrovaná data všech sensorů
-        return await _quantitiesAwg.Find<Quantities>(filter).ToListAsync();
+        return await _quantitiesAwg.Find<Quantities>(filter).Sort(sortAscending).ToListAsync();
     }
 
 
@@ -121,7 +126,7 @@ public class WeatherDB
         return await _quantities.Find<Quantities>(filter).Sort(sortDescending).Limit(1).FirstOrDefaultAsync();
     }
 
-    //Vrací první záznam seřazených hodnot podle času
+    //Vrací první záznam seřazených hodnot podle času vzestupně, v rámci jakéhokoliv času.
     public async Task<Quantities> GetDataTableHistory(DateTime from, DateTime to)
     {
         // Filter data od
@@ -134,20 +139,33 @@ public class WeatherDB
 
     }
 
-   
+    //Vrací poslední záznam seřazených hodnot podle času vzestupně, v rámci jednoho dne.
+    public async Task<Quantities> GetLastSensorDataRange(DateTime date)
+    {
+        // Filter data od
+        var filter = Builders<Quantities>.Filter.Gt(x => x.SensorFirstTime, date.ToUniversalTime().Date);
+        // Filter data do
+        filter &= Builders<Quantities>.Filter.Lt(x => x.SensorFirstTime, date.ToUniversalTime().Date.AddDays(1));
 
-    //Vrací první záznam seřazených hodnot podle času
+        var sortDescending = Builders<Quantities>.Sort.Descending("SensorFirstTime");
+        return await _quantities.Find<Quantities>(filter).Sort(sortDescending).Limit(1).FirstOrDefaultAsync();
+
+    }
+
+
+    //Vrací první záznam seřazených hodnot podle času, v rámci jednoho dne. Db průměry,max,min
     public async Task<Quantities> GetDataTableHistoryAwg(DateTime date)
     {
         // Přidání filtru pro daný den
-        var filter = Builders<Quantities>.Filter.Gte(x => x.SensorFirstTime, date.ToUniversalTime().Date) &
-                     Builders<Quantities>.Filter.Lt(x => x.SensorFirstTime, date.ToUniversalTime().Date.AddDays(1));
+        var filter = Builders<Quantities>.Filter.Gte(x => x.SensorFirstTime, date.Date) &
+                     Builders<Quantities>.Filter.Lt(x => x.SensorFirstTime, date.Date.AddDays(1));
 
         var sortAscending = Builders<Quantities>.Sort.Ascending("SensorFirstTime");
         return await _quantitiesAwg.Find<Quantities>(filter).Sort(sortAscending).Limit(1).FirstOrDefaultAsync();
 
     }
 
+    // Vrací hodnotu podledního záznamu v DB průměrů,max,min
     public async Task<Quantities> GetLastAwgDataTime()
     {
         var filter = Builders<Quantities>.Filter.Empty;

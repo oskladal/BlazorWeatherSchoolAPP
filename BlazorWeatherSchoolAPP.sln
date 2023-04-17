@@ -11,6 +11,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBConnect", "DBConnect\DBCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessing", "DataProcessing\DataProcessing.csproj", "{B9AAF0B8-2FA3-4ECD-B5E6-197BABA24038}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{40CCC617-FAA9-4AF3-A7D6-A55F14883F84}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+		DockerScript.sh = DockerScript.sh
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

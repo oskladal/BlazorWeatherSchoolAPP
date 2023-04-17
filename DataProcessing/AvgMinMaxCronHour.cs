@@ -126,7 +126,7 @@ namespace DataProcessing
                 solar_rad_max = denidata.OrderByDescending(x => x.Quantities46.solar_rad).First().Quantities46.solar_rad,
                 solarrad_ts_min = denidata.OrderBy(x => x.Quantities46.solar_rad).First().Quantities46.ts,
                 solarrad_ts_max = denidata.OrderByDescending(x => x.Quantities46.solar_rad).First().Quantities46.ts,
-                rainfall_last_15_min_mm = AwgData(denidata.Select(x => x.Quantities46.rainfall_last_15_min_mm).ToList()),
+                rainfall_daily_mm = denidata.Select(x => x.Quantities46.rainfall_daily_mm).ToList().Last(),
                 dew_point = denidata[denidata.Count - 1].Quantities46.dew_point,
                 dew_point_min = denidata.OrderBy(x => x.Quantities46.dew_point).First().Quantities46.dew_point,
                 dew_point_max = denidata.OrderByDescending(x => x.Quantities46.dew_point).First().Quantities46.dew_point,
@@ -143,6 +143,8 @@ namespace DataProcessing
                 windchill_ts_min = denidata.OrderBy(x => x.Quantities46.wind_chill).First().Quantities46.ts,
                 windchill_ts_max = denidata.OrderByDescending(x => x.Quantities46.wind_chill).First().Quantities46.ts,
                 ts = denidata[denidata.Count - 1].Quantities46.ts.Date
+
+                //SumData(denidata.Select(x => x.Quantities46.rainfall_last_15_min_mm).ToList()),
 
             };
 
@@ -214,7 +216,11 @@ namespace DataProcessing
 
 
             newdatetable_averages.Created = DateTime.Now;
-            newdatetable_averages.SensorFirstTime = denidata[denidata.Count - 1].Quantities243.ts.Date;
+
+            var r = DateTime.Now.Hour - DateTime.Now.ToUniversalTime().Hour;
+           
+            newdatetable_averages.SensorFirstTime = denidata[denidata.Count - 1].Quantities243.ts.AddHours(r).Date;
+            
 
 
             return newdatetable_averages;
@@ -226,7 +232,12 @@ namespace DataProcessing
             return Math.Round(way.Average(), 1);
 
         }
-        
+
+        public double SumData(List<double> way)
+        {
+            double sum = way.Sum();
+            return Math.Round(sum, 1);
+        }
     }
 }
 

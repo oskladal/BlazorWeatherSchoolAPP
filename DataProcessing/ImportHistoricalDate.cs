@@ -75,7 +75,7 @@ namespace DataProcessing
 
 
             DateTime currentDate = DateTime.Today.AddDays(-1);
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 155; i++)
             {
                 // začátek období dne
                 DateTime startDate = currentDate.Date;

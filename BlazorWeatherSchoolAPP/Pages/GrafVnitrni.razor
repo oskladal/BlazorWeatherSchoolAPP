@@ -1,8 +1,149 @@
 ﻿@page "/grafvnitrni"
 @layout MainLayout
-<h3>Component1</h3>
+
+@using DBConnect.Models
+@inject WeatherDB dataDB
+
+@inject IJSRuntime JS
+@using BlazorWeatherSchoolAPP.Source;
+
+
+<RadzenContentContainer Name="main">
+    <RadzenCard Style="width: 100%; ">
+        <ChildContent>
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H4">Tabulka měsíčního výpisu</RadzenText>
+            <p>
+                Tabulka zobratuje základní meteorologické veličny v rámci jednoho vybraného měsíce. Zobrazuje maxima, minima a průměry.
+            </p>
+            <br />
+            <RadzenRow>
+                <RadzenColumn>
+                    <div class="rz-p-12 rz-text-align-left">
+                        <RadzenSelectBar @bind-Value=@Velicina class="mb-5">
+                            <Items>
+                                <RadzenSelectBarItem Text="Teplota" Value="1" />
+                                <RadzenSelectBarItem Text="Tlak" Value="2" />
+                                <RadzenSelectBarItem Text="Rychlost větru" Value="3" />
+                                <RadzenSelectBarItem Text="Vlhkost" Value="4" />
+                                <RadzenSelectBarItem Text="Srážky" Value="5" />
+                                <RadzenSelectBarItem Text="Solární data" Value="6" />
+                            </Items>
+                        </RadzenSelectBar>
+                    </div>
+                </RadzenColumn>
+                <RadzenColumn>
+                    @if (last_data_awg != null)
+                    {
+                        <RadzenText style="vertical-align: bottom;" TextAlign="TextAlign.Center" TextStyle="TextStyle.H6">Měsíc a rok měření: @last_data_awg[0].SensorFirstTime.Date.ToString("MM/yyyy")</RadzenText>
+                    }
+                </RadzenColumn>
+            </RadzenRow>
+        </ChildContent>
+    </RadzenCard>
+    <br />
+    <RadzenCard Style="width: 100%; ">
+        <ChildContent>
+            @*Teplota, tlak, vlhkost, rychlost větru, smět větru, denní srážky*@
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny WeatherLink Live:</RadzenText>
+            <RadzenRow>
+                <RadzenColumn>
+                    <RadzenCard>
+                        <figure class="highcharts-figure">
+                            <div id="chart1"></div>
+                        </figure>
+                    </RadzenCard>
+                </RadzenColumn>
+                <RadzenColumn>
+                    <RadzenCard>
+                        <figure class="highcharts-figure">
+                            <div id="chart3"></div>
+                        </figure>
+                    </RadzenCard>
+                </RadzenColumn>
+            </RadzenRow>
+        </ChildContent>
+    </RadzenCard>
+    <br />
+    <RadzenCard Style="width: 100%; ">
+        <ChildContent>
+            @*Teplota, tlak, vlhkost, rychlost větru, smět větru, denní srážky*@
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny AirLink:</RadzenText>
+            <RadzenRow>
+                <RadzenColumn>
+                    <RadzenCard>
+                        <figure class="highcharts-figure">
+                            <div id="chart2"></div>
+                        </figure>
+                    </RadzenCard>
+                </RadzenColumn>
+                <RadzenColumn>
+                    <RadzenCard>
+                        <figure class="highcharts-figure">
+                            <div id="chart4"></div>
+                        </figure>
+                    </RadzenCard>
+                </RadzenColumn>
+            </RadzenRow>
+        </ChildContent>
+    </RadzenCard>
+</RadzenContentContainer>
+
 
 @code {
+    public List<Quantities> last_data_awg;
+    public List<Quantities> last_data;
+
+    Timer timer;
+
+    private int velicina;
+    public int Velicina { get { return velicina; } set { velicina = value; LoadData(); } }
+
+    // Spouští JS funkci, která renderuje graf
+    public async Task RenderCharts(List<Quantities> quantities, List<Quantities> quantitiesawg, int value)
+    {
+        var chart1 = GraphsGenerator.BasicGraphVnitrniTeplotaWLL(quantities);
+        var chart3 = GraphsGenerator.BasicGraphVnitrniTeplotaWLLAwg(quantitiesawg);
+        var chart2 = GraphsGenerator.BasicGraphVnitrniTeplotaWLL(quantities);
+        var chart4 = GraphsGenerator.BasicGraphVnitrniTeplotaWLLAwg(quantitiesawg);
+        await JS.InvokeAsync<string>("RenderCharts", chart3, "chart3");
+        await JS.InvokeAsync<string>("RenderCharts", chart1, "chart1");
+        await JS.InvokeAsync<string>("RenderCharts", chart2, "chart2");
+        await JS.InvokeAsync<string>("RenderCharts", chart4, "chart4");
+
+    }
+
+    // Načítání dat
+    protected override async Task OnInitializedAsync()
+    {
+        // Načtení dat při prvním spuštění
+        timer = new System.Threading.Timer((_) =>
+        {
+
+            InvokeAsync(async () =>
+            {
+
+                await LoadData();
+            });
+        }, null, 0, 300000);
+    }
+
+    public async Task LoadData()
+    {
+
+        DateTime end = DateTime.Now;
+        DateTime start = end.AddDays(-7);
+
+        if (velicina == 0) { velicina = 1; }
+
+        // Záznami v rozsahu
+        last_data_awg = await dataDB.GetSensorsDataAwg(start, end);
+        last_data = await dataDB.GetSensorsData(start, end);
+
+        await RenderCharts(last_data, last_data_awg, velicina);
+
+        StateHasChanged();
+    }
+    private bool _autoClose;
+
 
 }
-
