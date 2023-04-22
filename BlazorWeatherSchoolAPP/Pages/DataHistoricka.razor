@@ -14,7 +14,7 @@
                 Tabulky na této stránce zobrazují historické hodnoty měřených veličin. Je možné zvolit den a hodinu v kalendáři a zobrazí se nám data z tohoto dne v danou hodinu.
                 Zobrazují se hodnoty nejbližší vyšší podle zadaného času. Data starší než 13.4.2023 byla do databáze importována zpětně a obsahují záznami v delších časových okamžicích,
                 zároveň neobsahují úplně všechna data jako jsou aktuálně sbíraná.
-                Nejstarší data jsou z 15.11.2022 s vyjímkou dat o vlastnostech půdy, zde jsou nejstarší data z 1.12.2022. Další vyjímkou jsou data o srážkách, zde jsou záznami až z 13.4.2023. 
+                Nejstarší data jsou z 15.11.2022 s vyjímkou dat o vlastnostech půdy, zde jsou nejstarší data z 1.12.2022. Další vyjímkou jsou data o srážkách, zde jsou záznami až z 13.4.2023.
             </p>
             <br />
             <RadzenRow>
@@ -22,30 +22,37 @@
                     <RadzenDatePicker Min="MinMaxDate.Min" Max="MinMaxDate.Max" @bind-Value=@Start ShowTime="true" ShowSeconds="true" HoursStep="1.5" MinutesStep="5" DateFormat="dd/MM/yyyy HH:mm" />
                 </RadzenColumn>
                 <RadzenColumn>
-                    @if (last_data != null) { 
-                    <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H6">Reálný čás měření: @last_data.SensorFirstTime.ToLocalTime()</RadzenText>
-                        }
+                    @if (last_data != null)
+                    {
+                        <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H6">Reálný čás měření: @last_data.SensorFirstTime.ToLocalTime()</RadzenText>
+                    }
                 </RadzenColumn>
             </RadzenRow>
             <br />
-            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny:</RadzenText>
-            @if (last_data != null)
-            {
+        </ChildContent>
+    </RadzenCard>
+    <br />
+    @if (last_data != null)
+    {
+        <RadzenCard Style="width: 100%; ">
+            <ChildContent>
+                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny:</RadzenText>
+
                 <table class="table table-my-value">
                     <tr>
                         <td colspan="4" class="table-secondary bold-font">Teplota a vlhkost</td>
                     </tr>
                     <tbody class="table-group-divider ">
                         <tr>
-                            <td>Teplota vnitřní WeaherLinkLive</td>
+                            <td>Teplota vnitřní WLL</td>
                             <td>@last_data.Quantities243.temp_in °C</td>
-                            <td>Vlhkost vnitřní WeatherLinkLive</td>
+                            <td>Vlhkost vnitřní WLL</td>
                             <td>@last_data.Quantities243.hum_in %</td>
                         </tr>
                         <tr>
-                            <td>Rosný bod WeaherLinkLive</td>
+                            <td>Rosný bod WLL</td>
                             <td>@last_data.Quantities243.dew_point_in °C</td>
-                            <td>Heat index WeaherLinkLive</td>
+                            <td>Heat index WLL</td>
                             <td>@last_data.Quantities243.heat_index_in °C</td>
                         </tr>
                         <tr>
@@ -89,6 +96,14 @@
                     </tbody>
                 </table>
                 <br>
+            </ChildContent>
+        </RadzenCard>
+        <br />
+    }
+    @if (last_data != null)
+    {
+        <RadzenCard Style="width: 100%; ">
+            <ChildContent>
                 <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Venkovní veličiny:</RadzenText>
                 <table class="table table-my-value">
                     <tr>
@@ -123,29 +138,30 @@
                             <td>@last_data.Quantities46.uv_index</td>
                         </tr>
                     </tbody>
-                    @if (last_data.Quantities46.rainfall_year_mm != 0) { 
-                    <tr>
-                        <td colspan="4" class="table-secondary bold-font">Srážky</td>
-                    </tr>
-                    <tbody class="table-group-divider">
+                    @if (last_data.Quantities46.rainfall_year_mm != 0)
+                    {
                         <tr>
-                            <td>Intenzita dešťových srážek</td>
-                            <td>@last_data.Quantities46.rain_rate_last_mm mm/hod</td>
-                            <td>Hodinnové dešťové srážky</td>
-                            <td>@last_data.Quantities46.rainfall_last_60_min_mm mm</td>
+                            <td colspan="4" class="table-secondary bold-font">Srážky</td>
                         </tr>
-                        <tr>
-                            <td>Denní dešťové srážky</td>
-                            <td>@last_data.Quantities46.rainfall_daily_mm mm</td>
-                            <td>Měsíční dešťové srážky</td>
-                            <td>@last_data.Quantities46.rainfall_monthly_mm mm</td>
-                        </tr>
-                        <tr>
-                            <td>Roční dešťové srážky</td>
-                            <td>@last_data.Quantities46.rainfall_year_mm mm</td>
-                        </tr>
-                    </tbody>
-                        }
+                        <tbody class="table-group-divider">
+                            <tr>
+                                <td>Intenzita dešťových srážek</td>
+                                <td>@last_data.Quantities46.rain_rate_last_mm mm/hod</td>
+                                <td>Hodinnové dešťové srážky</td>
+                                <td>@last_data.Quantities46.rainfall_last_60_min_mm mm</td>
+                            </tr>
+                            <tr>
+                                <td>Denní dešťové srážky</td>
+                                <td>@last_data.Quantities46.rainfall_daily_mm mm</td>
+                                <td>Měsíční dešťové srážky</td>
+                                <td>@last_data.Quantities46.rainfall_monthly_mm mm</td>
+                            </tr>
+                            <tr>
+                                <td>Roční dešťové srážky</td>
+                                <td>@last_data.Quantities46.rainfall_year_mm mm</td>
+                            </tr>
+                        </tbody>
+                    }
                     <tr>
                         <td colspan="4" class="table-secondary bold-font">Vítr</td>
                     </tr>
@@ -161,24 +177,26 @@
                             <td>@last_data.Quantities46.wind_dir_last °</td>
                         </tr>
                     </tbody>
-                    @if (last_data.Quantities56 != null) {
-                    <tr>
-                        <td colspan="4" class="table-secondary bold-font">Půda</td>
-                    </tr>
-                    <tbody class="table-group-divider">
+                    @if (last_data.Quantities56 != null)
+                    {
                         <tr>
-                            <td>Teplota půdy</td>
-                            <td>@last_data.Quantities56.temp_1 °C</td>
-                            <td>Vlhkost půdy</td>
-                            <td>@last_data.Quantities56.moist_soil_1 %</td>
+                            <td colspan="4" class="table-secondary bold-font">Půda</td>
                         </tr>
-                    </tbody>
-                        }
+                        <tbody class="table-group-divider">
+                            <tr>
+                                <td>Teplota půdy</td>
+                                <td>@last_data.Quantities56.temp_1 °C</td>
+                                <td>Vlhkost půdy</td>
+                                <td>@last_data.Quantities56.moist_soil_1 %</td>
+                            </tr>
+                        </tbody>
+                    }
                 </table>
 
-                }
-        </ChildContent>
-    </RadzenCard>
+
+            </ChildContent>
+        </RadzenCard>
+    }
 </RadzenContentContainer>
 
 @code {
@@ -206,7 +224,7 @@
             {
                 await LoadData();
             });
-        }, null, 0, 60000);
+        }, null, 0, 300000);
     }
 
     public async Task LoadData()

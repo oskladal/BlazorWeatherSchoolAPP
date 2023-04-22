@@ -30,7 +30,7 @@ builder.Services.AddCronJob<AvgMinMaxCronHour>(c =>
 builder.Services.AddCronJob<AvgMinMaxCronJobWeek>(c =>
 {
     c.TimeZoneInfo = TimeZoneInfo.Local;
-    c.CronExpression = @"15 0 * * 0";
+    c.CronExpression = @"15 0 * * *";
 });
 
 builder.Services.AddCronJob<DataDBCronJob>(c =>
@@ -42,7 +42,7 @@ builder.Services.AddCronJob<DataDBCronJob>(c =>
 builder.Services.AddCronJob<ImportHistoricalDate>(c =>
 {
     c.TimeZoneInfo = TimeZoneInfo.Local;
-    c.CronExpression = @"10 0 * * 0";
+    c.CronExpression = @"10 0 * * *";
 });
 
 var app = builder.Build();

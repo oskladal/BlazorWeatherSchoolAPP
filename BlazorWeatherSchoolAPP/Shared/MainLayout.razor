@@ -18,7 +18,7 @@
 <PageTitle>BlazorWeatherSchoolAPP</PageTitle>
 
 <RadzenLayout style="height: 100%">
-    <RadzenHeader>
+    <RadzenHeader Style="position:fixed">
         <RadzenStack Orientation="Radzen.Orientation.Horizontal" Wrap="Radzen.FlexWrap.Wrap" AlignItems="Radzen.AlignItems.Center" Gap="0">
             <RadzenSidebarToggle Click="@(() => sidebar1Expanded = !sidebar1Expanded)" />
             <RadzenStack AlignItems="Radzen.AlignItems.Normal"  >
@@ -31,11 +31,11 @@
             }
         </RadzenStack>
     </RadzenHeader>
-    <RadzenSidebar @bind-Expanded="@sidebar1Expanded">
+    <RadzenSidebar @bind-Expanded="@sidebar1Expanded" class="header-padding">
         <ChildContent>
             <RadzenPanelMenu>
                 <ChildContent>
-                    <RadzenPanelMenuItem Text="Domovská stránka" Icon="home" Path="uvodnistrana" />
+                    <RadzenPanelMenuItem Text="Domovská stránka" Icon="home" Path="/" />
                     <RadzenPanelMenuItem Text="Data" Icon="date_range">
                         <ChildContent>
                             <RadzenPanelMenuItem Text="Venkovní měřidla" Icon="label_outline" Path="datameridlavenkovni" />
@@ -49,9 +49,7 @@
                     <RadzenPanelMenuItem Text="Grafy" Icon="donut_small">
                         <ChildContent>
                             <RadzenPanelMenuItem Text="Vnitřní" Icon="label_outline" Path="grafvnitrni" />
-                            <RadzenPanelMenuItem Text="Venkovní" Icon="label_outline" Path="fetchdata" />
-                            <RadzenPanelMenuItem Text="Volný výběr veličiny" Icon="label_outline" Path="grafvybervelicinu" />
-                            <RadzenPanelMenuItem Text="Historické" Icon="label_outline" Path="grafhistoriebuttonmesicvyber" />
+                            <RadzenPanelMenuItem Text="Venkovní" Icon="label_outline" Path="grafvenkovni" />
                         </ChildContent>
                     </RadzenPanelMenuItem>
                     <RadzenPanelMenuItem Text="Informace k projektu" Icon="offline_pin" Path="infoprojekt" />
@@ -118,7 +116,7 @@
             </div>
         </ChildContent>
     </RadzenSidebar>
-    <RadzenBody>
+    <RadzenBody class="header-padding1">
         <ChildContent>
             <RadzenContentContainer Name="main">
                 @Body
@@ -128,7 +126,7 @@
     <RadzenFooter>
         <RadzenRow Gap="1rem">
             <RadzenColumn Offset="1">
-                <iframe style="width: 110%; height: 200px; border-radius: 3px; " src="https://frame.mapy.cz/s/hokahekevo"></iframe>
+                <iframe style="width: 110%; height: 200px; border-radius: 3px; " src="https://frame.mapy.cz/s/funedagele"></iframe>
             </RadzenColumn>
             <RadzenColumn Offset="1" Size="2">
                 <RadzenText class="rz-color-base-400" TextAlign="TextAlign.Left" TextStyle="TextStyle.Overline">

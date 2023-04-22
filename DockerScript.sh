@@ -1,4 +1,5 @@
-﻿docker build --platform=linux/amd64 -t weatherschoolapp ./BlazorWeaherSchoolAPP
+﻿echo "Import Run"
+docker build --platform=linux/amd64 -t weatherschoolapp ./BlazorWeatherSchoolAPP
 docker build --platform=linux/amd64 -t dataprocessing ./DataProcessing
 docker save -o ./BlazorWeatherSchoolAPP.tar weatherschoolapp
 docker save -o ./DataProcessing.tar dataprocessing

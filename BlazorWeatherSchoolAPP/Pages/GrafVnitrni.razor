@@ -11,52 +11,56 @@
 <RadzenContentContainer Name="main">
     <RadzenCard Style="width: 100%; ">
         <ChildContent>
-            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H4">Tabulka měsíčního výpisu</RadzenText>
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H4">Vnitřní hodnoty vzduchu</RadzenText>
             <p>
-                Tabulka zobratuje základní meteorologické veličny v rámci jednoho vybraného měsíce. Zobrazuje maxima, minima a průměry.
+                Grafy zobrazují hodnoty maxima, minima a průměru vnitřních, naměřených hodnot vzduchu. V základním nastavení zobrazují hodnoty jednoho týdne
+                ale rozsah výberu je možné si nastavit pomocí kalendáře.
             </p>
             <br />
             <RadzenRow>
-                <RadzenColumn>
-                    <div class="rz-p-12 rz-text-align-left">
-                        <RadzenSelectBar @bind-Value=@Velicina class="mb-5">
+                <RadzenColumn SizeXS="12" SizeSM="12" SizeMD="6" SizeLG="6" SizeXL="6" Style="width: 100%; overflow-x:auto ">
+                    <div class=" rz-text-align-center">
+                        <RadzenSelectBar @bind-Value=@Velicina class="rz-background-color-base-100 rz-border-black rz-border-radius-1" Size="ButtonSize.Small">
                             <Items>
-                                <RadzenSelectBarItem Text="Teplota" Value="1" />
-                                <RadzenSelectBarItem Text="Tlak" Value="2" />
-                                <RadzenSelectBarItem Text="Rychlost větru" Value="3" />
-                                <RadzenSelectBarItem Text="Vlhkost" Value="4" />
-                                <RadzenSelectBarItem Text="Srážky" Value="5" />
-                                <RadzenSelectBarItem Text="Solární data" Value="6" />
+                                <RadzenSelectBarItem Text="Teplota vzduchu" Value="1" />
+                                <RadzenSelectBarItem Text="Tlak vzduchu" Value="2" />
+                                <RadzenSelectBarItem Text="Vlhkost vzduchu" Value="3" />
+                                <RadzenSelectBarItem Text="Prachovové částice" Value="4" />
                             </Items>
                         </RadzenSelectBar>
                     </div>
                 </RadzenColumn>
                 <RadzenColumn>
-                    @if (last_data_awg != null)
-                    {
-                        <RadzenText style="vertical-align: bottom;" TextAlign="TextAlign.Center" TextStyle="TextStyle.H6">Měsíc a rok měření: @last_data_awg[0].SensorFirstTime.Date.ToString("MM/yyyy")</RadzenText>
-                    }
+                    <div class="rz-text-align-center">
+                        <MudDateRangePicker @ref="_picker" Label="Vyberte rozsah..." @bind-DateRange="@RozsahDat" AutoClose="@_autoClose" Color="MudBlazor.Color.Success" MinDate="MinMaxDate.Min" MaxDate="MinMaxDate.Max">
+                            <PickerActions>
+                                <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Vymazat</MudButton>
+                                <MudButton OnClick="@(() => _picker.Close(false))">Zrušit</MudButton>
+                                <MudButton Color="MudBlazor.Color.Primary" OnClick="@(() => _picker.Close())">Potvrdit</MudButton>
+                            </PickerActions>
+                        </MudDateRangePicker>
+                        <MudSwitch @bind-Checked="@_autoClose" Color="MudBlazor.Color.Secondary">Automatické uzavření okna</MudSwitch>
+                    </div>
                 </RadzenColumn>
             </RadzenRow>
         </ChildContent>
     </RadzenCard>
     <br />
-    <RadzenCard Style="width: 100%; ">
+    <RadzenCard Style="width: 100%;" class=@hidden2>
         <ChildContent>
-            @*Teplota, tlak, vlhkost, rychlost větru, smět větru, denní srážky*@
             <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny WeatherLink Live:</RadzenText>
             <RadzenRow>
-                <RadzenColumn>
+                <RadzenColumn SizeXS="12" SizeSM="12" SizeMD="6" SizeLG="6" SizeXL="6">
                     <RadzenCard>
                         <figure class="highcharts-figure">
                             <div id="chart1"></div>
                         </figure>
                     </RadzenCard>
                 </RadzenColumn>
-                <RadzenColumn>
+                <RadzenColumn SizeXS="12" SizeSM="12" SizeMD="6" SizeLG="6" SizeXL="6">
                     <RadzenCard>
                         <figure class="highcharts-figure">
-                            <div id="chart3"></div>
+                            <div id=chart2></div>
                         </figure>
                     </RadzenCard>
                 </RadzenColumn>
@@ -64,19 +68,18 @@
         </ChildContent>
     </RadzenCard>
     <br />
-    <RadzenCard Style="width: 100%; ">
+    <RadzenCard Style="width: 100%; " class=@hidden>
         <ChildContent>
-            @*Teplota, tlak, vlhkost, rychlost větru, smět větru, denní srážky*@
             <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny AirLink:</RadzenText>
             <RadzenRow>
-                <RadzenColumn>
+                <RadzenColumn SizeXS="12" SizeSM="12" SizeMD="6" SizeLG="6" SizeXL="6">
                     <RadzenCard>
                         <figure class="highcharts-figure">
-                            <div id="chart2"></div>
+                            <div id="chart3"></div>
                         </figure>
                     </RadzenCard>
                 </RadzenColumn>
-                <RadzenColumn>
+                <RadzenColumn SizeXS="12" SizeSM="12" SizeMD="6" SizeLG="6" SizeXL="6">
                     <RadzenCard>
                         <figure class="highcharts-figure">
                             <div id="chart4"></div>
@@ -84,14 +87,45 @@
                     </RadzenCard>
                 </RadzenColumn>
             </RadzenRow>
+
+            <Div class=@hidden3>
+            <RadzenRow>
+                <RadzenColumn>
+                    <RadzenCard>
+                        <figure class="highcharts-figure">
+                            <div id="chart5"></div>
+                        </figure>
+                    </RadzenCard>
+                </RadzenColumn>
+                <RadzenColumn>
+                    <RadzenCard>
+                        <figure class="highcharts-figure">
+                            <div id=chart6></div>
+                        </figure>
+                    </RadzenCard>
+                </RadzenColumn>
+            </RadzenRow>
+            </Div>
         </ChildContent>
     </RadzenCard>
+
+     
 </RadzenContentContainer>
 
 
 @code {
     public List<Quantities> last_data_awg;
     public List<Quantities> last_data;
+    string hidden;
+    string hidden2;
+    string hidden3;
+
+    private DateRange? rozsahdat;
+    public DateRange? RozsahDat { get { return rozsahdat; } set { rozsahdat = value; LoadData(); } }
+
+    public DateRange? tyden = new DateRange(DateTime.Now.AddDays(-7).Date, DateTime.Now);
+
+    public (DateTime? Min, DateTime? Max) MinMaxDate;
 
     Timer timer;
 
@@ -101,15 +135,67 @@
     // Spouští JS funkci, která renderuje graf
     public async Task RenderCharts(List<Quantities> quantities, List<Quantities> quantitiesawg, int value)
     {
-        var chart1 = GraphsGenerator.BasicGraphVnitrniTeplotaWLL(quantities);
-        var chart3 = GraphsGenerator.BasicGraphVnitrniTeplotaWLLAwg(quantitiesawg);
-        var chart2 = GraphsGenerator.BasicGraphVnitrniTeplotaWLL(quantities);
-        var chart4 = GraphsGenerator.BasicGraphVnitrniTeplotaWLLAwg(quantitiesawg);
-        await JS.InvokeAsync<string>("RenderCharts", chart3, "chart3");
-        await JS.InvokeAsync<string>("RenderCharts", chart1, "chart1");
-        await JS.InvokeAsync<string>("RenderCharts", chart2, "chart2");
-        await JS.InvokeAsync<string>("RenderCharts", chart4, "chart4");
+        var chart1 = GraphGenerator.BasicGraphVnitrniTeplotaWLL(quantities);
+        var chart2 = GraphGeneratorAwg.BasicGraphVnitrniTeplotaWLLAwg(quantitiesawg);
+        var chart3 = GraphGenerator.BasicGraphVnitrniTeplotaAirLink(quantities);
+        var chart4 = GraphGeneratorAwg.BasicGraphVnitrniTeplotaAirLinkAwg(quantitiesawg);
+        var chart5 = GraphGenerator.BasicGraphVnitrniTlakWLL(quantities);
+        var chart6 = GraphGeneratorAwg.BasicGraphVnitrniTlakWLLAwg(quantitiesawg);
+        var chart7 = GraphGenerator.BasicGraphVnitrniVlhkostWLL(quantities);
+        var chart8 = GraphGeneratorAwg.BasicGraphVnitrniVlhkostWLLAwg(quantitiesawg);
+        var chart9 = GraphGenerator.BasicGraphVnitrniVlhkostAirLink(quantities);
+        var chart10 = GraphGeneratorAwg.BasicGraphVnitrniVlhkostAirLinkAwg(quantitiesawg);
+        var chart11 = GraphGenerator.BasicGraphVnitrniOvzdusiAirLink(quantities);
+        var chart13 = GraphGeneratorAwg.BasicGraphVnitrniOvzdusiAirLinkAwg(quantitiesawg);
+        var chart12 = GraphGenerator.BasicGraphVnitrniAQIAirLink(quantities);
+        var chart14 = GraphGeneratorAwg.BasicGraphVnitrniAQIAirLinkAwg(quantitiesawg);
 
+        if (value == 1)
+        {
+            await JS.InvokeAsync<string>("RenderCharts", chart1, "chart1");
+            await JS.InvokeAsync<string>("RenderChartsNew", chart2, "chart2");
+            await JS.InvokeAsync<string>("RenderCharts", chart3, "chart3");
+            await JS.InvokeAsync<string>("RenderChartsNew", chart4, "chart4");
+            await JS.InvokeAsync<string>("DeleteGraf", "chart5");
+            await JS.InvokeAsync<string>("DeleteGraf", "chart6");
+            hidden = "nic";
+            hidden2 = "nic";
+            hidden3 = "hidden";
+        }
+        else if (value == 2)
+        {
+            await JS.InvokeAsync<string>("RenderCharts", chart5, "chart1");
+            await JS.InvokeAsync<string>("RenderChartsNew", chart6, "chart2");
+            await JS.InvokeAsync<string>("DeleteGraf", "chart3");
+            await JS.InvokeAsync<string>("DeleteGraf", "chart4");
+            await JS.InvokeAsync<string>("DeleteGraf", "chart5");
+            await JS.InvokeAsync<string>("DeleteGraf", "chart6");
+            hidden = "hidden";
+            hidden2 = "nice";
+        }
+        else if (value == 3)
+        {
+            await JS.InvokeAsync<string>("RenderCharts", chart7, "chart1");
+            await JS.InvokeAsync<string>("RenderChartsNew", chart8, "chart2");
+            await JS.InvokeAsync<string>("RenderCharts", chart9, "chart3");
+            await JS.InvokeAsync<string>("RenderChartsNew", chart10, "chart4");
+            await JS.InvokeAsync<string>("DeleteGraf", "chart5");
+            await JS.InvokeAsync<string>("DeleteGraf", "chart6");
+            hidden = "nic";
+            hidden2 = "nice";
+            hidden3 = "hidden";
+        }
+        else if (value == 4)
+        {
+            await JS.InvokeAsync<string>("RenderCharts", chart11, "chart3");
+            await JS.InvokeAsync<string>("RenderChartsNew", chart13, "chart4");
+            await JS.InvokeAsync<string>("RenderCharts", chart12, "chart5");
+            await JS.InvokeAsync<string>("RenderChartsNew", chart14, "chart6");
+            hidden = "nic";
+            hidden2 = "hidden";
+            hidden3 = "nic";
+
+        }
     }
 
     // Načítání dat
@@ -129,21 +215,25 @@
 
     public async Task LoadData()
     {
+        // Minimální a maximílní datum pro volení rozsahu
+        MinMaxDate = await dataDB.GetMinMaxDate();
 
-        DateTime end = DateTime.Now;
-        DateTime start = end.AddDays(-7);
+        if (rozsahdat == null) { rozsahdat = tyden; }
+        DateTime start = rozsahdat.Start.Value;
+        DateTime end = rozsahdat.End.Value;
 
         if (velicina == 0) { velicina = 1; }
+        int velicina1 = velicina;
 
         // Záznami v rozsahu
         last_data_awg = await dataDB.GetSensorsDataAwg(start, end);
         last_data = await dataDB.GetSensorsData(start, end);
 
-        await RenderCharts(last_data, last_data_awg, velicina);
+        await RenderCharts(last_data, last_data_awg, velicina1);
 
         StateHasChanged();
     }
+    private MudDateRangePicker _picker;
     private bool _autoClose;
-
 
 }

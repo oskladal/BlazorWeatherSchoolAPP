@@ -11,280 +11,272 @@
 
 
 <RadzenContentContainer Name="main">
-    <ChildContent>
-        @if (last_data != null)
-        {
+    <RadzenCard Style="width: 100%; ">
+        <ChildContent>
+            @if (last_data != null)
+            {
+                <RadzenRow Gap="2rem">
+                    <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="4" SizeLG="3" SizeXL="3">
+                        <div>
+                            <RadzenCard Style="width: 250px; margin: 0 auto; ">
+                                <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Teplota AirLink</RadzenText>
+                                <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
+                                    <RadzenArcGaugeScale Step="40" Min="0" Max="200" MinorStep="4" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
+                                        <RadzenArcGaugeScaleValue Value=last_data.Quantities326.temp ShowValue=true>
+                                            <Template Context="pointer">
+                                                <h6>
+                                                    @pointer.Value <sup>°C</sup>
+                                                </h6>
+                                            </Template>
+                                        </RadzenArcGaugeScaleValue>
+                                    </RadzenArcGaugeScale>
+                                </RadzenArcGauge>
+                                <p>
+                                    Min: <b>@last_data_awg.Quantities326.temp_min</b> °C v
+                                    @last_data_awg.Quantities326.temp_ts_min.ToLocalTime().ToShortTimeString() |
+                                    Max: <b>@last_data_awg.Quantities326.temp_max</b> °C v
+                                    @last_data_awg.Quantities326.temp_ts_max.ToLocalTime().ToShortTimeString()
+                                </p>
+                            </RadzenCard>
+                        </div>
+                    </RadzenColumn>
+
+                    <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="4" SizeLG="3" SizeXL="3">
+                        <div>
+                            <RadzenCard Style="width: 250px; margin: 0 auto; ">
+                                <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Teplota WeatherLink Live</RadzenText>
+                                <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
+                                    <RadzenArcGaugeScale Step="20" Min="-20" Max="40" MinorStep="2" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
+                                        <RadzenArcGaugeScaleValue Value=last_data.Quantities243.temp_in ShowValue=true>
+                                            <Template Context="pointer">
+                                                <h6>
+                                                    @pointer.Value <sup>°C</sup>
+                                                </h6>
+                                            </Template>
+                                        </RadzenArcGaugeScaleValue>
+                                    </RadzenArcGaugeScale>
+                                </RadzenArcGauge>
+                                <p>
+                                    Min: <b>@last_data_awg.Quantities243.temp_in_min</b> °C v
+                                    @last_data_awg.Quantities243.temp_ts_min.ToLocalTime().ToShortTimeString() |
+                                    Max: <b>@last_data_awg.Quantities243.temp_in_max</b> °C v
+                                    @last_data_awg.Quantities243.temp_ts_max.ToLocalTime().ToShortTimeString()
+                                </p>
+                            </RadzenCard>
+                        </div>
+                    </RadzenColumn>
+                    <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="4" SizeLG="3" SizeXL="3">
+                        <div>
+                            <RadzenCard Style="width: 250px; margin: 0 auto; ">
+                                <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Vlhkost AirLink</RadzenText>
+                                <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
+                                    <RadzenArcGaugeScale Step="20" Min="-20" Max="40" MinorStep="2" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
+                                        <RadzenArcGaugeScaleValue Value=last_data.Quantities326.hum ShowValue=true>
+                                            <Template Context="pointer">
+                                                <h6>
+                                                    @pointer.Value <sup>%</sup>
+                                                </h6>
+                                            </Template>
+                                        </RadzenArcGaugeScaleValue>
+                                    </RadzenArcGaugeScale>
+                                </RadzenArcGauge>
+                                <p>
+                                    Min: <b>@last_data_awg.Quantities326.hum_min</b> % v
+                                    @last_data_awg.Quantities326.hum_ts_min.ToLocalTime().ToShortTimeString() |
+                                    Max: <b>@last_data_awg.Quantities326.hum_max</b> % v
+                                    @last_data_awg.Quantities326.hum_ts_max.ToLocalTime().ToShortTimeString()
+                                </p>
+                            </RadzenCard>
+                        </div>
+                    </RadzenColumn>
+                    <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="4" SizeLG="3" SizeXL="3">
+                        <div>
+                            <RadzenCard Style="width: 250px; margin: 0 auto; ">
+                                <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Vlhkost WeatherLink Live</RadzenText>
+                                <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
+                                    <RadzenArcGaugeScale Step="2" Min="0" Max="10" MinorStep="1" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
+                                        <RadzenArcGaugeScaleValue Value=last_data.Quantities243.hum_in ShowValue=true>
+                                            <Template Context="pointer">
+                                                <h6>
+                                                    @pointer.Value <sup>%</sup>
+                                                </h6>
+                                            </Template>
+                                        </RadzenArcGaugeScaleValue>
+                                    </RadzenArcGaugeScale>
+                                </RadzenArcGauge>
+                                <p>
+                                    Min: <b>@last_data_awg.Quantities243.hum_in_min</b> % v
+                                    @last_data_awg.Quantities243.hum_ts_min.ToLocalTime().ToShortTimeString() |
+                                    Max: <b>@last_data_awg.Quantities243.hum_in_max</b> % v
+                                    @last_data_awg.Quantities243.hum_ts_max.ToLocalTime().ToShortTimeString()
+                                </p>
+                            </RadzenCard>
+                        </div>
+                    </RadzenColumn>
+                </RadzenRow>
+                <br />
+                <RadzenRow Gap="2rem">
+                    <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="4" SizeLG="3" SizeXL="3">
+                        <div>
+                            <RadzenCard Style="width: 250px; margin: 0 auto; ">
+                                <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Rosný bod WeaherLink Live</RadzenText>
+                                <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
+                                    <RadzenArcGaugeScale Step="150" Min="0" Max="1000" MinorStep="15" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
+                                        <RadzenArcGaugeScaleValue Value=last_data.Quantities243.dew_point_in ShowValue=true>
+                                            <Template Context="pointer">
+                                                <h6>
+                                                    @pointer.Value <sup>°C</sup>
+                                                </h6>
+                                            </Template>
+                                        </RadzenArcGaugeScaleValue>
+                                    </RadzenArcGaugeScale>
+                                </RadzenArcGauge>
+                                <p>
+                                    Min: <b>@last_data_awg.Quantities243.dew_point_in_min</b> °C v
+                                    @last_data_awg.Quantities243.dewpoint_in_ts_min.ToLocalTime().ToShortTimeString() |
+                                    Max: <b>@last_data_awg.Quantities243.dew_point_in_max</b> °C v
+                                    @last_data_awg.Quantities243.dewpoint_in_ts_max.ToLocalTime().ToShortTimeString()
+                                </p>
+                            </RadzenCard>
+                        </div>
+                    </RadzenColumn>
+                    <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="4" SizeLG="3" SizeXL="3">
+                        <div>
+                            <RadzenCard Style="width: 250px; margin: 0 auto; ">
+                                <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Tlak vzduchu na hladinu moře WLive</RadzenText>
+                                <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
+                                    <RadzenArcGaugeScale Step="2" Min="0" Max="10" MinorStep="1" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
+                                        <RadzenArcGaugeScaleValue Value=last_data.Quantities242.bar_sea_level ShowValue=true>
+                                            <Template Context="pointer">
+                                                <h6>
+                                                    @pointer.Value <sup>hPa</sup>
+                                                </h6>
+                                            </Template>
+                                        </RadzenArcGaugeScaleValue>
+                                    </RadzenArcGaugeScale>
+                                </RadzenArcGauge>
+                                <p>
+                                    Min: <b>@last_data_awg.Quantities242.bar_sea_level_min</b> hPa v
+                                    @last_data_awg.Quantities242.barsea_ts_min.ToLocalTime().ToShortTimeString() |
+                                    Max: <b>@last_data_awg.Quantities242.bar_sea_level_max</b> hPa v
+                                    @last_data_awg.Quantities242.barsea_ts_max.ToLocalTime().ToShortTimeString()
+                                </p>
+                            </RadzenCard>
+                        </div>
+                    </RadzenColumn>
+                    <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="3" SizeLG="3" SizeXL="3">
+                        <div>
+                            <RadzenCard Style="width: 250px; margin: 0 auto; ">
+                                <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Rosný bod AirLink</RadzenText>
+                                <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
+                                    <RadzenArcGaugeScale Step="20" Min="0" Max="100" MinorStep="2" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
+                                        <RadzenArcGaugeScaleValue Value=last_data.Quantities326.dew_point ShowValue=true>
+                                            <Template Context="pointer">
+                                                <h6>
+                                                    @pointer.Value <sup>°C</sup>
+                                                </h6>
+                                            </Template>
+                                        </RadzenArcGaugeScaleValue>
+                                    </RadzenArcGaugeScale>
+                                </RadzenArcGauge>
+                                <p>
+                                    Min: <b>@last_data_awg.Quantities326.dew_point_min</b> °C v
+                                    @last_data_awg.Quantities326.dewpoint_ts_min.ToLocalTime().ToShortTimeString() |
+                                    Max: <b>@last_data_awg.Quantities326.dew_point_max</b> °C v
+                                    @last_data_awg.Quantities326.dewpoint_ts_max.ToLocalTime().ToShortTimeString()
+                                </p>
+                            </RadzenCard>
+                        </div>
+                    </RadzenColumn>
+                    <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="4" SizeLG="3" SizeXL="3">
+                        <div>
+                            <RadzenCard Style="width: 250px; margin: 0 auto; ">
+                                <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Heat index WLive</RadzenText>
+                                <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
+                                    <RadzenArcGaugeScale Step="2" Min="0" Max="10" MinorStep="1" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
+                                        <RadzenArcGaugeScaleValue Value=last_data.Quantities243.heat_index_in ShowValue=true>
+                                            <Template Context="pointer">
+                                                <h6>
+                                                    @pointer.Value <sup>°C</sup>
+                                                </h6>
+                                            </Template>
+                                        </RadzenArcGaugeScaleValue>
+                                    </RadzenArcGaugeScale>
+                                </RadzenArcGauge>
+                                <p>
+                                    Min: <b>@last_data_awg.Quantities243.heat_index_in_min</b> °C v
+                                    @last_data_awg.Quantities243.heatindex_in_ts_min.ToLocalTime().ToShortTimeString() |
+                                    Max: <b>@last_data_awg.Quantities243.heat_index_in_max</b> °C v
+                                    @last_data_awg.Quantities243.heatindex_in_ts_max.ToLocalTime().ToShortTimeString()
+                                </p>
+                            </RadzenCard>
+                        </div>
+                    </RadzenColumn>
+                </RadzenRow>
+                <br />
+                <RadzenRow Gap="2rem">
+                    <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="4" SizeLG="3" SizeXL="3">
+                        <div>
+                            <RadzenCard Style="width: 250px; margin: 0 auto; ">
+                                <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Heat index AirLink</RadzenText>
+                                <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
+                                    <RadzenArcGaugeScale Step="20" Min="0" Max="100" MinorStep="2" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
+                                        <RadzenArcGaugeScaleValue Value=last_data.Quantities326.heat_index ShowValue=true>
+                                            <Template Context="pointer">
+                                                <h6>
+                                                    @pointer.Value <sup>°C</sup>
+                                                </h6>
+                                            </Template>
+                                        </RadzenArcGaugeScaleValue>
+                                    </RadzenArcGaugeScale>
+                                </RadzenArcGauge>
+                                <p>
+                                    Min: <b>@last_data_awg.Quantities326.heat_index_min</b> °C v
+                                    @last_data_awg.Quantities326.heatindex_ts_min.ToLocalTime().ToShortTimeString() |
+                                    Max: <b>@last_data_awg.Quantities326.heat_index_max</b> °C v
+                                    @last_data_awg.Quantities326.heatindex_ts_max.ToLocalTime().ToShortTimeString()
+                                </p>
+                            </RadzenCard>
+                        </div>
+                    </RadzenColumn>
+                    <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="4" SizeLG="3" SizeXL="3">
+                        <div>
+                            <RadzenCard class="@color_description" Style="width: 250px; margin: 0 auto; ">
+                                <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Index kvality ovzduší AQI AirLink</RadzenText>
+                                <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
+                                    <RadzenArcGaugeScale Step="2" Min="0" Max="10" MinorStep="1" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
+                                        <RadzenArcGaugeScaleValue Value=last_data.Quantities326.aqi_val ShowValue=true>
+                                            <Template Context="pointer">
+                                                <h6>
+                                                    @pointer.Value <sup>(@translatedText_desc)</sup>
+                                                </h6>
+                                            </Template>
+                                        </RadzenArcGaugeScaleValue>
+                                    </RadzenArcGaugeScale>
+                                </RadzenArcGauge>
+                                <p>
+                                    Min: <b>@last_data_awg.Quantities326.aqi_val_min</b> (@translatedText_desc_min) v
+                                    @last_data_awg.Quantities326.aqival_ts_min.ToLocalTime().ToShortTimeString() |
+                                    Max: <b>@last_data_awg.Quantities326.aqi_val_max</b> (@translatedText_desc_max) v
+                                    @last_data_awg.Quantities326.aqival_ts_max.ToLocalTime().ToShortTimeString()
+                                </p>
+                            </RadzenCard>
+                        </div>
+                    </RadzenColumn>
+                </RadzenRow>
+                <br />
+            }
             <RadzenRow>
                 <RadzenColumn>
-                    <div>
-                        <RadzenCard Style="width: 100%; margin: 0 auto; ">
-                            <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Teplota AirLink</RadzenText>
-                            <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
-                                <RadzenArcGaugeScale Step="40" Min="0" Max="200" MinorStep="4" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
-                                    <RadzenArcGaugeScaleValue Value=last_data.Quantities326.temp ShowValue=true>
-                                        <Template Context="pointer">
-                                            <h6>
-                                                @pointer.Value <sup>°C</sup>
-                                            </h6>
-                                        </Template>
-                                    </RadzenArcGaugeScaleValue>
-                                </RadzenArcGaugeScale>
-                            </RadzenArcGauge>
-                            <p>
-                                Min: <b>@last_data_awg.Quantities326.temp_min</b> °C v
-                                @last_data_awg.Quantities326.temp_ts_min.ToLocalTime().ToShortTimeString() |
-                                Max: <b>@last_data_awg.Quantities326.temp_max</b> °C v
-                                @last_data_awg.Quantities326.temp_ts_max.ToLocalTime().ToShortTimeString()
-                            </p>
-                        </RadzenCard>
-                    </div>
-                </RadzenColumn>
-                <br />
-                <RadzenColumn>
-                    <div>
-                        <RadzenCard Style="width: 100%; margin: 0 auto; ">
-                            <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Teplota WeatherLink Live</RadzenText>
-                            <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
-                                <RadzenArcGaugeScale Step="20" Min="-20" Max="40" MinorStep="2" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
-                                    <RadzenArcGaugeScaleValue Value=last_data.Quantities243.temp_in ShowValue=true>
-                                        <Template Context="pointer">
-                                            <h6>
-                                                @pointer.Value <sup>°C</sup>
-                                            </h6>
-                                        </Template>
-                                    </RadzenArcGaugeScaleValue>
-                                </RadzenArcGaugeScale>
-                            </RadzenArcGauge>
-                            <p>
-                                Min: <b>@last_data_awg.Quantities243.temp_in_min</b> °C v
-                                @last_data_awg.Quantities243.temp_ts_min.ToLocalTime().ToShortTimeString() |
-                                Max: <b>@last_data_awg.Quantities243.temp_in_max</b> °C v
-                                @last_data_awg.Quantities243.temp_ts_max.ToLocalTime().ToShortTimeString()
-                            </p>
-                        </RadzenCard>
-                    </div>
+                    <RadzenCard>
+                        <figure class="highcharts-figure">
+                            <div id="graf1"></div>
+                        </figure>
+                    </RadzenCard>
                 </RadzenColumn>
             </RadzenRow>
-            <br />
-            <RadzenRow>
-                <RadzenColumn>
-                    <div>
-                        <RadzenCard Style="width: 100%; margin: 0 auto; ">
-                            <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Vlhkost AirLink</RadzenText>
-                            <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
-                                <RadzenArcGaugeScale Step="20" Min="-20" Max="40" MinorStep="2" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
-                                    <RadzenArcGaugeScaleValue Value=last_data.Quantities326.hum ShowValue=true>
-                                        <Template Context="pointer">
-                                            <h6>
-                                                @pointer.Value <sup>%</sup>
-                                            </h6>
-                                        </Template>
-                                    </RadzenArcGaugeScaleValue>
-                                </RadzenArcGaugeScale>
-                            </RadzenArcGauge>
-                            <p>
-                                Min: <b>@last_data_awg.Quantities326.hum_min</b> % v
-                                @last_data_awg.Quantities326.hum_ts_min.ToLocalTime().ToShortTimeString() |
-                                Max: <b>@last_data_awg.Quantities326.hum_max</b> % v
-                                @last_data_awg.Quantities326.hum_ts_max.ToLocalTime().ToShortTimeString()
-                            </p>
-                        </RadzenCard>
-                    </div>
-                </RadzenColumn>
-                <br />
-                <RadzenColumn>
-                    <div>
-                        <RadzenCard Style="width: 100%; margin: 0 auto; ">
-                            <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Vlhkost WeatherLink Live</RadzenText>
-                            <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
-                                <RadzenArcGaugeScale Step="2" Min="0" Max="10" MinorStep="1" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
-                                    <RadzenArcGaugeScaleValue Value=last_data.Quantities243.hum_in ShowValue=true>
-                                        <Template Context="pointer">
-                                            <h6>
-                                                @pointer.Value <sup>%</sup>
-                                            </h6>
-                                        </Template>
-                                    </RadzenArcGaugeScaleValue>
-                                </RadzenArcGaugeScale>
-                            </RadzenArcGauge>
-                            <p>
-                                Min: <b>@last_data_awg.Quantities243.hum_in_min</b> % v
-                                @last_data_awg.Quantities243.hum_ts_min.ToLocalTime().ToShortTimeString() |
-                                Max: <b>@last_data_awg.Quantities243.hum_in_max</b> % v
-                                @last_data_awg.Quantities243.hum_ts_max.ToLocalTime().ToShortTimeString()
-                            </p>
-                        </RadzenCard>
-                    </div>
-                </RadzenColumn>
-            </RadzenRow>
-            <br />
-            <RadzenRow>
-                <RadzenColumn>
-                    <div>
-                        <RadzenCard Style="width: 100%; margin: 0 auto; ">
-                            <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Rosný bod WeaherLink Live</RadzenText>
-                            <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
-                                <RadzenArcGaugeScale Step="150" Min="0" Max="1000" MinorStep="15" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
-                                    <RadzenArcGaugeScaleValue Value=last_data.Quantities243.dew_point_in ShowValue=true>
-                                        <Template Context="pointer">
-                                            <h6>
-                                                @pointer.Value <sup>°C</sup>
-                                            </h6>
-                                        </Template>
-                                    </RadzenArcGaugeScaleValue>
-                                </RadzenArcGaugeScale>
-                            </RadzenArcGauge>
-                            <p>
-                                Min: <b>@last_data_awg.Quantities243.dew_point_in_min</b> °C v
-                                @last_data_awg.Quantities243.dewpoint_in_ts_min.ToLocalTime().ToShortTimeString() |
-                                Max: <b>@last_data_awg.Quantities243.dew_point_in_max</b> °C v
-                                @last_data_awg.Quantities243.dewpoint_in_ts_max.ToLocalTime().ToShortTimeString()
-                            </p>
-                        </RadzenCard>
-                    </div>
-                </RadzenColumn>
-                <br />
-                <RadzenColumn>
-                    <div>
-                        <RadzenCard Style="width: 100%; margin: 0 auto; ">
-                            <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Tlak vzduchu na hladinu moře WLive</RadzenText>
-                            <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
-                                <RadzenArcGaugeScale Step="2" Min="0" Max="10" MinorStep="1" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
-                                    <RadzenArcGaugeScaleValue Value=last_data.Quantities242.bar_sea_level ShowValue=true>
-                                        <Template Context="pointer">
-                                            <h6>
-                                                @pointer.Value <sup>hPa</sup>
-                                            </h6>
-                                        </Template>
-                                    </RadzenArcGaugeScaleValue>
-                                </RadzenArcGaugeScale>
-                            </RadzenArcGauge>
-                            <p>
-                                Min: <b>@last_data_awg.Quantities242.bar_sea_level_min</b> hPa v
-                                @last_data_awg.Quantities242.barsea_ts_min.ToLocalTime().ToShortTimeString() |
-                                Max: <b>@last_data_awg.Quantities242.bar_sea_level_max</b> hPa v
-                                @last_data_awg.Quantities242.barsea_ts_max.ToLocalTime().ToShortTimeString()
-                            </p>
-                        </RadzenCard>
-                    </div>
-                </RadzenColumn>
-            </RadzenRow>
-            <br />
-            <RadzenRow>
-                <RadzenColumn>
-                    <div>
-                        <RadzenCard Style="width: 100%; margin: 0 auto; ">
-                            <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Rosný bod AirLink</RadzenText>
-                            <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
-                                <RadzenArcGaugeScale Step="20" Min="0" Max="100" MinorStep="2" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
-                                    <RadzenArcGaugeScaleValue Value=last_data.Quantities326.dew_point ShowValue=true>
-                                        <Template Context="pointer">
-                                            <h6>
-                                                @pointer.Value <sup>°C</sup>
-                                            </h6>
-                                        </Template>
-                                    </RadzenArcGaugeScaleValue>
-                                </RadzenArcGaugeScale>
-                            </RadzenArcGauge>
-                            <p>
-                                Min: <b>@last_data_awg.Quantities326.dew_point_min</b> °C v
-                                @last_data_awg.Quantities326.dewpoint_ts_min.ToLocalTime().ToShortTimeString() |
-                                Max: <b>@last_data_awg.Quantities326.dew_point_max</b> °C v
-                                @last_data_awg.Quantities326.dewpoint_ts_max.ToLocalTime().ToShortTimeString()
-                            </p>
-                        </RadzenCard>
-                    </div>
-                </RadzenColumn>
-                <br />
-                <RadzenColumn>
-                    <div>
-                        <RadzenCard Style="width: 100%; margin: 0 auto; ">
-                            <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Heat index WLive</RadzenText>
-                            <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
-                                <RadzenArcGaugeScale Step="2" Min="0" Max="10" MinorStep="1" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
-                                    <RadzenArcGaugeScaleValue Value=last_data.Quantities243.heat_index_in ShowValue=true>
-                                        <Template Context="pointer">
-                                            <h6>
-                                                @pointer.Value <sup>°C</sup>
-                                            </h6>
-                                        </Template>
-                                    </RadzenArcGaugeScaleValue>
-                                </RadzenArcGaugeScale>
-                            </RadzenArcGauge>
-                            <p>
-                                Min: <b>@last_data_awg.Quantities243.heat_index_in_min</b> °C v
-                                @last_data_awg.Quantities243.heatindex_in_ts_min.ToLocalTime().ToShortTimeString() |
-                                Max: <b>@last_data_awg.Quantities243.heat_index_in_max</b> °C v
-                                @last_data_awg.Quantities243.heatindex_in_ts_max.ToLocalTime().ToShortTimeString()
-                            </p>
-                        </RadzenCard>
-                    </div>
-                </RadzenColumn>
-            </RadzenRow>
-            <br />
-            <RadzenRow>
-                <RadzenColumn>
-                    <div>
-                        <RadzenCard Style="width: 100%; margin: 0 auto; ">
-                            <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Heat index AirLink</RadzenText>
-                            <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
-                                <RadzenArcGaugeScale Step="20" Min="0" Max="100" MinorStep="2" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
-                                    <RadzenArcGaugeScaleValue Value=last_data.Quantities326.heat_index ShowValue=true>
-                                        <Template Context="pointer">
-                                            <h6>
-                                                @pointer.Value <sup>°C</sup>
-                                            </h6>
-                                        </Template>
-                                    </RadzenArcGaugeScaleValue>
-                                </RadzenArcGaugeScale>
-                            </RadzenArcGauge>
-                            <p>
-                                Min: <b>@last_data_awg.Quantities326.heat_index_min</b> °C v
-                                @last_data_awg.Quantities326.heatindex_ts_min.ToLocalTime().ToShortTimeString() |
-                                Max: <b>@last_data_awg.Quantities326.heat_index_max</b> °C v
-                                @last_data_awg.Quantities326.heatindex_ts_max.ToLocalTime().ToShortTimeString()
-                            </p>
-                        </RadzenCard>
-                    </div>
-                </RadzenColumn>
-                <br />
-                <RadzenColumn>
-                    <div>
-                        <RadzenCard class="@color_description" Style="width: 100%; margin: 0 auto; ">
-                            <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H5">Index kvality ovzduší AQI AirLink</RadzenText>
-                            <RadzenArcGauge Style="width: 100%; height: 140px; margin-top: -20px;">
-                                <RadzenArcGaugeScale Step="2" Min="0" Max="10" MinorStep="1" Radius="1.5" TickPosition=0 Y="0.9" Margin="0">
-                                    <RadzenArcGaugeScaleValue Value=last_data.Quantities326.aqi_val ShowValue=true>
-                                        <Template Context="pointer">
-                                            <h6>
-                                                @pointer.Value <sup>(@translatedText_desc)</sup>
-                                            </h6>
-                                        </Template>
-                                    </RadzenArcGaugeScaleValue>
-                                </RadzenArcGaugeScale>
-                            </RadzenArcGauge>
-                            <p>
-                                Min: <b>@last_data_awg.Quantities326.aqi_val_min</b> (@translatedText_desc_min) v
-                                @last_data_awg.Quantities326.aqival_ts_min.ToLocalTime().ToShortTimeString() |
-                                Max: <b>@last_data_awg.Quantities326.aqi_val_max</b> (@translatedText_desc_max) v
-                                @last_data_awg.Quantities326.aqival_ts_max.ToLocalTime().ToShortTimeString()
-                            </p>
-                        </RadzenCard>
-                    </div>
-                </RadzenColumn>
-            </RadzenRow>
-            <br />
-        }
-        <RadzenRow>
-            <RadzenColumn>
-                <RadzenCard>
-                    <figure class="highcharts-figure">
-                        <div id="graf1"></div>
-                    </figure>
-                </RadzenCard>
-            </RadzenColumn>
-        </RadzenRow>
-    </ChildContent>
+        </ChildContent>
+        </RadzenCard>
 </RadzenContentContainer>
 
 

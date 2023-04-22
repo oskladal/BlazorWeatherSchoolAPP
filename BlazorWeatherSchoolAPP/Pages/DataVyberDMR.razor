@@ -41,9 +41,10 @@
             <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny WeatherLink Live:</RadzenText>
             @if (last_data != null)
             {
-                <RadzenDataGrid style="--rz-grid-header-background-color: #d5d8db;" AllowPaging="true" AllowSorting="true" class="table-my-volny" Data="@last_data" TItem="Quantities" AllowAlternatingRows="true">
+                <RadzenDataGrid style="--rz-grid-header-background-color: #d5d8db; height: 300px" AllowPaging="true" AllowSorting="true" class="table-my-volny"
+                                ColumnWidth="120px" Data="@last_data" TItem="Quantities" AllowAlternatingRows="true">
                     <Columns>
-                        <RadzenDataGridColumn TItem="Quantities" Property="SensorFirstTime" Title="Datum">
+                        <RadzenDataGridColumn Width="80px" TItem="Quantities" Property="SensorFirstTime" Title="Datum" Frozen="true">
                             <Template Context="data">
                                 <span title="@data.SensorFirstTime.ToLocalTime().ToString("dd/MM HH:mm")">@data.SensorFirstTime.ToLocalTime().ToString("HH:mm") </span>
                             </Template>
@@ -85,9 +86,10 @@
             <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny AirLink:</RadzenText>
             @if (last_data != null)
             {
-                <RadzenDataGrid style="--rz-grid-header-background-color: #d5d8db;" AllowPaging="true" AllowSorting="true" class="table-my-volny" Data="@last_data" TItem="Quantities" AllowAlternatingRows="true">
+                <RadzenDataGrid style="--rz-grid-header-background-color: #d5d8db; height: 300px" AllowPaging="true" AllowSorting="true"
+                                ColumnWidth="120px" class="table-my-volny" Data="@last_data" TItem="Quantities" AllowAlternatingRows="true">
                     <Columns>
-                        <RadzenDataGridColumn TItem="Quantities" Property="SensorFirstTime" Title="Datum">
+                        <RadzenDataGridColumn Width="80px" TItem="Quantities" Property="SensorFirstTime" Title="Datum" Frozen="true">
                             <Template Context="data">
                                 <span title="@data.SensorFirstTime.ToLocalTime().ToString("dd/MM HH:mm")">
                                     @data.SensorFirstTime.ToLocalTime().ToString("HH:mm")
@@ -166,9 +168,10 @@
             <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Venkovní veličiny:</RadzenText>
             @if (last_data != null)
             {
-                <RadzenDataGrid style="--rz-grid-header-background-color: #d5d8db;" class="table-my-volny" AllowPaging="true" AllowSorting="true" Data="@last_data" TItem="Quantities" AllowAlternatingRows="true">
+                <RadzenDataGrid style="--rz-grid-header-background-color: #d5d8db; height: 300px" class="table-my-volny"
+                                ColumnWidth="120px" AllowPaging="true" AllowSorting="true" Data="@last_data" TItem="Quantities" AllowAlternatingRows="true">
                     <Columns>
-                        <RadzenDataGridColumn TItem="Quantities" Property="SensorFirstTime" Title="Datum">
+                        <RadzenDataGridColumn Width="80px" TItem="Quantities" Property="SensorFirstTime" Title="Datum" Frozen="true">
                             <Template Context="data">
                                 <span title="@data.SensorFirstTime.ToLocalTime().ToString("dd/MM HH:mm")">@data.SensorFirstTime.ToLocalTime().ToString("HH:mm")</span>
                             </Template>
@@ -265,7 +268,7 @@
                 {
                     await LoadData();
                 });
-            }, null, 0, 60000);
+            }, null, 0, 300000);
         }
 
         public async Task LoadData()
@@ -282,7 +285,14 @@
             // Poslední záznam
             last_data = await dataDB.GetSensorsData(start1,end1);
 
-            Console.WriteLine("test");
+            if (last_data.Count == 0)
+            {
+                start = new DateTime(2023, 4, 1, 00, 00, 0).Date;
+                start1 = start.Value;
+                end1 = start1.AddDays(1);
+                last_data = await dataDB.GetSensorsData(start1, end1);
+            }
+
             StateHasChanged();
         }
         private MudDatePicker _picker;

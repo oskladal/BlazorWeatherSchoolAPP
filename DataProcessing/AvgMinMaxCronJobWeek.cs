@@ -31,7 +31,7 @@ namespace DataProcessing
         public override async Task DoWork(CancellationToken cancellationToken)
         {
             DateTime currentDate = DateTime.Today.AddDays(-1);
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 170; i++)
             {
 
                 //Definování formátu pro rozsah
@@ -131,6 +131,7 @@ namespace DataProcessing
                 solarrad_ts_min = denidata.OrderBy(x => x.Quantities46.solar_rad).First().Quantities46.ts,
                 solarrad_ts_max = denidata.OrderByDescending(x => x.Quantities46.solar_rad).First().Quantities46.ts,
                 rainfall_daily_mm = denidata.Select(x => x.Quantities46.rainfall_daily_mm).ToList().Last(),
+                //rainfall_daily_mm = SumData(denidata.Select(x => x.Quantities46.rainfall_last_15_min_mm).ToList()),
                 dew_point = denidata[denidata.Count - 1].Quantities46.dew_point,
                 dew_point_min = denidata.OrderBy(x => x.Quantities46.dew_point).First().Quantities46.dew_point,
                 dew_point_max = denidata.OrderByDescending(x => x.Quantities46.dew_point).First().Quantities46.dew_point,

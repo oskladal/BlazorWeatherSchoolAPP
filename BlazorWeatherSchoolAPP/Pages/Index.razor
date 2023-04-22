@@ -1,12 +1,12 @@
-﻿@page "/uvodnistrana"
-@layout MainLayout
+﻿@page "/"
+
 
 
 @using DBConnect.Models
 @inject WeatherDB dataDB
 
 <RadzenContentContainer Name="main">
-    <RadzenCard Style="width: 100%; " >
+    <RadzenCard Style="width: 100%; ">
         <ChildContent>
             <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H4">Úvodní stránka meteorologické aplikace VŠCHT</RadzenText>
             <p>
@@ -18,24 +18,29 @@
                 Pokud máte jakékoli dotazy nebo návrhy na vylepšení, neváhejte mě kontaktovat. Doufám, že tuto aplikaci oceníte stejně jako já.
             </p>
             <br />
-            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny:</RadzenText>
-            @if (last_data != null)
-            {
+        </ChildContent>
+    </RadzenCard>
+    <br />
+    @if (last_data != null)
+        {
+        <RadzenCard Style="width: 100%; ">
+            <ChildContent>
+                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny:</RadzenText>
                 <table class="table table-my-value">
                     <tr>
                         <td colspan="4" class="table-secondary bold-font">Teplota a vlhkost</td>
                     </tr>
                     <tbody class="table-group-divider ">
                         <tr>
-                            <td>Teplota vnitřní WeaherLinkLive</td>
+                            <td>Teplota vnitřní WLL</td>
                             <td>@last_data.Quantities243.temp_in °C</td>
-                            <td>Vlhkost vnitřní WeatherLinkLive</td>
+                            <td>Vlhkost vnitřní WLL</td>
                             <td>@last_data.Quantities243.hum_in %</td>
                         </tr>
                         <tr>
-                            <td>Rosný bod WeaherLinkLive</td>
+                            <td>Rosný bod WLL</td>
                             <td>@last_data.Quantities243.dew_point_in °C</td>
-                            <td>Heat index WeaherLinkLive</td>
+                            <td>Heat index WLL</td>
                             <td>@last_data.Quantities243.heat_index_in °C</td>
                         </tr>
                         <tr>
@@ -80,94 +85,102 @@
                         </tr>
                     </tbody>
                 </table>
-                <br>
-                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Venkovní veličiny:</RadzenText>
-                <table class="table table-my-value">
-                    <tr>
-                        <td colspan="4" class="table-secondary bold-font">Teplota a vlhkost</td>
-                    </tr>
-                    <tbody class="table-group-divider ">
+            </ChildContent>
+        </RadzenCard>
+        }
+        <br>
+        @if (last_data != null)
+        {
+            <RadzenCard Style="width: 100%; ">
+                <ChildContent>
+                    <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Venkovní veličiny:</RadzenText>
+                    <table class="table table-my-value">
                         <tr>
-                            <td>Teplota</td>
-                            <td>@last_data.Quantities46.temp °C</td>
-                            <td>Vlhkost</td>
-                            <td>@last_data.Quantities46.hum %</td>
+                            <td colspan="4" class="table-secondary bold-font">Teplota a vlhkost</td>
                         </tr>
+                        <tbody class="table-group-divider ">
+                            <tr>
+                                <td>Teplota</td>
+                                <td>@last_data.Quantities46.temp °C</td>
+                                <td>Vlhkost</td>
+                                <td>@last_data.Quantities46.hum %</td>
+                            </tr>
+                            <tr>
+                                <td>Rosný bod</td>
+                                <td>@last_data.Quantities46.dew_point °C</td>
+                                <td>Heat index</td>
+                                <td>@last_data.Quantities46.heat_index °C</td>
+                            </tr>
+                            <tr>
+                                <td>Chlad větru</td>
+                                <td>@last_data.Quantities46.wind_chill °C</td>
+                            </tr>
+                        </tbody>
                         <tr>
-                            <td>Rosný bod</td>
-                            <td>@last_data.Quantities46.dew_point °C</td>
-                            <td>Heat index</td>
-                            <td>@last_data.Quantities46.heat_index °C</td>
+                            <td colspan="4" class="table-secondary bold-font">Sluneční záření a UV index</td>
                         </tr>
+                        <tbody class="table-group-divider">
+                            <tr>
+                                <td>Intenzita slunečního záření</td>
+                                <td>@last_data.Quantities46.solar_rad W/m&sup2</td>
+                                <td>UV index</td>
+                                <td>@last_data.Quantities46.uv_index</td>
+                            </tr>
+                        </tbody>
                         <tr>
-                            <td>Chlad větru</td>
-                            <td>@last_data.Quantities46.wind_chill °C</td>
+                            <td colspan="4" class="table-secondary bold-font">Srážky</td>
                         </tr>
-                    </tbody>
-                    <tr>
-                        <td colspan="4" class="table-secondary bold-font">Sluneční záření a UV index</td>
-                    </tr>
-                    <tbody class="table-group-divider">
+                        <tbody class="table-group-divider">
+                            <tr>
+                                <td>Intenzita dešťových srážek</td>
+                                <td>@last_data.Quantities46.rain_rate_last_mm mm/hod</td>
+                                <td>Hodinnové dešťové srážky</td>
+                                <td>@last_data.Quantities46.rainfall_last_60_min_mm mm</td>
+                            </tr>
+                            <tr>
+                                <td>Denní dešťové srážky</td>
+                                <td>@last_data.Quantities46.rainfall_daily_mm mm</td>
+                                <td>Měsíční dešťové srážky</td>
+                                <td>@last_data.Quantities46.rainfall_monthly_mm mm</td>
+                            </tr>
+                            <tr>
+                                <td>Roční dešťové srážky</td>
+                                <td>@last_data.Quantities46.rainfall_year_mm mm</td>
+                            </tr>
+                        </tbody>
                         <tr>
-                            <td>Intenzita slunečního záření</td>
-                            <td>@last_data.Quantities46.solar_rad W/m&sup2</td>
-                            <td>UV index</td>
-                            <td>@last_data.Quantities46.uv_index</td>
+                            <td colspan="4" class="table-secondary bold-font">Vítr</td>
                         </tr>
-                    </tbody>
-                    <tr>
-                        <td colspan="4" class="table-secondary bold-font">Srážky</td>
-                    </tr>
-                    <tbody class="table-group-divider">
+                        <tbody class="table-group-divider">
+                            <tr>
+                                <td>Aktuální rychlost větru</td>
+                                <td>@last_data.Quantities46.wind_speed_last km/h</td>
+                                <td>Průměrná rychlost větru 10 min</td>
+                                <td>@last_data.Quantities46.wind_speed_avg_last_10_min km/h</td>
+                            </tr>
+                            <tr>
+                                <td>Aktuální směr větru</td>
+                                <td>@last_data.Quantities46.wind_dir_last °</td>
+                            </tr>
+                        </tbody>
                         <tr>
-                            <td>Intenzita dešťových srážek</td>
-                            <td>@last_data.Quantities46.rain_rate_last_mm mm/hod</td>
-                            <td>Hodinnové dešťové srážky</td>
-                            <td>@last_data.Quantities46.rainfall_last_60_min_mm mm</td>
+                            <td colspan="4" class="table-secondary bold-font">Půda</td>
                         </tr>
-                        <tr>
-                            <td>Denní dešťové srážky</td>
-                            <td>@last_data.Quantities46.rainfall_daily_mm mm</td>
-                            <td>Měsíční dešťové srážky</td>
-                            <td>@last_data.Quantities46.rainfall_monthly_mm mm</td>
-                        </tr>
-                        <tr>
-                            <td>Roční dešťové srážky</td>
-                            <td>@last_data.Quantities46.rainfall_year_mm mm</td>
-                        </tr>
-                    </tbody>
-                    <tr>
-                        <td colspan="4" class="table-secondary bold-font">Vítr</td>
-                    </tr>
-                    <tbody class="table-group-divider">
-                        <tr>
-                            <td>Aktuální rychlost větru</td>
-                            <td>@last_data.Quantities46.wind_speed_last km/h</td>
-                            <td>Průměrná rychlost větru 10 min</td>
-                            <td>@last_data.Quantities46.wind_speed_avg_last_10_min km/h</td>
-                        </tr>
-                        <tr>
-                            <td>Aktuální směr větru</td>
-                            <td>@last_data.Quantities46.wind_dir_last °</td>
-                        </tr>
-                    </tbody>
-                    <tr>
-                        <td colspan="4" class="table-secondary bold-font">Půda</td>
-                    </tr>
-                    <tbody class="table-group-divider">
-                        <tr>
-                            <td>Teplota půdy</td>
-                            <td>@last_data.Quantities56.temp_1 °C</td>
-                            <td>Vlhkost půdy</td>
-                            <td>@last_data.Quantities56.moist_soil_1 %</td>
-                        </tr>
-                    </tbody>
-                </table>
+                        <tbody class="table-group-divider">
+                            <tr>
+                                <td>Teplota půdy</td>
+                                <td>@last_data.Quantities56.temp_1 °C</td>
+                                <td>Vlhkost půdy</td>
+                                <td>@last_data.Quantities56.moist_soil_1 %</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
+                    
+                </ChildContent>
+            </RadzenCard>
             }
-        </ChildContent>
-    </RadzenCard>
-</RadzenContentContainer>
+        </RadzenContentContainer>
 
 @code {
     public Quantities last_data;
@@ -189,7 +202,7 @@
             {
                 await LoadData();
             });
-        }, null, 0, 60000);
+        }, null, 0, 300000);
     }
 
     public async Task LoadData()

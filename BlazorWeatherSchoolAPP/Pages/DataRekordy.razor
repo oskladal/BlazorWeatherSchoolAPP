@@ -30,245 +30,268 @@
                     }
                 </RadzenColumn>
             </RadzenRow>
-            <br />
-            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny:</RadzenText>
-            @if (last_data_awg != null)
-            {
-                <table class="table table-my-value record">
-                    <tr>
-                        <td colspan="1" class="table-secondary bold-font">Teplota a vlhkost</td>
-                        <td colspan="1" class="table-secondary">Průměr</td>
-                        <td colspan="1" class="table-secondary">Max</td>
-                        <td colspan="1" class="table-secondary">Min</td>
-                        <td colspan="1" class="table-secondary"></td>
-                        <td colspan="1" class="table-secondary">Průměr</td>
-                        <td colspan="1" class="table-secondary">Max</td>
-                        <td colspan="1" class="table-secondary">Min</td>
-                    </tr>
-                    <tbody class="table-group-divider ">
-                        <tr>
-                            <td>Teplota vnitřní WeaherLinkLive</td>
-                            <td>@last_data_awg.Quantities243.temp_in °C</td>
-                            <td>@last_data_awg.Quantities243.temp_in_max °C</td>
-                            <td>@last_data_awg.Quantities243.temp_in_min °C</td>
-                            <td>Vlhkost vnitřní WeatherLinkLive</td>
-                            <td>@last_data_awg.Quantities243.hum_in %</td>
-                            <td>@last_data_awg.Quantities243.hum_in_max %</td>
-                            <td>@last_data_awg.Quantities243.hum_in_min %</td>
-                        </tr>
-                        <tr>
-                            <td>Rosný bod WeaherLinkLive</td>
-                            <td>@last_data_awg.Quantities243.dew_point_in °C</td>
-                            <td>@last_data_awg.Quantities243.dew_point_in_max °C</td>
-                            <td>@last_data_awg.Quantities243.dew_point_in_min °C</td>
-                            <td>Heat index WeaherLinkLive</td>
-                            <td>@last_data_awg.Quantities243.heat_index_in °C</td>
-                            <td>@last_data_awg.Quantities243.heat_index_in_max °C</td>
-                            <td>@last_data_awg.Quantities243.heat_index_in_min °C</td>
-                        </tr>
-                        <tr>
-                            <td>Teplota vnitřní AirLink</td>
-                            <td>@last_data_awg.Quantities326.temp °C</td>
-                            <td>@last_data_awg.Quantities326.temp_max °C</td>
-                            <td>@last_data_awg.Quantities326.temp_min °C</td>
-                            <td>Vlhkost vnitřní AirLink</td>
-                            <td>@last_data_awg.Quantities326.hum %</td>
-                            <td>@last_data_awg.Quantities326.hum_max %</td>
-                            <td>@last_data_awg.Quantities326.hum_min %</td>
-                        </tr>
-                        <tr>
-                            <td>Rosný bod AirLink</td>
-                            <td>@last_data_awg.Quantities326.dew_point °C</td>
-                            <td>@last_data_awg.Quantities326.dew_point_max °C</td>
-                            <td>@last_data_awg.Quantities326.dew_point_min °C</td>
-                            <td>Heat index Airlink</td>
-                            <td>@last_data_awg.Quantities326.heat_index °C</td>
-                            <td>@last_data_awg.Quantities326.heat_index_max °C</td>
-                            <td>@last_data_awg.Quantities326.heat_index_min °C</td>
-                        </tr>
-
-                    </tbody>
-                    <tr>
-                        <td colspan="1" class="table-secondary bold-font">Tlak</td>
-                        <td colspan="1" class="table-secondary">Průměr</td>
-                        <td colspan="1" class="table-secondary">Max</td>
-                        <td colspan="1" class="table-secondary">Min</td>
-                        <td colspan="4" class="table-secondary"></td>
-
-                    </tr>
-                    <tbody class="table-group-divider">
-                        <tr>
-                            <td>Tlak na hladině moře</td>
-                            <td>@last_data_awg.Quantities242.bar_sea_level hPa</td>
-                            <td>@last_data_awg.Quantities242.bar_sea_level_max hPa</td>
-                            <td>@last_data_awg.Quantities242.bar_sea_level_min hPa</td>
-                        </tr>
-                    </tbody>
-                    <tr>
-                        <td colspan="1" class="table-secondary bold-font">Kvalita ovzduší</td>
-                        <td colspan="1" class="table-secondary">Průměr</td>
-                        <td colspan="1" class="table-secondary">Max</td>
-                        <td colspan="1" class="table-secondary">Min</td>
-                        <td colspan="1" class="table-secondary"></td>
-                        <td colspan="1" class="table-secondary">Průměr</td>
-                        <td colspan="1" class="table-secondary">Max</td>
-                        <td colspan="1" class="table-secondary">Min</td>
-                    </tr>
-                    <tbody class="table-group-divider">
-                        <tr>
-                            <td>PM1 AirLink</td>
-                            <td>@last_data_awg.Quantities326.pm_1 μg/m&sup3</td>
-                            <td>@last_data_awg.Quantities326.pm_1_max μg/m&sup3</td>
-                            <td>@last_data_awg.Quantities326.pm_1_min μg/m&sup3</td>
-                            <td>PM2,5 AirLink</td>
-                            <td>@last_data_awg.Quantities326.pm_2p5 μg/m&sup3</td>
-                            <td>@last_data_awg.Quantities326.pm_2p5_max μg/m&sup3</td>
-                            <td>@last_data_awg.Quantities326.pm_2p5_min μg/m&sup3</td>
-                        </tr>
-                        <tr>
-                            <td>PM10 AirLink</td>
-                            <td>@last_data_awg.Quantities326.pm_10 μg/m&sup3</td>
-                            <td>@last_data_awg.Quantities326.pm_10_max μg/m&sup3</td>
-                            <td>@last_data_awg.Quantities326.pm_10_min μg/m&sup3</td>
-                            <td>Index kvality ovzduší AQI AirLink</td>
-                            <td class="@translatedText_desc[1]">@last_data_awg.Quantities326.aqi_val (@translatedText_desc[0])</td>
-                            <td class="@translatedText_desc_max[1]">@last_data_awg.Quantities326.aqi_val_max (@translatedText_desc_max[0])</td>
-                            <td class="@translatedText_desc_min[1]">@last_data_awg.Quantities326.aqi_val_min (@translatedText_desc_min[0])</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <br>
-                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Venkovní veličiny:</RadzenText>
-                <table class="table table-my-value record">
-                    <tr>
-                        <td colspan="1" class="table-secondary bold-font">Teplota a vlhkost</td>
-                        <td colspan="1" class="table-secondary">Průměr</td>
-                        <td colspan="1" class="table-secondary">Max</td>
-                        <td colspan="1" class="table-secondary">Min</td>
-                        <td colspan="1" class="table-secondary"></td>
-                        <td colspan="1" class="table-secondary">Průměr</td>
-                        <td colspan="1" class="table-secondary">Max</td>
-                        <td colspan="1" class="table-secondary">Min</td>
-                    </tr>
-                    <tbody class="table-group-divider ">
-                        <tr>
-                            <td>Teplota</td>
-                            <td>@last_data_awg.Quantities46.temp °C</td>
-                            <td>@last_data_awg.Quantities46.temp_max °C</td>
-                            <td>@last_data_awg.Quantities46.temp_min °C</td>
-                            <td>Vlhkost</td>
-                            <td>@last_data_awg.Quantities46.hum %</td>
-                            <td>@last_data_awg.Quantities46.hum_max %</td>
-                            <td>@last_data_awg.Quantities46.hum_min %</td>
-                        </tr>
-                        <tr>
-                            <td>Rosný bod</td>
-                            <td>@last_data_awg.Quantities46.dew_point °C</td>
-                            <td>@last_data_awg.Quantities46.dew_point_max °C</td>
-                            <td>@last_data_awg.Quantities46.dew_point_min °C</td>
-                            <td>Heat index</td>
-                            <td>@last_data_awg.Quantities46.heat_index °C</td>
-                            <td>@last_data_awg.Quantities46.heat_index_max °C</td>
-                            <td>@last_data_awg.Quantities46.heat_index_min °C</td>
-                        </tr>
-                        <tr>
-                            <td>Chlad větru</td>
-                            <td>@last_data_awg.Quantities46.wind_chill °C</td>
-                            <td>@last_data_awg.Quantities46.wind_chill_max °C</td>
-                            <td>@last_data_awg.Quantities46.wind_chill_min °C</td>
-                        </tr>
-                    </tbody>
-                    <tr>
-                        <td colspan="1" class="table-secondary bold-font">Sluneční záření a UV index</td>
-                        <td colspan="1" class="table-secondary">Průměr</td>
-                        <td colspan="1" class="table-secondary">Max</td>
-                        <td colspan="1" class="table-secondary">Min</td>
-                        <td colspan="1" class="table-secondary"></td>
-                        <td colspan="1" class="table-secondary">Průměr</td>
-                        <td colspan="1" class="table-secondary">Max</td>
-                        <td colspan="1" class="table-secondary">Min</td>
-                    </tr>
-                    <tbody class="table-group-divider">
-                        <tr>
-                            <td>Intenzita slunečního záření</td>
-                            <td>@last_data_awg.Quantities46.solar_rad W/m&sup2</td>
-                            <td>@last_data_awg.Quantities46.solar_rad_max W/m&sup2</td>
-                            <td>@last_data_awg.Quantities46.solar_rad_min W/m&sup2</td>
-                            <td>UV index</td>
-                            <td>@last_data_awg.Quantities46.uv_index</td>
-                            <td>@last_data_awg.Quantities46.uv_index_max</td>
-                            <td>@last_data_awg.Quantities46.uv_index_min</td>
-                        </tr>
-                    </tbody>
-                    <tr>
-                        <td colspan="1" class="table-secondary bold-font">Srážky</td>
-                        <td colspan="1" class="table-secondary">Průměr</td>
-                        <td colspan="1" class="table-secondary">Max</td>
-                        <td colspan="1" class="table-secondary">Min</td>
-                        <td colspan="1" class="table-secondary"></td>
-                        <td colspan="1" class="table-secondary">Průměr</td>
-                        <td colspan="2" class="table-secondary"></td>
-                    </tr>
-                    <tbody class="table-group-divider">
-                        <tr>
-                            <td>Intenzita dešťových srážek</td>
-                            <td>@last_data_awg.Quantities46.rain_rate_last_mm mm/hod</td>
-                            <td>@last_data_awg.Quantities46.rain_rate_last_mm_max mm/hod</td>
-                            <td>@last_data_awg.Quantities46.rain_rate_last_mm_min mm/hod</td>
-                            <td>Průměrný úhrn srážek</td>
-                            <td>@last_data_awg.Quantities46.rainfall_daily_mm mm</td>
-                        </tr>
-                    </tbody>
-                    <tr>
-                        <td colspan="1" class="table-secondary bold-font">Vítr</td>
-                        <td colspan="1" class="table-secondary">Průměr</td>
-                        <td colspan="1" class="table-secondary">Max</td>
-                        <td colspan="1" class="table-secondary">Min</td>
-                        <td colspan="1" class="table-secondary"></td>
-                        <td colspan="1" class="table-secondary">Průměr</td>
-                        <td colspan="2" class="table-secondary"></td>
-                    </tr>
-                    <tbody class="table-group-divider">
-                        <tr>
-                            <td>Rychlost větru</td>
-                            <td>@last_data_awg.Quantities46.wind_speed_avg_last_10_min km/h</td>
-                            <td>@last_data_awg.Quantities46.wind_speed_last_max km/h</td>
-                            <td>@last_data_awg.Quantities46.wind_speed_last_min km/h</td>
-                            <td>Směr větru</td>
-                            <td>@last_data_awg.Quantities46.wind_dir_last °</td>
-                        </tr>
-                    </tbody>
-                    @if (last_data_awg.Quantities56 != null)
-                    {
-                        <tr>
-                            <td colspan="1" class="table-secondary bold-font">Půda</td>
-                            <td colspan="1" class="table-secondary">Průměr</td>
-                            <td colspan="1" class="table-secondary">Max</td>
-                            <td colspan="1" class="table-secondary">Min</td>
-                            <td colspan="1" class="table-secondary"></td>
-                            <td colspan="1" class="table-secondary">Průměr</td>
-                            <td colspan="1" class="table-secondary">Max</td>
-                            <td colspan="1" class="table-secondary">Min</td>
-                        </tr>
-                        <tbody class="table-group-divider">
-                            <tr>
-                                <td>Teplota půdy</td>
-                                <td>@last_data_awg.Quantities56.temp_1 °C</td>
-                                <td>@last_data_awg.Quantities56.temp_1_max °C</td>
-                                <td>@last_data_awg.Quantities56.temp_1_min °C</td>
-                                <td>Vlhkost půdy</td>
-                                <td>@last_data_awg.Quantities56.moist_soil_1 %</td>
-                                <td>@last_data_awg.Quantities56.moist_soil_1_max %</td>
-                                <td>@last_data_awg.Quantities56.moist_soil_1_min %</td>
-                            </tr>
-                        </tbody>
-                    }
-                </table>
-
-            }
         </ChildContent>
     </RadzenCard>
-</RadzenContentContainer>
+    <br />
+    @if (last_data_awg != null)
+    {
+        <RadzenCard Style="width: 100%;  ">
+            <ChildContent>
+                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny:</RadzenText>
+                <RadzenRow>
+                    <RadzenColumn Style="width: 100%; overflow-x:auto ">
+
+
+
+
+                        <table class="table table-my-value record">
+                            <tr>
+                                <td colspan="1" class="table-secondary bold-font">Teplota a vlhkost</td>
+                                <td colspan="1" class="table-secondary">Průměr</td>
+                                <td colspan="1" class="table-secondary">Max</td>
+                                <td colspan="1" class="table-secondary">Min</td>
+                                <td colspan="1" class="table-secondary"></td>
+                                <td colspan="1" class="table-secondary">Průměr</td>
+                                <td colspan="1" class="table-secondary">Max</td>
+                                <td colspan="1" class="table-secondary">Min</td>
+                            </tr>
+                            <tbody class="table-group-divider ">
+                                <tr>
+                                    <td>Teplota vnitřní WLL</td>
+                                    <td>@last_data_awg.Quantities243.temp_in °C</td>
+                                    <td>@last_data_awg.Quantities243.temp_in_max °C</td>
+                                    <td>@last_data_awg.Quantities243.temp_in_min °C</td>
+                                    <td>Vlhkost vnitřní WLL</td>
+                                    <td>@last_data_awg.Quantities243.hum_in %</td>
+                                    <td>@last_data_awg.Quantities243.hum_in_max %</td>
+                                    <td>@last_data_awg.Quantities243.hum_in_min %</td>
+                                </tr>
+                                <tr>
+                                    <td>Rosný bod WLL</td>
+                                    <td>@last_data_awg.Quantities243.dew_point_in °C</td>
+                                    <td>@last_data_awg.Quantities243.dew_point_in_max °C</td>
+                                    <td>@last_data_awg.Quantities243.dew_point_in_min °C</td>
+                                    <td>Heat index WLL</td>
+                                    <td>@last_data_awg.Quantities243.heat_index_in °C</td>
+                                    <td>@last_data_awg.Quantities243.heat_index_in_max °C</td>
+                                    <td>@last_data_awg.Quantities243.heat_index_in_min °C</td>
+                                </tr>
+                                <tr>
+                                    <td>Teplota vnitřní AirLink</td>
+                                    <td>@last_data_awg.Quantities326.temp °C</td>
+                                    <td>@last_data_awg.Quantities326.temp_max °C</td>
+                                    <td>@last_data_awg.Quantities326.temp_min °C</td>
+                                    <td>Vlhkost vnitřní AirLink</td>
+                                    <td>@last_data_awg.Quantities326.hum %</td>
+                                    <td>@last_data_awg.Quantities326.hum_max %</td>
+                                    <td>@last_data_awg.Quantities326.hum_min %</td>
+                                </tr>
+                                <tr>
+                                    <td>Rosný bod AirLink</td>
+                                    <td>@last_data_awg.Quantities326.dew_point °C</td>
+                                    <td>@last_data_awg.Quantities326.dew_point_max °C</td>
+                                    <td>@last_data_awg.Quantities326.dew_point_min °C</td>
+                                    <td>Heat index Airlink</td>
+                                    <td>@last_data_awg.Quantities326.heat_index °C</td>
+                                    <td>@last_data_awg.Quantities326.heat_index_max °C</td>
+                                    <td>@last_data_awg.Quantities326.heat_index_min °C</td>
+                                </tr>
+
+                            </tbody>
+                            <tr>
+                                <td colspan="1" class="table-secondary bold-font">Tlak</td>
+                                <td colspan="1" class="table-secondary">Průměr</td>
+                                <td colspan="1" class="table-secondary">Max</td>
+                                <td colspan="1" class="table-secondary">Min</td>
+                                <td colspan="4" class="table-secondary"></td>
+
+                            </tr>
+                            <tbody class="table-group-divider">
+                                <tr>
+                                    <td>Tlak na hladině moře</td>
+                                    <td>@last_data_awg.Quantities242.bar_sea_level hPa</td>
+                                    <td>@last_data_awg.Quantities242.bar_sea_level_max hPa</td>
+                                    <td>@last_data_awg.Quantities242.bar_sea_level_min hPa</td>
+                                </tr>
+                            </tbody>
+                            <tr>
+                                <td colspan="1" class="table-secondary bold-font">Kvalita ovzduší</td>
+                                <td colspan="1" class="table-secondary">Průměr</td>
+                                <td colspan="1" class="table-secondary">Max</td>
+                                <td colspan="1" class="table-secondary">Min</td>
+                                <td colspan="1" class="table-secondary"></td>
+                                <td colspan="1" class="table-secondary">Průměr</td>
+                                <td colspan="1" class="table-secondary">Max</td>
+                                <td colspan="1" class="table-secondary">Min</td>
+                            </tr>
+                            <tbody class="table-group-divider">
+                                <tr>
+                                    <td>PM1 AirLink</td>
+                                    <td>@last_data_awg.Quantities326.pm_1 μg/m&sup3</td>
+                                    <td>@last_data_awg.Quantities326.pm_1_max μg/m&sup3</td>
+                                    <td>@last_data_awg.Quantities326.pm_1_min μg/m&sup3</td>
+                                    <td>PM2,5 AirLink</td>
+                                    <td>@last_data_awg.Quantities326.pm_2p5 μg/m&sup3</td>
+                                    <td>@last_data_awg.Quantities326.pm_2p5_max μg/m&sup3</td>
+                                    <td>@last_data_awg.Quantities326.pm_2p5_min μg/m&sup3</td>
+                                </tr>
+                                <tr>
+                                    <td>PM10 AirLink</td>
+                                    <td>@last_data_awg.Quantities326.pm_10 μg/m&sup3</td>
+                                    <td>@last_data_awg.Quantities326.pm_10_max μg/m&sup3</td>
+                                    <td>@last_data_awg.Quantities326.pm_10_min μg/m&sup3</td>
+                                    <td>Index kvality ovzduší AQI AirLink</td>
+                                    <td class="@translatedText_desc[1]">@last_data_awg.Quantities326.aqi_val (@translatedText_desc[0])</td>
+                                    <td class="@translatedText_desc_max[1]">@last_data_awg.Quantities326.aqi_val_max (@translatedText_desc_max[0])</td>
+                                    <td class="@translatedText_desc_min[1]">@last_data_awg.Quantities326.aqi_val_min (@translatedText_desc_min[0])</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </RadzenColumn>
+                </RadzenRow>
+            </ChildContent>
+        </RadzenCard>
+    }
+    @if (last_data_awg != null)
+    {
+        <br>
+        <RadzenCard Style="width: 100%; ">
+            <ChildContent>
+                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Venkovní veličiny:</RadzenText>
+                <RadzenRow>
+                    <RadzenColumn Style="width: 100%; overflow-x:auto ">
+
+                        <table class="table table-my-value record">
+                            <tr>
+                                <td colspan="1" class="table-secondary bold-font">Teplota a vlhkost</td>
+                                <td colspan="1" class="table-secondary">Průměr</td>
+                                <td colspan="1" class="table-secondary">Max</td>
+                                <td colspan="1" class="table-secondary">Min</td>
+                                <td colspan="1" class="table-secondary"></td>
+                                <td colspan="1" class="table-secondary">Průměr</td>
+                                <td colspan="1" class="table-secondary">Max</td>
+                                <td colspan="1" class="table-secondary">Min</td>
+                            </tr>
+                            <tbody class="table-group-divider ">
+                                <tr>
+                                    <td>Teplota</td>
+                                    <td>@last_data_awg.Quantities46.temp °C</td>
+                                    <td>@last_data_awg.Quantities46.temp_max °C</td>
+                                    <td>@last_data_awg.Quantities46.temp_min °C</td>
+                                    <td>Vlhkost</td>
+                                    <td>@last_data_awg.Quantities46.hum %</td>
+                                    <td>@last_data_awg.Quantities46.hum_max %</td>
+                                    <td>@last_data_awg.Quantities46.hum_min %</td>
+                                </tr>
+                                <tr>
+                                    <td>Rosný bod</td>
+                                    <td>@last_data_awg.Quantities46.dew_point °C</td>
+                                    <td>@last_data_awg.Quantities46.dew_point_max °C</td>
+                                    <td>@last_data_awg.Quantities46.dew_point_min °C</td>
+                                    <td>Heat index</td>
+                                    <td>@last_data_awg.Quantities46.heat_index °C</td>
+                                    <td>@last_data_awg.Quantities46.heat_index_max °C</td>
+                                    <td>@last_data_awg.Quantities46.heat_index_min °C</td>
+                                </tr>
+                                <tr>
+                                    <td>Chlad větru</td>
+                                    <td>@last_data_awg.Quantities46.wind_chill °C</td>
+                                    <td>@last_data_awg.Quantities46.wind_chill_max °C</td>
+                                    <td>@last_data_awg.Quantities46.wind_chill_min °C</td>
+                                </tr>
+                            </tbody>
+                            <tr>
+                                <td colspan="1" class="table-secondary bold-font">Sluneční záření a UV index</td>
+                                <td colspan="1" class="table-secondary">Průměr</td>
+                                <td colspan="1" class="table-secondary">Max</td>
+                                <td colspan="1" class="table-secondary">Min</td>
+                                <td colspan="1" class="table-secondary"></td>
+                                <td colspan="1" class="table-secondary">Průměr</td>
+                                <td colspan="1" class="table-secondary">Max</td>
+                                <td colspan="1" class="table-secondary">Min</td>
+                            </tr>
+                            <tbody class="table-group-divider">
+                                <tr>
+                                    <td>Intenzita slunečního záření</td>
+                                    <td>@last_data_awg.Quantities46.solar_rad W/m&sup2</td>
+                                    <td>@last_data_awg.Quantities46.solar_rad_max W/m&sup2</td>
+                                    <td>@last_data_awg.Quantities46.solar_rad_min W/m&sup2</td>
+                                    <td>UV index</td>
+                                    <td>@last_data_awg.Quantities46.uv_index</td>
+                                    <td>@last_data_awg.Quantities46.uv_index_max</td>
+                                    <td>@last_data_awg.Quantities46.uv_index_min</td>
+                                </tr>
+                            </tbody>
+                            <tr>
+                                <td colspan="1" class="table-secondary bold-font">Srážky</td>
+                                <td colspan="1" class="table-secondary">Průměr</td>
+                                <td colspan="1" class="table-secondary">Max</td>
+                                <td colspan="1" class="table-secondary">Min</td>
+                                <td colspan="1" class="table-secondary"></td>
+                                <td colspan="1" class="table-secondary">Průměr</td>
+                                <td colspan="2" class="table-secondary"></td>
+                            </tr>
+                            <tbody class="table-group-divider">
+                                <tr>
+                                    <td>Intenzita dešťových srážek</td>
+                                    <td>@last_data_awg.Quantities46.rain_rate_last_mm mm/hod</td>
+                                    <td>@last_data_awg.Quantities46.rain_rate_last_mm_max mm/hod</td>
+                                    <td>@last_data_awg.Quantities46.rain_rate_last_mm_min mm/hod</td>
+                                    <td>Průměrný úhrn srážek</td>
+                                    <td>@last_data_awg.Quantities46.rainfall_daily_mm mm</td>
+                                </tr>
+                            </tbody>
+                            <tr>
+                                <td colspan="1" class="table-secondary bold-font">Vítr</td>
+                                <td colspan="1" class="table-secondary">Průměr</td>
+                                <td colspan="1" class="table-secondary">Max</td>
+                                <td colspan="1" class="table-secondary">Min</td>
+                                <td colspan="1" class="table-secondary"></td>
+                                <td colspan="1" class="table-secondary">Průměr</td>
+                                <td colspan="2" class="table-secondary"></td>
+                            </tr>
+                            <tbody class="table-group-divider">
+                                <tr>
+                                    <td>Rychlost větru</td>
+                                    <td>@last_data_awg.Quantities46.wind_speed_avg_last_10_min km/h</td>
+                                    <td>@last_data_awg.Quantities46.wind_speed_last_max km/h</td>
+                                    <td>@last_data_awg.Quantities46.wind_speed_last_min km/h</td>
+                                    <td>Směr větru</td>
+                                    <td>@last_data_awg.Quantities46.wind_dir_last °</td>
+                                </tr>
+                            </tbody>
+                            @if (last_data_awg.Quantities56 != null)
+                            {
+                                <tr>
+                                    <td colspan="1" class="table-secondary bold-font">Půda</td>
+                                    <td colspan="1" class="table-secondary">Průměr</td>
+                                    <td colspan="1" class="table-secondary">Max</td>
+                                    <td colspan="1" class="table-secondary">Min</td>
+                                    <td colspan="1" class="table-secondary"></td>
+                                    <td colspan="1" class="table-secondary">Průměr</td>
+                                    <td colspan="1" class="table-secondary">Max</td>
+                                    <td colspan="1" class="table-secondary">Min</td>
+                                </tr>
+                                <tbody class="table-group-divider">
+                                    <tr>
+                                        <td>Teplota půdy</td>
+                                        <td>@last_data_awg.Quantities56.temp_1 °C</td>
+                                        <td>@last_data_awg.Quantities56.temp_1_max °C</td>
+                                        <td>@last_data_awg.Quantities56.temp_1_min °C</td>
+                                        <td>Vlhkost půdy</td>
+                                        <td>@last_data_awg.Quantities56.moist_soil_1 %</td>
+                                        <td>@last_data_awg.Quantities56.moist_soil_1_max %</td>
+                                        <td>@last_data_awg.Quantities56.moist_soil_1_min %</td>
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                    </RadzenColumn>
+                </RadzenRow>
+            </ChildContent>
+        </RadzenCard>
+        }
+    </RadzenContentContainer>
 
 @code {
     public Quantities last_data_awg;
@@ -296,7 +319,7 @@
             {
                 await LoadData();
             });
-        }, null, 0, 60000);
+        }, null, 0, 300000);
     }
 
     public async Task LoadData()
@@ -312,7 +335,14 @@
         // Poslední záznam
         last_data_awg = await dataDB.GetDataTableHistoryAwg(start1);
 
-        if(last_data_awg != null) {
+        if (last_data_awg == null)
+        {
+            start = new DateTime(2023, 4, 1, 12, 10, 0);
+            start1 = start.Value;
+            last_data_awg = await dataDB.GetDataTableHistoryAwg(start1);
+        }
+
+        if (last_data_awg != null) {
             // překlad
             translatedText_desc = TranslateTextWithNumber();
             translatedText_desc_min = TranslateText(last_data_awg.Quantities326.aqi_desc_min);

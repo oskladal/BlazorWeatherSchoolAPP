@@ -1,8 +1,174 @@
 ﻿@page "/grafvenkovni"
 @layout MainLayout
-<h3>Component1</h3>
+
+@using DBConnect.Models
+@inject WeatherDB dataDB
+
+@inject IJSRuntime JS
+@using BlazorWeatherSchoolAPP.Source;
+
+
+<RadzenContentContainer Name="main">
+    <RadzenCard Style="width: 100%; ">
+        <ChildContent>
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H4">Venkovní hodnoty naměřených veličin</RadzenText>
+            <p>
+                Grafy zobrazují hodnoty maxima, minima a průměru naměřených venkovních veličin. V základním nastavení zobrazují hodnoty jednoho týdne
+                ale rozsah výberu je možné si nastavit pomocí kalendáře.
+            </p>
+            <br />
+            <RadzenRow>
+                <RadzenColumn SizeXS="12" SizeSM="12" SizeMD="6" SizeLG="6" SizeXL="6" Style="width: 100%; overflow-x:auto ">
+                    <div class="rz-p-4 rz-text-align-center">
+                        <RadzenSelectBar @bind-Value=@Velicina class="rz-background-color-base-100 rz-border-black rz-border-radius-1" Size="ButtonSize.Small">
+                            <Items>
+                                <RadzenSelectBarItem Text="Teplota vzduchu" Value="1" />
+                                <RadzenSelectBarItem Text="Rychlost větru" Value="2" />
+                                <RadzenSelectBarItem Text="Vlhkost vzduchu" Value="3" />
+                                <RadzenSelectBarItem Text="Dešťové srážky" Value="4" />
+                                <RadzenSelectBarItem Text="Solární data" Value="5" />
+                            </Items>
+                        </RadzenSelectBar>
+                    </div>
+                </RadzenColumn>
+                <RadzenColumn>
+                    <div class="rz-text-align-center">
+                        <MudDateRangePicker @ref="_picker" Label="Vyberte rozsah..." @bind-DateRange="@RozsahDat" AutoClose="@_autoClose" Color="MudBlazor.Color.Success" MinDate="MinMaxDate.Min" MaxDate="MinMaxDate.Max">
+                            <PickerActions>
+                                <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Vymazat</MudButton>
+                                <MudButton OnClick="@(() => _picker.Close(false))">Zrušit</MudButton>
+                                <MudButton Color="MudBlazor.Color.Primary" OnClick="@(() => _picker.Close())">Potvrdit</MudButton>
+                            </PickerActions>
+                        </MudDateRangePicker>
+                        <MudSwitch @bind-Checked="@_autoClose" Color="MudBlazor.Color.Secondary">Automatické uzavření okna</MudSwitch>
+                    </div>
+                </RadzenColumn>
+            </RadzenRow>
+        </ChildContent>
+    </RadzenCard>
+    <br />
+    <RadzenCard Style="width: 100%; ">
+        <ChildContent>
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Venkovní veličiny:</RadzenText>
+            <RadzenRow>
+                <RadzenColumn SizeXS="12" SizeSM="12" SizeMD="6" SizeLG="6" SizeXL="6">
+                    <RadzenCard>
+                        <figure class="highcharts-figure">
+                            <div id="chart1"></div>
+                        </figure>
+                    </RadzenCard>
+                </RadzenColumn>
+                <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="6" SizeLG="6" SizeXL="6">
+                    <RadzenCard>
+                        <figure class="highcharts-figure">
+                            <div id=chart2></div>
+                        </figure>
+                    </RadzenCard>
+                </RadzenColumn>
+            </RadzenRow>
+        </ChildContent>
+    </RadzenCard>
+
+</RadzenContentContainer>
+
 
 @code {
+    public List<Quantities> last_data_awg;
+    public List<Quantities> last_data;
+
+    private DateRange? rozsahdat;
+    public DateRange? RozsahDat { get { return rozsahdat; } set { rozsahdat = value; LoadData(); } }
+
+    public DateRange? tyden = new DateRange(DateTime.Now.AddDays(-7).Date, DateTime.Now);
+
+    public (DateTime? Min, DateTime? Max) MinMaxDate;
+
+    Timer timer;
+
+    private int velicina;
+    public int Velicina { get { return velicina; } set { velicina = value; LoadData(); } }
+
+    // Spouští JS funkci, která renderuje graf
+    public async Task RenderCharts(List<Quantities> quantities, List<Quantities> quantitiesawg, int value)
+    {
+        var chart1 = GraphsGeneratorOut.BasicGraphVenkovniTeplota(quantities);
+        var chart2 = GraphsGeneratorOutAwg.BasicGraphVenkovniTeplotaAwg(quantitiesawg);
+        var chart3 = GraphsGeneratorOut.BasicGraphVenkovniVitr(quantities);
+        var chart4 = GraphsGeneratorOutAwg.BasicGraphVenkovniVitrAwg(quantitiesawg);
+        var chart5 = GraphsGeneratorOut.BasicGraphVenkovniVlhkost(quantities);
+        var chart6 = GraphsGeneratorOutAwg.BasicGraphVenkovniVlhkostAwg(quantitiesawg);
+        var chart7 = GraphsGeneratorOut.BasicGraphVenkovniSrazky(quantities);
+        var chart8 = GraphsGeneratorOutAwg.BasicGraphVenkovniSrazkyAwg(quantitiesawg);
+        var chart9 = GraphsGeneratorOut.BasicGraphVenkovniSlunce(quantities);
+        var chart10 = GraphsGeneratorOutAwg.BasicGraphVenkovniSlunceAwg(quantitiesawg);
+
+        if (value == 1)
+        {
+            await JS.InvokeAsync<string>("RenderCharts", chart1, "chart1");
+            await JS.InvokeAsync<string>("RenderChartsNew", chart2, "chart2");
+        }
+        else if (value == 2)
+        {
+            await JS.InvokeAsync<string>("RenderCharts", chart3, "chart1");
+            await JS.InvokeAsync<string>("RenderChartsNew", chart4, "chart2");
+        }
+
+        else if (value == 3)
+        {
+            await JS.InvokeAsync<string>("RenderCharts", chart5, "chart1");
+            await JS.InvokeAsync<string>("RenderChartsNew", chart6, "chart2");
+        }
+
+        else if (value == 4)
+        {
+            await JS.InvokeAsync<string>("RenderCharts", chart7, "chart1");
+            await JS.InvokeAsync<string>("RenderChartsNew", chart8, "chart2");
+        }
+
+        else if (value == 5)
+        {
+            await JS.InvokeAsync<string>("RenderCharts", chart9, "chart1");
+            await JS.InvokeAsync<string>("RenderChartsNew", chart10, "chart2");
+        }
+
+    }
+
+    // Načítání dat
+    protected override async Task OnInitializedAsync()
+    {
+        // Načtení dat při prvním spuštění
+        timer = new System.Threading.Timer((_) =>
+        {
+
+            InvokeAsync(async () =>
+            {
+
+                await LoadData();
+            });
+        }, null, 0, 300000);
+    }
+
+    public async Task LoadData()
+    {
+        // Minimální a maximílní datum pro volení rozsahu
+        MinMaxDate = await dataDB.GetMinMaxDate();
+
+        if (rozsahdat == null) { rozsahdat = tyden; }
+        DateTime start = rozsahdat.Start.Value;
+        DateTime end = rozsahdat.End.Value;
+
+        if (velicina == 0) { velicina = 1; }
+        int velicina1 = velicina;
+
+        // Záznami v rozsahu
+        last_data_awg = await dataDB.GetSensorsDataAwg(start, end);
+        last_data = await dataDB.GetSensorsData(start, end);
+
+        await RenderCharts(last_data, last_data_awg, velicina1);
+
+        StateHasChanged();
+    }
+    private MudDateRangePicker _picker;
+    private bool _autoClose;
 
 }
-

@@ -251,7 +251,7 @@
     // Spouští JS funkci, která renderuje graf
     public async Task RenderCharts(List<Quantities> quantities)
     {
-        var chart = GraphsGenerator.BasicGraphVnitrniTeplotaWLL(quantities);
+        var chart = GraphGenerator.BasicGraphVnitrniTeplotaWLL(quantities);
         await JS.InvokeAsync<string>("RenderCharts", chart);
 
     }

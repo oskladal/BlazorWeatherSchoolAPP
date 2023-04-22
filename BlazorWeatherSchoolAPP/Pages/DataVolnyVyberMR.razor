@@ -32,9 +32,10 @@
             <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny WeatherLink Live:</RadzenText>
             @if (last_data_awg != null)
             {
-                <RadzenDataGrid style="--rz-grid-header-background-color: #d5d8db;" AllowPaging="true" AllowSorting="true" class="table-my-volny" Data="@last_data_awg" TItem="Quantities" AllowAlternatingRows="true">
+                <RadzenDataGrid Style="--rz-grid-header-background-color: #d5d8db; height: 300px" AllowPaging="true" AllowSorting="true" class="table-my-volny" Data="@last_data_awg" TItem="Quantities"
+                                AllowAlternatingRows="true" ColumnWidth="120px" >
                     <Columns>
-                        <RadzenDataGridColumn TItem="Quantities" Property="SensorFirstTime" Title="Datum">
+                        <RadzenDataGridColumn Width="80px"  TItem="Quantities" Property="SensorFirstTime" Title="Datum" Frozen="true">
                             <Template Context="data">
                                 <span title="@data.SensorFirstTime.ToString("dd/MM/yy")">@data.SensorFirstTime.ToString("dd/MM") </span>
                             </Template>
@@ -96,9 +97,10 @@
             <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny AirLink:</RadzenText>
             @if (last_data_awg != null)
             {
-                <RadzenDataGrid style="--rz-grid-header-background-color: #d5d8db;" AllowPaging="true" AllowSorting="true" class="table-my-volny" Data="@last_data_awg" TItem="Quantities" AllowAlternatingRows="true">
+                <RadzenDataGrid style="--rz-grid-header-background-color: #d5d8db; height: 300px" AllowPaging="true" AllowSorting="true" class="table-my-volny" Data="@last_data_awg"
+                                ColumnWidth="120px" TItem="Quantities" AllowAlternatingRows="true">
                     <Columns>
-                        <RadzenDataGridColumn TItem="Quantities" Property="SensorFirstTime" Title="Datum">
+                        <RadzenDataGridColumn Width="80px" TItem="Quantities" Property="SensorFirstTime" Title="Datum" Frozen="true">
                             <Template Context="data">
                                 <span title="@data.SensorFirstTime.ToString("dd/MM/yy")">
                                     @data.SensorFirstTime.ToString("dd/MM")
@@ -162,9 +164,10 @@
             <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Venkovní veličiny:</RadzenText>
             @if (last_data_awg != null)
             {
-                <RadzenDataGrid style="--rz-grid-header-background-color: #d5d8db;" class="table-my-volny" AllowPaging="true" AllowSorting="true" Data="@last_data_awg" TItem="Quantities" AllowAlternatingRows="true">
+                <RadzenDataGrid style="--rz-grid-header-background-color: #d5d8db; height: 300px" class="table-my-volny" AllowPaging="true" AllowSorting="true"
+                                ColumnWidth="120px" Data="@last_data_awg" TItem="Quantities" AllowAlternatingRows="true">
                     <Columns>
-                        <RadzenDataGridColumn TItem="Quantities" Property="SensorFirstTime" Title="Datum">
+                        <RadzenDataGridColumn Width="80px" TItem="Quantities" Property="SensorFirstTime" Title="Datum" Frozen="true">
                             <Template Context="data">
                                 <span title="@data.SensorFirstTime.ToString("dd/MM/yy")">@data.SensorFirstTime.ToString("dd/MM")</span>
                             </Template>
@@ -229,12 +232,12 @@
 
 @code {
     public List<Quantities> last_data_awg;
-   
+
     public (DateTime? Min, DateTime? Max) MinMaxDate;
 
     // Rozsahy pro výběr dat
     private DateTime? start;
-    
+
     public DateTime? Start { get { return start; } set { start = value; LoadData(); } }
 
 
@@ -250,7 +253,7 @@
             {
                 await LoadData();
             });
-        }, null, 0, 60000);
+        }, null, 0, 300000);
     }
 
     public async Task LoadData()
@@ -262,6 +265,8 @@
         if (start == null) { start = DateTime.Now.Date.AddDays(1 - DateTime.Now.Day); }
 
         DateTime start1 = start.Value;
+        if (start1 > DateTime.Now.Date.AddDays(1 - DateTime.Now.Day)) { start1 = DateTime.Now.Date.AddDays(1 - DateTime.Now.Day);
+            start = DateTime.Now.Date.AddDays(1 - DateTime.Now.Day);  }
         DateTime end1 = start1.AddMonths(1);
 
         // Poslední záznam
@@ -272,7 +277,7 @@
     private MudDatePicker _picker;
     private bool _autoClose;
 
-    
+
 }
 
 
