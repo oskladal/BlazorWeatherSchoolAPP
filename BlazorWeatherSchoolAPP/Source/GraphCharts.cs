@@ -43,11 +43,11 @@ namespace BlazorWeatherSchoolAPP.Source
             {
                 Title = new Title
                 {
-                    Text = "Vnitřní prachové částice"
+                    Text = "Koncentrace prachových částic"
                 },
                 Subtitle = new Subtitle
                 {
-                    Text = "AirLink VŠCHT, měřeno:"
+                    Text = "Vnitřní prostory budovy B VŠCHT Praha"
                 },
                 XAxis = new List<XAxis>
 {
@@ -63,13 +63,13 @@ namespace BlazorWeatherSchoolAPP.Source
                 {
                     Title = new YAxisTitle
                     {
-                        Text = "μg/m&sup3"
+                        Text = "Koncentrace (μg/m&sup3)"
                     }
                 }
             },
                 Legend = new Legend
                 {
-                    Enabled = false
+                    Enabled = true
                 },
                 Tooltip = new Tooltip
                 {
@@ -86,21 +86,22 @@ namespace BlazorWeatherSchoolAPP.Source
                     {
                         PointPadding = 0.1,
                         BorderWidth = 0,
-                        GroupPadding = 0, // nastavení menší mezery mezi sloupci,
-       
+                        GroupPadding = 0.1, // nastavení menší mezery mezi sloupci,
+
                     }
                 },
+                
 
                 Series = new List<Series>
 {
                 new ColumnSeries
                 {
                     Name = "PM1",
-                    ColorByPoint = true,
+
             
                     Data = new List<ColumnSeriesData>
     {
-                        new ColumnSeriesData { Name = "Aktuální", Y = pm1 },
+                        new ColumnSeriesData { Name = "Aktuální", Y = pm1, },
                         new ColumnSeriesData {Name = "Max", Y = pm1_max},
                         new ColumnSeriesData {Name = "Min", Y=pm1_min},
                         new ColumnSeriesData {Name = "Průměr", Y=pm1_avg},
@@ -110,7 +111,7 @@ namespace BlazorWeatherSchoolAPP.Source
                 new ColumnSeries
                 {
                     Name = "PM2.5",
-                    ColorByPoint = true,
+
                     Data = new List<ColumnSeriesData>
     {
                         new ColumnSeriesData { Name = "Aktuální", Y = pm2_5 },
@@ -124,14 +125,13 @@ namespace BlazorWeatherSchoolAPP.Source
                 new ColumnSeries
                 {
                     Name = "PM10",
-                    ColorByPoint = true,
                     Data = new List<ColumnSeriesData>
     {
-                        new ColumnSeriesData { Name = "Aktuální", Y = pm2_5 },
+                        new ColumnSeriesData {Name = "Aktuální", Y = pm2_5 },
                         new ColumnSeriesData {Name = "Max", Y = pm_10_max},
                         new ColumnSeriesData {Name = "Min", Y= pm_10_min},
                         new ColumnSeriesData {Name = "Průměr", Y= pm10_avg},
-                        new ColumnSeriesData { Name = "Za 24 hod", Y = pm10_24 },
+                        new ColumnSeriesData {Name = "Za 24 hod", Y = pm10_24 },
 
                     }
                 },

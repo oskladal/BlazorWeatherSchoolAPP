@@ -12,7 +12,7 @@
             <MudTextField T="string" Label="Vložte email" Required="true" RequiredError="Email je povinný!"
                           Validation="@(new EmailAddressAttribute() {ErrorMessage = "Neplatná emailová adresa!"})"
                           @bind-Value="model.Email" Variant="MudBlazor.Variant.Outlined" />
-            <MudTextField T="string" Required="true" Label="Vložte dotaz"
+            <MudTextField T="string" Required="true" Label="Vložte připomínku či dotaz"
                           Variant="MudBlazor.Variant.Outlined" Lines="5" Clearable="true"
                           Validation="@(new Func<string, IEnumerable<string>>(TextStrength))"
                           RequiredError="Toto pole je povinné!"
@@ -38,9 +38,6 @@
     string[] errors = { };
     MudForm form;
 
-
-    // Proměnná pro zavření dialogu při kliknutí mimo dialog
-    bool isDialogOpen = false;
 
     // zde se ukládají data z formuláře
     DataTable model = new DataTable();
@@ -68,7 +65,15 @@
     {
         email.SendEmail(model);
         string msg = email.Message;
-        ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = msg, Duration = 4000 });
+        Console.WriteLine(msg);
+        if(msg == "Email byl odeslán") {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = msg, Duration = 4000 });
+        }
+        else if (msg != "Email byl odeslán")
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = msg, Duration = 4000 });
+
+        }
         MudDialog.Close(DialogResult.Ok(true));
     }
 

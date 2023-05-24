@@ -87,21 +87,3 @@ public class ConnectAPI
 
 }
 
-
-
-
-/*
-$key = 'tl4o4olkrzdznzkmljlrr05ruov4uvcz';
-$secret = 'f84ixwqpkdionigkuy1bufubeezehbdd';
-$time = time();
-$data1= "api-key" .$key. "t" .$time;    
-$hash = hash_hmac('sha256',$data1,$secret);   
-$url_info = "https://api.weatherlink.com/v2/stations?api-key=$key&t=$time&api-signature=$hash";    
-
-//Hodnoty aktuální ze stanice ID: 15017 
-$id_stanice = "15017";
-$data2 = "api-key" .$key. "station-id" .$id_stanice. "t" .$time; 
-$hash2 = hash_hmac('sha256',$data2,$secret);      
-$url_stanice1_data = "https://api.weatherlink.com/v2/current/$id_stanice?api-key=$key&t=$time&api-signature=$hash2";      
-$url_senzory = "https://api.weatherlink.com/v2/sensors?api-key=$key&t=$time&api-signature=$hash";
-*/

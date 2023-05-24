@@ -15,3 +15,7 @@ function RenderChartsNew(data, graf_id) {
 function DeleteGraf(id) {
     document.getElementById(id).innerHTML = "";
 }
+
+window.GetViewportWidth = function () {
+    return window.innerWidth;
+};

@@ -8,6 +8,8 @@ using Highsoft.Web.Mvc.Charts;
 using Highsoft.Web.Mvc.Charts.Rendering;
 using Microsoft.AspNetCore.Builder;
 
+
+
 namespace BlazorWeatherSchoolAPP.Source
 {
     public class GraphGeneratorAwg
@@ -87,6 +89,8 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 var chartOptions = new Highcharts
                 {
+                  
+                   
                     Chart = new Highsoft.Web.Mvc.Charts.Chart
                     {
                         Type = ChartType.Line
@@ -94,8 +98,11 @@ namespace BlazorWeatherSchoolAPP.Source
 
                     Title = new Title
                     {
-                        Text = "Teplota prům. max. min."
+                        Text = "Teplota prům. max. min.",
+                        Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
+
                     },
+                    
                     XAxis = new List<XAxis>
                 {
                     new XAxis
@@ -104,13 +111,6 @@ namespace BlazorWeatherSchoolAPP.Source
                         Title = new XAxisTitle
                         {
                             Text = "Datum"
-                        },
-
-                        DateTimeLabelFormats = new Hashtable
-                        {
-                            { "day", "%d.%m.%Y" },
-                            { "month", "%m.%Y" },
-                            { "year", "%Y" }
                         },
 
                     }
@@ -124,7 +124,8 @@ namespace BlazorWeatherSchoolAPP.Source
                     Title = new YAxisTitle
                     {
                         Text = "Teplota (°C)"
-                    }
+                    },
+                    Opposite = true
                 }
 
             },
@@ -132,7 +133,7 @@ namespace BlazorWeatherSchoolAPP.Source
                     Tooltip = new Tooltip
                     {
                         Shared = true,
-                        XDateFormat = "%d.%m.%Y",
+                        XDateFormat = "%A, %d.%m.%Y",
                         ValueSuffix = " °" + "C",
                         ValueDecimals = 1,
                     },
@@ -265,7 +266,6 @@ namespace BlazorWeatherSchoolAPP.Source
                 }
             };
                 chartOptions.ID = "chart2";
-
                 var renderer = new HighchartsRenderer(chartOptions);
                 string chart = renderer.GetJsonOptionsForBlazor();
                 return chart;
@@ -310,7 +310,8 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "Teplota prům. max. min."
+                    Text = "Teplota prům. max. min.",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
                 },
                 XAxis = new List<XAxis>
                 {
@@ -320,13 +321,6 @@ namespace BlazorWeatherSchoolAPP.Source
                         Title = new XAxisTitle
                         {
                             Text = "Datum"
-                        },
-
-                        DateTimeLabelFormats = new Hashtable
-                        {
-                            { "day", "%d.%m.%Y" },
-                            { "month", "%m.%Y" },
-                            { "year", "%Y" }
                         },
 
                     }
@@ -340,7 +334,8 @@ namespace BlazorWeatherSchoolAPP.Source
                     Title = new YAxisTitle
                     {
                         Text = "Teplota (°C)"
-                    }
+                    },
+                    Opposite = true
                 }
 
             },
@@ -348,7 +343,7 @@ namespace BlazorWeatherSchoolAPP.Source
                 Tooltip = new Tooltip
                 {
                     Shared = true,
-                    XDateFormat = "%d.%m.%Y",
+                    XDateFormat = "%A, %d.%m.%Y",
                     ValueSuffix = " °" + "C",
                     ValueDecimals = 1,
                 },
@@ -461,7 +456,8 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "Tlak vzduchu přepočtený na hladinu moře prům. max. min."
+                    Text = "Tlak vzduchu přepočtený na hladinu moře prům. max. min.",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
                 },
                 XAxis = new List<XAxis>
                 {
@@ -471,13 +467,6 @@ namespace BlazorWeatherSchoolAPP.Source
                         Title = new XAxisTitle
                         {
                             Text = "Datum"
-                        },
-
-                        DateTimeLabelFormats = new Hashtable
-                        {
-                            { "day", "%d.%m.%Y" },
-                            { "month", "%m.%Y" },
-                            { "year", "%Y" }
                         },
 
                     }
@@ -491,7 +480,8 @@ namespace BlazorWeatherSchoolAPP.Source
                     Title = new YAxisTitle
                     {
                         Text = "Tlak (hPa)"
-                    }
+                    },
+                    Opposite = true
                 }
 
             },
@@ -499,7 +489,7 @@ namespace BlazorWeatherSchoolAPP.Source
                 Tooltip = new Tooltip
                 {
                     Shared = true,
-                    XDateFormat = "%d.%m.%Y",
+                    XDateFormat = "%A, %d.%m.%Y",
                     ValueSuffix = " hPa",
                     ValueDecimals = 1,
                 },
@@ -612,7 +602,8 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "Vlhkost prům. max. min."
+                    Text = "Vlhkost prům. max. min.",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
                 },
                 XAxis = new List<XAxis>
             {
@@ -624,12 +615,7 @@ namespace BlazorWeatherSchoolAPP.Source
                         Text = "Datum"
                     },
 
-                    DateTimeLabelFormats = new Hashtable
-    {
-                        { "day", "%d.%m.%Y" },
-                        { "month", "%m.%Y" },
-                        { "year", "%Y" }
-                    },
+   
 
                 }
 
@@ -642,7 +628,8 @@ namespace BlazorWeatherSchoolAPP.Source
                     Title = new YAxisTitle
                     {
                         Text = "Vlhkost (%)"
-                    }
+                    },
+                    Opposite = true
                 }
 
             },
@@ -650,7 +637,7 @@ namespace BlazorWeatherSchoolAPP.Source
                 Tooltip = new Tooltip
                 {
                     Shared = true,
-                    XDateFormat = "%d.%m.%Y",
+                    XDateFormat = "%A, %d.%m.%Y",
                     ValueSuffix = " %",
                     ValueDecimals = 1,
                 },
@@ -763,7 +750,8 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "Vlhkost prům. max. min."
+                    Text = "Vlhkost prům. max. min.",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
                 },
                 XAxis = new List<XAxis>
             {
@@ -774,12 +762,7 @@ namespace BlazorWeatherSchoolAPP.Source
                         Text = "Datum"
                     },
 
-                    DateTimeLabelFormats = new Hashtable
-    {
-                        { "day", "%d.%m.%Y" },
-                        { "month", "%m.%Y" },
-                        { "year", "%Y" }
-                    },
+
 
                 }
 
@@ -792,7 +775,8 @@ namespace BlazorWeatherSchoolAPP.Source
                     Title = new YAxisTitle
                     {
                         Text = "Vlhkost (%)"
-                    }
+                    },
+                    Opposite = true
                 }
 
             },
@@ -800,7 +784,7 @@ namespace BlazorWeatherSchoolAPP.Source
                 Tooltip = new Tooltip
                 {
                     Shared = true,
-                    XDateFormat = "%d.%m.%Y",
+                    XDateFormat = "%A, %d.%m.%Y",
                     ValueSuffix = " %",
                     ValueDecimals = 1,
                 },
@@ -953,7 +937,8 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "Množství části prům. max. min."
+                    Text = "Množství části prům. max. min.",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
                 },
                 XAxis = new List<XAxis>
             {
@@ -964,12 +949,7 @@ namespace BlazorWeatherSchoolAPP.Source
                         Text = "Datum"
                     },
 
-                    DateTimeLabelFormats = new Hashtable
-    {
-                        { "day", "%d.%m.%Y" },
-                        { "month", "%m.%Y" },
-                        { "year", "%Y" }
-                    },
+
 
                 }
 
@@ -981,8 +961,9 @@ namespace BlazorWeatherSchoolAPP.Source
                 {   
                     Title = new YAxisTitle
                     {
-                        Text = "μg/m&sup3"
-                    }
+                        Text = "Množství částic (μg/m&sup3)"
+                    },
+                    Opposite = true
                 }
 
             },
@@ -991,7 +972,7 @@ namespace BlazorWeatherSchoolAPP.Source
                 Tooltip = new Tooltip
                 {
                     Shared = true,
-                    XDateFormat = "%d.%m.%Y",
+                    XDateFormat = "%A, %d.%m.%Y",
                     ValueSuffix = " μg/m&sup3",
                     ValueDecimals = 1,
                 },
@@ -1163,7 +1144,8 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "AQI prům. max. min."
+                    Text = "AQI prům. max. min.",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
                 },
                 XAxis = new List<XAxis>
             {
@@ -1174,12 +1156,6 @@ namespace BlazorWeatherSchoolAPP.Source
                         Text = "Datum"
                     },
 
-                    DateTimeLabelFormats = new Hashtable
-    {
-                        { "day", "%d.%m.%Y" },
-                        { "month", "%m.%Y" },
-                        { "year", "%Y" }
-                    },
 
                 }
 
@@ -1192,7 +1168,8 @@ namespace BlazorWeatherSchoolAPP.Source
                     Title = new YAxisTitle
                     {
                         Text = "AQI"
-                    }
+                    },
+                    Opposite = true
                 }
 
             },
@@ -1200,7 +1177,7 @@ namespace BlazorWeatherSchoolAPP.Source
                 Tooltip = new Tooltip
                 {
                     Shared = true,
-                    XDateFormat = "%d.%m.%Y",
+                    XDateFormat = "%A, %d.%m.%Y",
                     ValueSuffix = "",
                     ValueDecimals = 1,
                 },

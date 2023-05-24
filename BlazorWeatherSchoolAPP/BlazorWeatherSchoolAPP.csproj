@@ -15,7 +15,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Models\" />
     <None Remove="Radzen.Blazor" />
     <None Remove="Blazorise" />
     <None Remove="Blazorise.Bootstrap" />
@@ -28,25 +27,16 @@
     <None Remove="Source\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="wwwroot\HightChartJS\" />
     <Folder Include="Source\" />
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Radzen.Blazor" Version="4.7.0" />
-    <PackageReference Include="Blazorise" Version="1.2.0" />
-    <PackageReference Include="Blazorise.Bootstrap" Version="1.2.0" />
-    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.2.0" />
-    <PackageReference Include="Blazorise.Components" Version="1.2.0" />
-    <PackageReference Include="Blazorise.Charts.DataLabels" Version="1.2.0" />
-    <PackageReference Include="Blazorise.Charts" Version="1.2.0" />
+    <PackageReference Include="Radzen.Blazor" Version="4.11.2" />
     <PackageReference Include="BlazorDateRangePicker" Version="4.3.0" />
-    <PackageReference Include="MudBlazor" Version="6.1.9" />
-    <PackageReference Include="Google.Apis.Translate.v2" Version="1.60.0.875" />
-    <PackageReference Include="Google.Cloud.Translation.V2" Version="3.1.0" />
-    <PackageReference Include="Highsoft.Highstock" Version="10.3.3.1" />
-    <PackageReference Include="Highsoft.Highcharts" Version="10.3.3.1" />
+    <PackageReference Include="MudBlazor" Version="6.2.5" />
+    <PackageReference Include="Highsoft.Highstock" Version="10.3.3.2" />
+    <PackageReference Include="Highsoft.Highcharts" Version="10.3.3.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>

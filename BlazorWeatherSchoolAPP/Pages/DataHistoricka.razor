@@ -9,12 +9,10 @@
 <RadzenContentContainer Name="main">
     <RadzenCard Style="width: 100%; ">
         <ChildContent>
-            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H4">Tabulky historických záznamů</RadzenText>
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H4">Historické záznamy</RadzenText>
             <p>
-                Tabulky na této stránce zobrazují historické hodnoty měřených veličin. Je možné zvolit den a hodinu v kalendáři a zobrazí se nám data z tohoto dne v danou hodinu.
-                Zobrazují se hodnoty nejbližší vyšší podle zadaného času. Data starší než 13.4.2023 byla do databáze importována zpětně a obsahují záznami v delších časových okamžicích,
-                zároveň neobsahují úplně všechna data jako jsou aktuálně sbíraná.
-                Nejstarší data jsou z 15.11.2022 s vyjímkou dat o vlastnostech půdy, zde jsou nejstarší data z 1.12.2022. Další vyjímkou jsou data o srážkách, zde jsou záznami až z 13.4.2023.
+                Uvedené tabulky zobrazují historické hodnoty sledovaných meteorologických veličin.
+                Vyberte si den a hodinu v kalendáři a zobrazí se vám naměřená data z nejbližšího měření. 
             </p>
             <br />
             <RadzenRow>
@@ -24,7 +22,7 @@
                 <RadzenColumn>
                     @if (last_data != null)
                     {
-                        <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H6">Reálný čás měření: @last_data.SensorFirstTime.ToLocalTime()</RadzenText>
+                        <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H6">Datum a čas měření: @last_data.SensorFirstTime.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</RadzenText>
                     }
                 </RadzenColumn>
             </RadzenRow>
@@ -34,9 +32,124 @@
     <br />
     @if (last_data != null)
     {
+    <RadzenCard Style="width: 100%; ">
+    <ChildContent>
+        <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Venkovní senzory:</RadzenText>
+        <table class="table table-my-value">
+            <tr>
+                <td colspan="4" class="table-secondary bold-font">Teplota a vlhkost</td>
+            </tr>
+            <tbody class="table-group-divider ">
+                <tr>
+                    <td>Teplota</td>
+                    <td>@last_data.Quantities46.temp °C</td>
+                    <td>Relativní vlhkost</td>
+                    <td>@last_data.Quantities46.hum %</td>
+                </tr>
+                <tr>
+                    <td>Heat index</td>
+                    <td>@last_data.Quantities46.heat_index °C</td>
+                    <td>Rosný bod</td>
+                    <td>@last_data.Quantities46.dew_point °C</td>
+
+                </tr>
+                <tr>
+                    <td>Wind Chill</td>
+                    <td>@last_data.Quantities46.wind_chill °C</td>
+                </tr>
+            </tbody>
+            <tr>
+                <td colspan="4" class="table-secondary bold-font">Sluneční záření a UV index</td>
+            </tr>
+            <tbody class="table-group-divider">
+                <tr>
+                    <td>Intenzita slunečního záření</td>
+                    <td>@last_data.Quantities46.solar_rad W/m&sup2</td>
+                    <td>UV index</td>
+                    <td>@last_data.Quantities46.uv_index</td>
+                </tr>
+            </tbody>
+            @if (last_data.Quantities46.rainfall_year_mm != 0)
+            {
+                <tr>
+                    <td colspan="4" class="table-secondary bold-font">Srážky</td>
+                </tr>
+                <tbody class="table-group-divider">
+                    <tr>
+                        <td>Intenzita srážek</td>
+                        <td>@last_data.Quantities46.rain_rate_last_mm mm/hod</td>         
+                    </tr>
+                    <tr>
+                        <td>Hodinnový úhrn srážek</td>
+                        <td>@last_data.Quantities46.rainfall_last_60_min_mm mm</td>         
+                        <td>Měsíční úhrn srážek</td>
+                        <td>@last_data.Quantities46.rainfall_monthly_mm mm</td>
+                    </tr>
+                    <tr>
+                        <td>Denní úhrn srážek</td>
+                        <td>@last_data.Quantities46.rainfall_daily_mm mm</td>
+                        <td>Roční úhrn srážek</td>
+                        <td>@last_data.Quantities46.rainfall_year_mm mm</td>
+                    </tr>
+                </tbody>
+            }
+                @if (last_data.Quantities46.rainfall_year_mm == 0)
+            {
+                <tr>
+                    <td colspan="4" class="table-secondary bold-font">Srážky</td>
+                </tr>
+                <tbody class="table-group-divider">
+                    <tr>
+                        <td>Intenzita sráže</td>
+                        <td>@last_data.Quantities46.rain_rate_last_mm mm/hod</td>
+                        <td>Denní úhrn srážek (vztaženo na celý den)</td>
+                        <td>@last_data_awg.Quantities46.rainfall_daily_mm mm</td>
+                    </tr>
+                </tbody>
+            }
+            <tr>
+                <td colspan="4" class="table-secondary bold-font">Vítr</td>
+            </tr>
+            <tbody class="table-group-divider">
+                <tr>
+                    <td>Aktuální rychlost větru</td>
+                    <td>@last_data.Quantities46.wind_speed_last km/h</td>
+                    <td>Aktuální směr větru</td>
+                    <td>@last_data.Quantities46.wind_dir_last °</td>
+                </tr>
+                <tr>
+                    <td>Průměrná rychlost větru 10 min</td>
+                    <td>@last_data.Quantities46.wind_speed_avg_last_10_min km/h</td>
+                    
+                </tr>
+            </tbody>
+            @if (last_data.Quantities56 != null)
+            {
+                <tr>
+                    <td colspan="4" class="table-secondary bold-font">Půda</td>
+                </tr>
+                <tbody class="table-group-divider">
+                    <tr>
+                        <td>Teplota půdy</td>
+                        <td>@last_data.Quantities56.temp_1 °C</td>
+                        <td>Vlhkost půdy</td>
+                        <td>@last_data.Quantities56.moist_soil_1 %</td>
+                    </tr>
+                </tbody>
+            }
+        </table>
+
+
+    </ChildContent>
+</RadzenCard>
+
+        <br />
+    }
+    @if (last_data != null)
+    {
         <RadzenCard Style="width: 100%; ">
             <ChildContent>
-                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny:</RadzenText>
+                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní senzory:</RadzenText>
 
                 <table class="table table-my-value">
                     <tr>
@@ -46,26 +159,29 @@
                         <tr>
                             <td>Teplota vnitřní WLL</td>
                             <td>@last_data.Quantities243.temp_in °C</td>
-                            <td>Vlhkost vnitřní WLL</td>
+                            <td>Teplota vnitřní AirLink</td>
+                            <td>@last_data.Quantities326.temp °C</td>
+                        </tr>
+                        <tr>
+                            <td>Heat index WLL</td>
+                            <td>@last_data.Quantities243.heat_index_in °C</td>
+                            <td>Heat index Airlink</td>
+                            <td>@last_data.Quantities326.heat_index °C</td>
+
+                        </tr>
+                        <tr>
+                            <td>Relativní vlhkost WLL</td>
                             <td>@last_data.Quantities243.hum_in %</td>
+
+                            <td>Relativní vlhkost AirLink</td>
+                            <td>@last_data.Quantities326.hum %</td>
                         </tr>
                         <tr>
                             <td>Rosný bod WLL</td>
                             <td>@last_data.Quantities243.dew_point_in °C</td>
-                            <td>Heat index WLL</td>
-                            <td>@last_data.Quantities243.heat_index_in °C</td>
-                        </tr>
-                        <tr>
-                            <td>Teplota vnitřní AirLink</td>
-                            <td>@last_data.Quantities326.temp °C</td>
-                            <td>Vlhkost vnitřní AirLink</td>
-                            <td>@last_data.Quantities326.hum %</td>
-                        </tr>
-                        <tr>
                             <td>Rosný bod AirLink</td>
                             <td>@last_data.Quantities326.dew_point °C</td>
-                            <td>Heat index Airlink</td>
-                            <td>@last_data.Quantities326.heat_index °C</td>
+
                         </tr>
                     </tbody>
                     <tr>
@@ -73,7 +189,7 @@
                     </tr>
                     <tbody class="table-group-divider">
                         <tr>
-                            <td>Tlak na hladině moře</td>
+                            <td>Tlak vzduchu (přepočtený na hladinu moře)</td>
                             <td>@last_data.Quantities242.bar_sea_level hPa</td>
                         </tr>
                     </tbody>
@@ -84,125 +200,44 @@
                         <tr>
                             <td>PM1 AirLink</td>
                             <td>@last_data.Quantities326.pm_1 μg/m&sup3</td>
+                            <td class="@translatedText_desc[1]">Index kvality ovzduší AQI AirLink</td>
+                            <td class="@translatedText_desc[1]">@last_data.Quantities326.aqi_val (@translatedText_desc[0])</td>
+                        </tr>
+                        <tr>
                             <td>PM2,5 AirLink</td>
                             <td>@last_data.Quantities326.pm_2p5 μg/m&sup3</td>
                         </tr>
                         <tr>
                             <td>PM10 AirLink</td>
                             <td>@last_data.Quantities326.pm_10 μg/m&sup3</td>
-                            <td class="@color_description">Index kvality ovzduší AQI AirLink</td>
-                            <td class="@color_description">@last_data.Quantities326.aqi_val (@translatedText_desc)</td>
                         </tr>
                     </tbody>
                 </table>
-                <br>
+                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.Overline">*PM1 - prachové částice o velikosti do 1 mikrometru </RadzenText>
+                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.Overline">*PM2.5 - prachové částice o velikosti do 2.5 mikrometrů </RadzenText>
+                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.Overline">*PM10 - prachové částice o velikosti do 10 mikrometrů</RadzenText>
+                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.Overline">
+                    *WLL je zkratka pro WeatherLink Live, což je hlavní
+                    komunikační modul pro bezdrátový sběr dat ze senzorů meteostanice a připojených modulů, WLL
+                    obstahuje vlastní sadu senzorů pro sledování pohody prostředí; aktuálně je umístěn v
+                    místnosti ZB2-364
+                </RadzenText>
+                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.Overline">
+                    *AirLink je označení pro
+                    modul sledování prachových částic ve vzduchu, tento modul je vybaven samostatnou sadou
+                    senzorů pro měření pohody prostředí; aktuálně je umístěn v místnosti ZB2-364
+                </RadzenText>
             </ChildContent>
         </RadzenCard>
-        <br />
-    }
-    @if (last_data != null)
-    {
-        <RadzenCard Style="width: 100%; ">
-            <ChildContent>
-                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Venkovní veličiny:</RadzenText>
-                <table class="table table-my-value">
-                    <tr>
-                        <td colspan="4" class="table-secondary bold-font">Teplota a vlhkost</td>
-                    </tr>
-                    <tbody class="table-group-divider ">
-                        <tr>
-                            <td>Teplota</td>
-                            <td>@last_data.Quantities46.temp °C</td>
-                            <td>Vlhkost</td>
-                            <td>@last_data.Quantities46.hum %</td>
-                        </tr>
-                        <tr>
-                            <td>Rosný bod</td>
-                            <td>@last_data.Quantities46.dew_point °C</td>
-                            <td>Heat index</td>
-                            <td>@last_data.Quantities46.heat_index °C</td>
-                        </tr>
-                        <tr>
-                            <td>Chlad větru</td>
-                            <td>@last_data.Quantities46.wind_chill °C</td>
-                        </tr>
-                    </tbody>
-                    <tr>
-                        <td colspan="4" class="table-secondary bold-font">Sluneční záření a UV index</td>
-                    </tr>
-                    <tbody class="table-group-divider">
-                        <tr>
-                            <td>Intenzita slunečního záření</td>
-                            <td>@last_data.Quantities46.solar_rad W/m&sup2</td>
-                            <td>UV index</td>
-                            <td>@last_data.Quantities46.uv_index</td>
-                        </tr>
-                    </tbody>
-                    @if (last_data.Quantities46.rainfall_year_mm != 0)
-                    {
-                        <tr>
-                            <td colspan="4" class="table-secondary bold-font">Srážky</td>
-                        </tr>
-                        <tbody class="table-group-divider">
-                            <tr>
-                                <td>Intenzita dešťových srážek</td>
-                                <td>@last_data.Quantities46.rain_rate_last_mm mm/hod</td>
-                                <td>Hodinnové dešťové srážky</td>
-                                <td>@last_data.Quantities46.rainfall_last_60_min_mm mm</td>
-                            </tr>
-                            <tr>
-                                <td>Denní dešťové srážky</td>
-                                <td>@last_data.Quantities46.rainfall_daily_mm mm</td>
-                                <td>Měsíční dešťové srážky</td>
-                                <td>@last_data.Quantities46.rainfall_monthly_mm mm</td>
-                            </tr>
-                            <tr>
-                                <td>Roční dešťové srážky</td>
-                                <td>@last_data.Quantities46.rainfall_year_mm mm</td>
-                            </tr>
-                        </tbody>
-                    }
-                    <tr>
-                        <td colspan="4" class="table-secondary bold-font">Vítr</td>
-                    </tr>
-                    <tbody class="table-group-divider">
-                        <tr>
-                            <td>Aktuální rychlost větru</td>
-                            <td>@last_data.Quantities46.wind_speed_last km/h</td>
-                            <td>Průměrná rychlost větru 10 min</td>
-                            <td>@last_data.Quantities46.wind_speed_avg_last_10_min km/h</td>
-                        </tr>
-                        <tr>
-                            <td>Aktuální směr větru</td>
-                            <td>@last_data.Quantities46.wind_dir_last °</td>
-                        </tr>
-                    </tbody>
-                    @if (last_data.Quantities56 != null)
-                    {
-                        <tr>
-                            <td colspan="4" class="table-secondary bold-font">Půda</td>
-                        </tr>
-                        <tbody class="table-group-divider">
-                            <tr>
-                                <td>Teplota půdy</td>
-                                <td>@last_data.Quantities56.temp_1 °C</td>
-                                <td>Vlhkost půdy</td>
-                                <td>@last_data.Quantities56.moist_soil_1 %</td>
-                            </tr>
-                        </tbody>
-                    }
-                </table>
-
-
-            </ChildContent>
-        </RadzenCard>
+        
     }
 </RadzenContentContainer>
 
 @code {
     public Quantities last_data;
+    public Quantities last_data_awg;
 
-    public String translatedText_desc;
+    public String[] translatedText_desc;
 
     public (DateTime? Min, DateTime? Max) MinMaxDate;
 
@@ -211,27 +246,34 @@
     DateTime end = DateTime.Now;
     public DateTime? Start { get { return start; } set { start = value; LoadData(); } }
 
+    Timer timer;
+    DateTime currentTime;
 
     // Načítání dat
     protected override async Task OnInitializedAsync()
     {
-        // Načtení dat při prvním spuštění
+        //První načtení
         await LoadData();
-        var timer = new System.Threading.Timer((_) =>
-        {
 
-            InvokeAsync(async () =>
+        // Minimální a maximílní datum pro volení rozsahu
+        MinMaxDate = await dataDB.GetMinMaxDate();
+        // Načtení dat při prvním spuštění
+        timer = new System.Threading.Timer((_) =>
+        {
+            currentTime = DateTime.Now.ToLocalTime();
+            if (currentTime.Minute == 0 || currentTime.Minute % 5 == 0 && currentTime.Second > 21)
             {
-                await LoadData();
-            });
-        }, null, 0, 300000);
+                InvokeAsync(async () =>
+                {
+                    await LoadData();
+                });
+            }
+
+        }, null, 0, 30000);
     }
 
     public async Task LoadData()
     {
-
-        // Minimální a maximílní datum pro volení rozsahu
-        MinMaxDate = await dataDB.GetMinMaxDate();
 
 
         if (start == null) { start = DateTime.Now.AddMinutes(-10); }
@@ -245,11 +287,11 @@
             last_data = await dataDB.GetDataTableHistory(start1, end);
         }
 
-        // překlad
-        translatedText_desc = TranslateText(last_data.Quantities326.aqi_desc);
+        // Poslední záznam
+        last_data_awg = await dataDB.GetDataTableHistoryAwg(start1);
 
-        //test = await dataDB.GetToDaySensorDataMax("Quantities46.temp");
-        //test2 = await dataDB.GetToDaySensorDataMin("Quantities46.temp") ;
+        // překlad
+        translatedText_desc = TranslateTextWithNumber(last_data.Quantities326.aqi_val);
 
         StateHasChanged();
     }
@@ -257,34 +299,17 @@
     private bool _autoClose;
 
 
-
-    public String color_description;
-
-    // Překlad description
-    string TranslateText(string inputText)
+    string[] TranslateTextWithNumber(double inputnumber)
     {
-        switch (inputText)
-        {
-            case "Good":
-                color_description = "green_one";
-                return "Dobrý";
-            case "Fair":
-                color_description = "green_two";
-                return "Spravedlivý";
-            case "Moderate":
-                color_description = "yellow";
-                return "Mírný";
-            case "Poor":
-                color_description = "orange";
-                return "Špatný";
-            case "Very poor":
-                color_description = "brown";
-                return "Velmi špatný";
-            default:
-                color_description = "green_one";
-                return "Dobré";
-        }
+        if (inputnumber <= 10) { return new string[] { "Dobrá", "good" }; }
+        else if (inputnumber <= 20) { return new string[] { "Uspokojivá", "fair" }; }
+        else if (inputnumber <= 25) { return new string[] { "Vyhovující", "moderate" }; }
+        else if (inputnumber <= 50) { return new string[] { "Špatná", "poor" }; }
+        else if (inputnumber <= 75) { return new string[] { "Velmi špatná", "very_poor" }; }
+        else if (inputnumber <= 800) { return new string[] { "Extrémně špatná", "extremely_poor" }; }
+        else { return new string[] { "Dobrá", "good" }; }
     }
+
 }
 
 

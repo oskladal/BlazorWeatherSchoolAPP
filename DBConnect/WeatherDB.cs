@@ -10,20 +10,12 @@ using MongoDB.Bson;
 
 namespace DBConnect;
 
-public class CollectionBuilder<T> where T : class
-{
-    public IMongoCollection<T> Get(IMongoDatabase database, string collectionName)
-    {
-        return database.GetCollection<T>(collectionName);
-    }
-}
 
 public class WeatherDB
 {
     // Kolekce pro všechna data
     private IMongoCollection<Quantities> _quantities;
     private IMongoCollection<Quantities> _quantitiesAwg;
-    private IMongoCollection<Quantities> _historicalquantities;
 
 
     public WeatherDB(IOptions<List<SensorConfig>> sensorsConfiguration, IConfiguration config)
@@ -175,13 +167,5 @@ public class WeatherDB
     }
 
 
-
-    //TODO: Preprocessing dat. Kvůli tomu aby se nemusela pokaždé tahat všechna data (průměry a tak)
-
-    /*---------------------------------------------------------------*/
-    /*---------------------------------------------------------------*/
-
 }
 
-
-// collection je tabulka in db, a já do ní do dávam data, ona vrací data co chci

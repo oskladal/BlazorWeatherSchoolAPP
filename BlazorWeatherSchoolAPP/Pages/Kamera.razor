@@ -1,0 +1,70 @@
+﻿@page "/kamera"
+@layout MainLayout
+@inject IDialogService DialogService
+
+<RadzenContentContainer Name="main">
+    <RadzenCard Style="width: 100%; ">
+        <ChildContent>
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H4">Kamerový systém a atmosferická viditelnost</RadzenText>
+            <p>
+                Tato záložka slouží pro budoucí zobrazování kamerových záznamů stanice a zobrazování stavu viditelnosti.
+                <br />
+                Čtveřice kamer Foscam NVM bude nepřetržitě snímat své okolí, snímky z této kamery budou
+                zobrazovány na této záložce, zároveň budou tyto snímky také ukládány a
+                následně použity pro trénování neuronové sítě.
+                Tato síť by následně měla vypočítat úroveň atmosférické viditelnosti. I tato
+                hodnota bude následně zobrazena na této záložce.
+
+
+            </p>
+            <br />
+        </ChildContent>
+    </RadzenCard>
+    <br />
+    <RadzenCard Style="width: 100%; " Class="photos_stan">
+        <RadzenRow>
+            <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="4" SizeLG="4" SizeXL="4">
+                <RadzenImage Path="/img/system_kamer.png" @onclick="() => OpenDialogPhoto(ImagePaths.Stanice1)" />
+            </RadzenColumn>
+            <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="4" SizeLG="4" SizeXL="4">
+                <RadzenImage Path="/img/kamery.jpeg" @onclick="() => OpenDialogPhoto(ImagePaths.Stanice2)" />
+            </RadzenColumn>
+            <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="4" SizeLG="4" SizeXL="4">
+                
+            </RadzenColumn>
+
+        </RadzenRow>
+    </RadzenCard>
+</RadzenContentContainer>
+
+
+@code {
+
+    // Nastavení k dialogu
+    private void OpenDialogPhoto(string imagePath)
+    {
+        var parameters = new DialogParameters { ["ImagePath"] = imagePath };
+
+        MudBlazor.DialogOptions options = new MudBlazor.DialogOptions()
+        {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true,
+            DisableBackdropClick = false,
+            NoHeader = true,
+            Position = MudBlazor.DialogPosition.Center,
+            CloseOnEscapeKey = true
+        };
+
+        DialogService.ShowAsync<ImageDialog>("Připomínky a dotazy", parameters, options);
+    }
+
+
+
+    public static class ImagePaths
+    {
+        public static string Stanice1 => "/img/system_kamer.png";
+        public static string Stanice2 => "/img/kamery.jpeg";
+    }
+
+}
+

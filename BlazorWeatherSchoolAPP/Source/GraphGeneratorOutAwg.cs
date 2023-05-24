@@ -143,7 +143,8 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "Teplota"
+                    Text = "Teplota",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
                 },
                 XAxis = new List<XAxis>
                 {
@@ -173,7 +174,8 @@ namespace BlazorWeatherSchoolAPP.Source
                         Title = new YAxisTitle
                         {
                             Text = "Teplota (°C)"
-                        }
+                        },
+                        Opposite = true
                     }
 
                 },
@@ -181,7 +183,7 @@ namespace BlazorWeatherSchoolAPP.Source
                 Tooltip = new Tooltip
                 {
                     Shared = true,
-                    XDateFormat = "%d.%m.%Y",
+                    XDateFormat = "%A, %d.%m.%Y",
                     ValueSuffix = " °" + "C",
                     ValueDecimals = 1,
                 },
@@ -423,7 +425,8 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "Rychlost větru"
+                    Text = "Rychlost větru",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
                 },
                 XAxis = new List<XAxis>
                 {
@@ -453,7 +456,8 @@ namespace BlazorWeatherSchoolAPP.Source
                         Title = new YAxisTitle
                         {
                             Text = "Rychlost (km/h)"
-                        }
+                        },
+                        Opposite = true
                     }
 
                 },
@@ -461,7 +465,7 @@ namespace BlazorWeatherSchoolAPP.Source
                 Tooltip = new Tooltip
                 {
                     Shared = true,
-                    XDateFormat = "%d.%m.%Y",
+                    XDateFormat = "%A, %d.%m.%Y",
                     ValueSuffix = " km/h",
                     ValueDecimals = 1,
                 },
@@ -602,7 +606,8 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "Vlhkost vzduchu a půdy prům. max. min."
+                    Text = "Vlhkost vzduchu a půdy prům. max. min.",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
                 },
                 XAxis = new List<XAxis>
                 {
@@ -632,7 +637,8 @@ namespace BlazorWeatherSchoolAPP.Source
                         Title = new YAxisTitle
                         {
                             Text = "Vlhkost (%)"
-                        }
+                        },
+                        Opposite = true
                     }
 
                 },
@@ -640,7 +646,7 @@ namespace BlazorWeatherSchoolAPP.Source
                 Tooltip = new Tooltip
                 {
                     Shared = true,
-                    XDateFormat = "%d.%m.%Y",
+                    XDateFormat = "%A, %d.%m.%Y",
                     ValueSuffix = " %",
                     ValueDecimals = 1,
                 },
@@ -795,7 +801,8 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "Srážky prům. max. min."
+                    Text = "Srážky prům. max. min.",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
                 },
                 XAxis = new List<XAxis>
                 {
@@ -824,16 +831,18 @@ namespace BlazorWeatherSchoolAPP.Source
                         {
                             Title = new YAxisTitle
                             {
-                                Text = "mm"
-                            }
+                                Text = "Úhrn sráž. (mm)"
+                            },
+                            Opposite = true
                         },
                     new YAxis
                         {
-                            Opposite = true,
+                            
                             Title = new YAxisTitle
                             {
-                                Text = "mm/h"
-                            }
+                                Text = "Intenzita sráž. (mm/h)"
+                            },
+                            Opposite = true
                         }
 
                 },
@@ -841,7 +850,7 @@ namespace BlazorWeatherSchoolAPP.Source
                 Tooltip = new Tooltip
                 {
                     Shared = true,
-                    XDateFormat = "%d.%m.%Y",
+                    XDateFormat = "%A, %d.%m.%Y",
                     ValueDecimals = 1,
                 },
 
@@ -928,7 +937,7 @@ namespace BlazorWeatherSchoolAPP.Source
                     new SplineSeries {
                         Name = "Intenzita srážek",
                         Id = "int",
-                        Visible = true,
+                        Visible = false,
                         ShowInLegend = true,
                      },
 
@@ -999,7 +1008,8 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "Intenzita slunečního záření a UV index prům. max. min."
+                    Text = "Intenzita slunečního záření a UV index prům. max. min.",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
                 },
                 XAxis = new List<XAxis>
                 {
@@ -1028,15 +1038,25 @@ namespace BlazorWeatherSchoolAPP.Source
                         {
                             Title = new YAxisTitle
                             {
-                                Text = "W/m&sup2"
-                            }
+                                Text = "Intenzita sl. zář. (W/m&sup2)"
+                            },
+                            Opposite = true
                         },
+                    new YAxis
+                        {
+                            Opposite = true,
+                            Title = new YAxisTitle
+                            {
+                                Text = "UV index"
+                            },
+
+                        }
                 },
 
                 Tooltip = new Tooltip
                 {
                     Shared = true,
-                    XDateFormat = "%d.%m.%Y",
+                    XDateFormat = "%A, %d.%m.%Y",
                     ValueDecimals = 1,
                 },
 
@@ -1151,7 +1171,7 @@ namespace BlazorWeatherSchoolAPP.Source
 
                     new SplineSeries {
                         Name = "UV index",
-                        Id = "int",
+                        Id = "uv",
                         Visible = false,
                         ShowInLegend = true,
                      },

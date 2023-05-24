@@ -5,6 +5,7 @@
 @inject IJSRuntime JSRuntime
 @using Microsoft.JSInterop
 @inject IDialogService DialogService
+@inject IJSRuntime JS
 
 <MudThemeProvider />
 <MudDialogProvider />
@@ -15,19 +16,24 @@
 <RadzenTooltip />
 <RadzenContextMenu />
 
-<PageTitle>BlazorWeatherSchoolAPP</PageTitle>
+<PageTitle>Meteorologická stanice VŠCHT Praha</PageTitle>
 
 <RadzenLayout style="height: 100%">
     <RadzenHeader Style="position:fixed">
         <RadzenStack Orientation="Radzen.Orientation.Horizontal" Wrap="Radzen.FlexWrap.Wrap" AlignItems="Radzen.AlignItems.Center" Gap="0">
             <RadzenSidebarToggle Click="@(() => sidebar1Expanded = !sidebar1Expanded)" />
-            <RadzenStack AlignItems="Radzen.AlignItems.Normal"  >
-                <RadzenImage Path="/img/logo.png" Style="width: 4rem;" />
+            <RadzenStack AlignItems="Radzen.AlignItems.Normal">
+                <a href="https://www.vscht.cz/">
+                    <RadzenImage Path="/img/logo.png" Style="width: 4rem;" />
+                </a>
             </RadzenStack>
-            <RadzenLabel style="margin-left: 1rem;" Text="Meteorologická aplikace VŠCHT" />
+            <RadzenLabel style="margin-left: 1rem;" Text="Meteorologická stanice VŠCHT
+Praha" />
             @if (last_data != null)
             {
-                <RadzenText Style="text-align: right; color: white; margin-left: auto; padding-right: 10px">Poslední čas měření: @last_data.SensorFirstTime.ToLocalTime()</RadzenText>
+                <RadzenText Style="text-align: right; color: white; margin-left: auto; padding-right: 10px">
+                    Poslední měření: @last_data.SensorFirstTime.ToLocalTime().ToString("dd.MM.yyyy HH:mm")
+                </RadzenText>
             }
         </RadzenStack>
     </RadzenHeader>
@@ -35,24 +41,25 @@
         <ChildContent>
             <RadzenPanelMenu>
                 <ChildContent>
-                    <RadzenPanelMenuItem Text="Domovská stránka" Icon="home" Path="/" />
-                    <RadzenPanelMenuItem Text="Data" Icon="date_range">
+                    <RadzenPanelMenuItem Text="Aktuální přehled počasí" Icon="sunny_snowing" Path="/" Click="() => OnMenuItemClick()" />
+                    <RadzenPanelMenuItem Text="Přehled měřených veličin" Icon="date_range">
                         <ChildContent>
-                            <RadzenPanelMenuItem Text="Venkovní měřidla" Icon="label_outline" Path="datameridlavenkovni" />
-                            <RadzenPanelMenuItem Text="Vniřní měřidla" Icon="label_outline" Path="datameridlavnitrni" />
-                            <RadzenPanelMenuItem Text="Historická" Icon="label_outline" Path="datahistoricka" />
-                            <RadzenPanelMenuItem Text="Rekordy" Icon="label_outline" Path="datarekordy" />
-                            <RadzenPanelMenuItem Text="Volný výběr měsíc" Icon="label_outline" Path="datavolnyvybermr" />
-                            <RadzenPanelMenuItem Text="Volný výběr den" Icon="label_outline" Path="datavyberdmr" />
+                            <RadzenPanelMenuItem Text="Venkovní senzory" Icon="label_outline" Path="datameridlavenkovni" Click="() => OnMenuItemClick()" />
+                            <RadzenPanelMenuItem Text="Vniřní senzory" Icon="label_outline" Path="datameridlavnitrni" Click="() => OnMenuItemClick()" />
+                            <RadzenPanelMenuItem Text="Historické záznamy" Icon="label_outline" Path="datahistoricka" Click="() => OnMenuItemClick()" />
+                            <RadzenPanelMenuItem Text="Rekordy" Icon="label_outline" Path="datarekordy" Click="() => OnMenuItemClick()" />
+                            <RadzenPanelMenuItem Text="Měsíční přehled" Icon="label_outline" Path="datavolnyvybermr" Click="() => OnMenuItemClick()" />
+                            <RadzenPanelMenuItem Text="Denní přehled" Icon="label_outline" Path="datavyberdmr" Click="() => OnMenuItemClick()" />
                         </ChildContent>
                     </RadzenPanelMenuItem>
-                    <RadzenPanelMenuItem Text="Grafy" Icon="donut_small">
+                    <RadzenPanelMenuItem Text="Grafický vývoj počasí" Icon="donut_small">
                         <ChildContent>
-                            <RadzenPanelMenuItem Text="Vnitřní" Icon="label_outline" Path="grafvnitrni" />
-                            <RadzenPanelMenuItem Text="Venkovní" Icon="label_outline" Path="grafvenkovni" />
+                            <RadzenPanelMenuItem Text="Venkovní senzory" Icon="label_outline" Path="grafvenkovni" Click="() => OnMenuItemClick()" />
+                            <RadzenPanelMenuItem Text="Vnitřní senzory" Icon="label_outline" Path="grafvnitrni" Click="() => OnMenuItemClick()"/>
                         </ChildContent>
                     </RadzenPanelMenuItem>
-                    <RadzenPanelMenuItem Text="Informace k projektu" Icon="offline_pin" Path="infoprojekt" />
+                    <RadzenPanelMenuItem Text="Informace o projektu" Icon="offline_pin" Path="infoprojekt" Click="() => OnMenuItemClick()" />
+                    <RadzenPanelMenuItem Text="Kamerový systém" Icon="videocam" Path="kamera" Click="() => OnMenuItemClick()" />
                 </ChildContent>
             </RadzenPanelMenu>
             <div class="rz-p-4">
@@ -131,12 +138,12 @@
             <RadzenColumn Offset="1" Size="2">
                 <RadzenText class="rz-color-base-400" TextAlign="TextAlign.Left" TextStyle="TextStyle.Overline">
                     <b>Vytvořil:</b><br />
-                    Ondřej Skládal<br />
+                    Bc. Ondřej Skládal<br />
                     <br />
-                    <b>V rámci diplomové práce:</b><br />
+                    <b>V rámci diplomové práce v roce 2023:</b><br />
                     Komunikace s aplikačním rozhraním meteorologické stanice a vizualizace dat<br />
                     <br />
-                    <b>Kontaktujte mě s připomínkami:</b>
+                    <b>Kontaktujte nás s připomínkami:</b>
                 </RadzenText>
                 <MudButton Style="@($"color:{Colors.Grey.Lighten1}; background:{Colors.Grey.Darken4};")" Variant="MudBlazor.Variant.Filled" OnClick="@((e) => OpenDialog())">Emailový formulář</MudButton>
             </RadzenColumn>
@@ -175,20 +182,27 @@
     public Quantities last_data;
 
     Timer timer;
+    DateTime currentTime;
 
     // Načítání dat
     protected override async Task OnInitializedAsync()
     {
+        //První načtení
+        await LoadData();
+
         // Načtení dat při prvním spuštění
         timer = new System.Threading.Timer((_) =>
         {
-
-            InvokeAsync(async () =>
+            currentTime = DateTime.Now.ToLocalTime();
+            if (currentTime.Minute == 00 || currentTime.Minute % 5 == 0 && currentTime.Second > 21)
             {
+                InvokeAsync(async () =>
+                {
+                    await LoadData();
+                });
+            }
 
-                await LoadData();
-            });
-        }, null, 0, 300000);
+        }, null, 0, 30000);
     }
 
     public async Task LoadData()
@@ -214,6 +228,18 @@
             Position = MudBlazor.DialogPosition.Center,
             CloseOnEscapeKey = true
         };
-        DialogService.Show<Pages.DialogEmail>("Připomínky a dotazy",options);
+        DialogService.Show<Pages.DialogEmail>("Připomínky a dotazy", options);
+    }
+
+
+
+    public async Task OnMenuItemClick()
+    {
+        int viewportWidth = await JS.InvokeAsync<int>("GetViewportWidth");
+
+        if (viewportWidth < 780)
+        {
+            sidebar1Expanded = false;
+        }
     }
 }

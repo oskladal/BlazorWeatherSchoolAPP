@@ -1,8 +1,71 @@
 ﻿@page "/infoprojekt"
 @layout MainLayout
-<h3>Component1</h3>
+@inject IDialogService DialogService
+
+<RadzenContentContainer Name="main">
+    <RadzenCard Style="width: 100%; ">
+        <ChildContent>
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H4">Meteorologická stanice VŠCHT Praha</RadzenText>
+            <p>
+                Meteorologická stanice Vysoké školy chemicko-technologické v Praze je založena na zařízení Davis Vantage Pro2
+                plus (Davis Instruments) s integrovaným systémem senzorů ISS a na několika dalších bezdrátových modulech.
+                Umožňuje měřit externí meteorologické podmínky, vlhkost a teploty půdy a pohodu prostředí uvnitř budov VŠCHT
+                Praha. Stanice je umístěna na střeše budovy B VŠCHT Praha, na rohu ulic Zikova a Studentská.
+                Stanice předává data do cloudu Weatherlink.com, odkud je získává tato webová aplikace a kde
+                jsou zpracovávány pro výzkumné a výukové účely. Stanice byla pořízena díky prostředkům z
+                projektu PIGA C1_VSCHT_2018_037. Stanice je spravována Ústavem fyziky a měřicí techniky a
+                Ústavem matematiky, informatiky a kybernetiky
+                <br />
+                Zeměpisné souřadnice stanice: N 50°06'07", E 14°23'22", 234 m n. m.
+            </p>
+            <br />
+        </ChildContent>
+    </RadzenCard>
+    <br />
+    <RadzenCard Style="width: 100%; " Class="photos_stan">
+        <RadzenRow>
+            <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="4" SizeLG="4" SizeXL="4">
+                <RadzenImage Path="/img/stanice1.jpeg" @onclick="() => OpenDialogPhoto(ImagePaths.Stanice1)" />
+            </RadzenColumn>
+            <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="4" SizeLG="4" SizeXL="4">
+                <RadzenImage Path="/img/stanice2.jpeg" @onclick="() => OpenDialogPhoto(ImagePaths.Stanice2)" />
+            </RadzenColumn>
+            <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="4" SizeLG="4" SizeXL="4">
+                <RadzenImage Path="/img/mapa.jpeg" @onclick="() => OpenDialogPhoto(ImagePaths.Mapa)" />
+            </RadzenColumn>
+        </RadzenRow>
+    </RadzenCard>
+</RadzenContentContainer>
+
 
 @code {
+
+    // Nastavení k dialogu
+    private void OpenDialogPhoto(string imagePath)
+    {
+        var parameters = new DialogParameters { ["ImagePath"] = imagePath };
+
+        MudBlazor.DialogOptions options = new MudBlazor.DialogOptions()
+        {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true,
+            DisableBackdropClick = false,
+            NoHeader = true,
+            Position = MudBlazor.DialogPosition.Center,
+            CloseOnEscapeKey = true
+        };
+
+        DialogService.ShowAsync<ImageDialog>("Připomínky a dotazy", parameters, options);
+    }
+
+
+
+    public static class ImagePaths
+    {
+        public static string Stanice1 => "/img/stanice1.jpeg";
+        public static string Stanice2 => "/img/stanice2.jpeg";
+        public static string Mapa => "/img/mapa.jpeg";
+    }
 
 }
 

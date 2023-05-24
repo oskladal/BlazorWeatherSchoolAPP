@@ -12,14 +12,14 @@
                 Tabulka zobratuje základní meteorologické veličny v rámci jednoho vybraného měsíce. Zobrazuje maxima, minima a průměry.
             </p>
             <br />
-            <RadzenRow>
+            <RadzenRow >
                 <RadzenColumn>
-                    <MudDatePicker Label="Vyber měsíc a rok" @bind-Date="@Start" OpenTo="OpenTo.Month" MinDate="MinMaxDate.Min" MaxDate="MinMaxDate.Max" FixDay="1" DateFormat="MM/yyyy" />
+                    <MudDatePicker tabindex="1234" Editable="true" class="bordered-datepicker"  @bind-Date="@Start" OpenTo="OpenTo.Month" MinDate="MinMaxDate.Min" MaxDate="MinMaxDate.Max" FixDay="1" DateFormat="MM/yyyy" />
                 </RadzenColumn>
                 <RadzenColumn>
                     @if (last_data_awg != null)
                     {
-                        <RadzenText style="vertical-align: bottom;" TextAlign="TextAlign.Center" TextStyle="TextStyle.H6">Měsíc a rok měření: @last_data_awg[0].SensorFirstTime.Date.ToString("MM/yyyy")</RadzenText>
+                        <RadzenText style="vertical-align: bottom;" TextAlign="TextAlign.Left" TextStyle="TextStyle.H6">Měsíc a rok měření: @last_data_awg[0].SensorFirstTime.Date.ToString("MM/yyyy")</RadzenText>
                     }
                 </RadzenColumn>
             </RadzenRow>
@@ -29,139 +29,7 @@
     <RadzenCard Style="width: 100%; ">
         <ChildContent>
             @*Teplota, tlak, vlhkost, rychlost větru, smět větru, denní srážky*@
-            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny WeatherLink Live:</RadzenText>
-            @if (last_data_awg != null)
-            {
-                <RadzenDataGrid Style="--rz-grid-header-background-color: #d5d8db; height: 300px" AllowPaging="true" AllowSorting="true" class="table-my-volny" Data="@last_data_awg" TItem="Quantities"
-                                AllowAlternatingRows="true" ColumnWidth="120px" >
-                    <Columns>
-                        <RadzenDataGridColumn Width="80px"  TItem="Quantities" Property="SensorFirstTime" Title="Datum" Frozen="true">
-                            <Template Context="data">
-                                <span title="@data.SensorFirstTime.ToString("dd/MM/yy")">@data.SensorFirstTime.ToString("dd/MM") </span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities243.temp_in" Title="Teplota prům.">
-                            <Template Context="data">
-                                <span title="@data.Quantities243.temp_in °C"> @data.Quantities243.temp_in °C</span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities243.temp_in_max" Title="Teplota max.">
-                            <Template Context="data">
-                                <span title="@data.Quantities243.temp_in_max °C">@data.Quantities243.temp_in_max °C</span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities243.temp_in_min" Title="Teplota min.">
-                            <Template Context="data">
-                                <span title="@data.Quantities243.temp_in_min °C">@data.Quantities243.temp_in_min °C</span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities243.hum_in" Title="Vlhkost prům.">
-                            <Template Context="data">
-                                <span title="@data.Quantities243.hum_in %">@data.Quantities243.hum_in %</span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities243.hum_in_max" Title="Vlhkost max.">
-                            <Template Context="data">
-                                <span title="@data.Quantities243.hum_in_max %">@data.Quantities243.hum_in_max %</span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities243.hum_in_min" Title="Vlhkost min.">
-                            <Template Context="data">
-                                <span title="@data.Quantities243.hum_in_min %">@data.Quantities243.hum_in_min %</span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities242.bar_sea_level" Title="Tlak prům.">
-                            <Template Context="data">
-                                <span title="@data.Quantities242.bar_sea_level hPa">@data.Quantities242.bar_sea_level hPa</span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities242.bar_sea_level_max" Title="Tlak max.">
-                            <Template Context="data">
-                                <span title="@data.Quantities242.bar_sea_level_max hPa">@data.Quantities242.bar_sea_level_max hPa</span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities242.bar_sea_level_min" Title="Tlak min.">
-                            <Template Context="data">
-                                <span title="@data.Quantities242.bar_sea_level_min hPa">@data.Quantities242.bar_sea_level_min hPa</span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                    </Columns>
-                </RadzenDataGrid>
-
-            }
-        </ChildContent>
-    </RadzenCard>
-    <br />
-    <RadzenCard Style="width: 100%; ">
-        <ChildContent>
-            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní veličiny AirLink:</RadzenText>
-            @if (last_data_awg != null)
-            {
-                <RadzenDataGrid style="--rz-grid-header-background-color: #d5d8db; height: 300px" AllowPaging="true" AllowSorting="true" class="table-my-volny" Data="@last_data_awg"
-                                ColumnWidth="120px" TItem="Quantities" AllowAlternatingRows="true">
-                    <Columns>
-                        <RadzenDataGridColumn Width="80px" TItem="Quantities" Property="SensorFirstTime" Title="Datum" Frozen="true">
-                            <Template Context="data">
-                                <span title="@data.SensorFirstTime.ToString("dd/MM/yy")">
-                                    @data.SensorFirstTime.ToString("dd/MM")
-                                </span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities326.temp" Title="Teplota prům.">
-                            <Template Context="data">
-                                <span title="@data.Quantities326.temp °C">
-                                    @data.Quantities326.temp °C
-                                </span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities326.temp_max" Title="Teplota max.">
-                            <Template Context="data">
-                                <span title="@data.Quantities326.temp_max °C">
-                                    @data.Quantities326.temp_max °C
-                                </span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities326.temp_min" Title="Teplota min.">
-                            <Template Context="data">
-                                <span title="@data.Quantities326.temp_min °C">
-                                    @data.Quantities326.temp_min °C
-                                </span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities326.hum" Title="Vlhkost prům.">
-                            <Template Context="data">
-                                <span title="@data.Quantities326.hum %">
-                                    @data.Quantities326.hum %
-                                </span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities326.hum_max" Title="Vlhkost max.">
-                            <Template Context="data">
-                                <span title="@data.Quantities326.hum_max %">
-                                    @data.Quantities326.hum_max %
-                                </span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities326.hum_min" Title="Vlhkost min.">
-                            <Template Context="last_data_awg">
-                                <span title="@last_data_awg.Quantities326.hum_min %">
-                                    @last_data_awg.Quantities326.hum_min %
-                                </span>
-                            </Template>
-                        </RadzenDataGridColumn>
-                    </Columns>
-                </RadzenDataGrid>
-
-
-
-            }
-        </ChildContent>
-    </RadzenCard>
-    <br />
-    <RadzenCard Style="width: 100%; ">
-        <ChildContent>
-            @*Teplota, tlak, vlhkost, rychlost větru, smět větru, denní srážky*@
-            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Venkovní veličiny:</RadzenText>
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Venkovní senzory:</RadzenText>
             @if (last_data_awg != null)
             {
                 <RadzenDataGrid style="--rz-grid-header-background-color: #d5d8db; height: 300px" class="table-my-volny" AllowPaging="true" AllowSorting="true"
@@ -224,10 +92,153 @@
                         </RadzenDataGridColumn>
                     </Columns>
                 </RadzenDataGrid>
-                   
+
             }
         </ChildContent>
     </RadzenCard>
+    <br />
+    <RadzenCard Style="width: 100%; ">
+        <ChildContent>
+            @*Teplota, tlak, vlhkost, rychlost větru, smět větru, denní srážky*@
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní senzory WeatherLink Live:</RadzenText>
+            @if (last_data_awg != null)
+            {
+                <RadzenDataGrid Style="--rz-grid-header-background-color: #d5d8db; height: 300px" AllowPaging="true" AllowSorting="true" class="table-my-volny" Data="@last_data_awg" TItem="Quantities"
+                                AllowAlternatingRows="true" ColumnWidth="120px">
+                    <Columns>
+                        <RadzenDataGridColumn Width="80px" TItem="Quantities" Property="SensorFirstTime" Title="Datum" Frozen="true">
+                            <Template Context="data">
+                                <span title="@data.SensorFirstTime.ToString("dd/MM/yy")">@data.SensorFirstTime.ToString("dd/MM") </span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities243.temp_in" Title="Teplota prům.">
+                            <Template Context="data">
+                                <span title="@data.Quantities243.temp_in °C"> @data.Quantities243.temp_in °C</span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities243.temp_in_max" Title="Teplota max.">
+                            <Template Context="data">
+                                <span title="@data.Quantities243.temp_in_max °C">@data.Quantities243.temp_in_max °C</span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities243.temp_in_min" Title="Teplota min.">
+                            <Template Context="data">
+                                <span title="@data.Quantities243.temp_in_min °C">@data.Quantities243.temp_in_min °C</span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities243.hum_in" Title="Vlhkost prům.">
+                            <Template Context="data">
+                                <span title="@data.Quantities243.hum_in %">@data.Quantities243.hum_in %</span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities243.hum_in_max" Title="Vlhkost max.">
+                            <Template Context="data">
+                                <span title="@data.Quantities243.hum_in_max %">@data.Quantities243.hum_in_max %</span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities243.hum_in_min" Title="Vlhkost min.">
+                            <Template Context="data">
+                                <span title="@data.Quantities243.hum_in_min %">@data.Quantities243.hum_in_min %</span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities242.bar_sea_level" Title="Tlak prům.">
+                            <Template Context="data">
+                                <span title="@data.Quantities242.bar_sea_level hPa">@data.Quantities242.bar_sea_level hPa</span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities242.bar_sea_level_max" Title="Tlak max.">
+                            <Template Context="data">
+                                <span title="@data.Quantities242.bar_sea_level_max hPa">@data.Quantities242.bar_sea_level_max hPa</span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities242.bar_sea_level_min" Title="Tlak min.">
+                            <Template Context="data">
+                                <span title="@data.Quantities242.bar_sea_level_min hPa">@data.Quantities242.bar_sea_level_min hPa</span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                    </Columns>
+                </RadzenDataGrid>
+
+            }
+        </ChildContent>
+    </RadzenCard>
+    <br />
+    <RadzenCard Style="width: 100%; ">
+        <ChildContent>
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Vnitřní senzory AirLink:</RadzenText>
+            @if (last_data_awg != null)
+            {
+                <RadzenDataGrid style="--rz-grid-header-background-color: #d5d8db; height: 300px" AllowPaging="true" AllowSorting="true" class="table-my-volny" Data="@last_data_awg"
+                                ColumnWidth="120px" TItem="Quantities" AllowAlternatingRows="true">
+                    <Columns>
+                        <RadzenDataGridColumn Width="80px" TItem="Quantities" Property="SensorFirstTime" Title="Datum" Frozen="true">
+                            <Template Context="data">
+                                <span title="@data.SensorFirstTime.ToString("dd/MM/yy")">
+                                    @data.SensorFirstTime.ToString("dd/MM")
+                                </span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities326.temp" Title="Teplota prům.">
+                            <Template Context="data">
+                                <span title="@data.Quantities326.temp °C">
+                                    @data.Quantities326.temp °C
+                                </span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities326.temp_max" Title="Teplota max.">
+                            <Template Context="data">
+                                <span title="@data.Quantities326.temp_max °C">
+                                    @data.Quantities326.temp_max °C
+                                </span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities326.temp_min" Title="Teplota min.">
+                            <Template Context="data">
+                                <span title="@data.Quantities326.temp_min °C">
+                                    @data.Quantities326.temp_min °C
+                                </span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities326.hum" Title="Vlhkost prům.">
+                            <Template Context="data">
+                                <span title="@data.Quantities326.hum %">
+                                    @data.Quantities326.hum %
+                                </span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities326.hum_max" Title="Vlhkost max.">
+                            <Template Context="data">
+                                <span title="@data.Quantities326.hum_max %">
+                                    @data.Quantities326.hum_max %
+                                </span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Quantities" Property="Quantities326.hum_min" Title="Vlhkost min.">
+                            <Template Context="last_data_awg">
+                                <span title="@last_data_awg.Quantities326.hum_min %">
+                                    @last_data_awg.Quantities326.hum_min %
+                                </span>
+                            </Template>
+                        </RadzenDataGridColumn>
+                    </Columns>
+                </RadzenDataGrid>
+                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.Overline">
+                    *WLL je zkratka pro WeatherLink Live, což je hlavní
+                    komunikační modul pro bezdrátový sběr dat ze senzorů meteostanice a připojených modulů, WLL
+                    obstahuje vlastní sadu senzorů pro sledování pohody prostředí; aktuálně je umístěn v
+                    místnosti ZB2-364
+                </RadzenText>
+                <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.Overline">
+                    *AirLink je označení pro
+                    modul sledování prachových částic ve vzduchu, tento modul je vybaven samostatnou sadou
+                    senzorů pro měření pohody prostředí; aktuálně je umístěn v místnosti ZB2-364
+                </RadzenText>
+
+
+            }
+        </ChildContent>
+    </RadzenCard>
+
 </RadzenContentContainer>
 
 @code {
@@ -240,27 +251,34 @@
 
     public DateTime? Start { get { return start; } set { start = value; LoadData(); } }
 
+    Timer timer;
+    DateTime currentTime;
 
     // Načítání dat
     protected override async Task OnInitializedAsync()
     {
-        // Načtení dat při prvním spuštění
+        //První načtení
         await LoadData();
-        var timer = new System.Threading.Timer((_) =>
-        {
 
-            InvokeAsync(async () =>
+        // Minimální a maximílní datum pro volení rozsahu
+        MinMaxDate = await dataDB.GetMinMaxDate();
+        // Načtení dat při prvním spuštění
+        timer = new System.Threading.Timer((_) =>
+        {
+            currentTime = DateTime.Now.ToLocalTime();
+            if (currentTime.Minute == 0 || currentTime.Minute % 5 == 0 && currentTime.Second > 21)
             {
-                await LoadData();
-            });
-        }, null, 0, 300000);
+                InvokeAsync(async () =>
+                {
+                    await LoadData();
+                });
+            }
+
+        }, null, 0, 30000);
     }
 
     public async Task LoadData()
     {
-        // Minimální a maximílní datum pro volení rozsahu
-        MinMaxDate = await dataDB.GetMinMaxDate();
-
 
         if (start == null) { start = DateTime.Now.Date.AddDays(1 - DateTime.Now.Day); }
 
@@ -274,9 +292,6 @@
 
         StateHasChanged();
     }
-    private MudDatePicker _picker;
-    private bool _autoClose;
-
 
 }
 

@@ -37,7 +37,7 @@ namespace BlazorWeatherSchoolAPP.Source
                     mail.From = new MailAddress(config["Email"]);
 
                     // Nastavení adresy příjemce
-                    mail.To.Add("skladalo@vscht.cz");
+                    mail.To.Add("kopeckyd@vscht.cz");
 
                     // Nastavení předmětu zprávy
                     mail.Subject = "Dotaz WeatherAplikace VŠCHT";
@@ -46,9 +46,9 @@ namespace BlazorWeatherSchoolAPP.Source
                     mail.Body = form.TextField + " Z emailu: " + form.Email;
 
                     // Odeslání zprávy
-                    using (SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587))
+                    using (SmtpClient smtpClient = new SmtpClient(config["SMTP"], 25)) //587
                     {
-                        smtpClient.Credentials = new System.Net.NetworkCredential(config["Email"], config["EmailKey"]);
+                        //smtpClient.Credentials = new System.Net.NetworkCredential(config["Email"], config["EmailKey"]);
                         smtpClient.EnableSsl = true;
                         smtpClient.Send(mail);
                         Message = "Email byl odeslán";
@@ -58,7 +58,9 @@ namespace BlazorWeatherSchoolAPP.Source
             }
             catch (Exception ex)
             {
-                Message = ex.Message;
+                Message = "Email se nepodařilo odeslat";
+                Console.WriteLine(ex);
+
             }
         }
     }

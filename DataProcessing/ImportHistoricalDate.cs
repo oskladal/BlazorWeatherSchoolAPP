@@ -73,7 +73,6 @@ namespace DataProcessing
         {
             _logger.LogInformation("Sace mongoDB at:{time}", DateTimeOffset.Now);
 
-
             DateTime currentDate = DateTime.Today.AddDays(-1);
             for (int i = 0; i < 7; i++)
             {

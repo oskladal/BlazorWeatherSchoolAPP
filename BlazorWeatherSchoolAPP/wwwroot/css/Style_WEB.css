@@ -46,36 +46,28 @@ table.table-my-value.record tbody tr td:nth-child(n+6):nth-child(-n+8) {
     background-color: #52CCAB;
 }*/
 
-.yellow {
-    background-color: #F1E642;
+.good {
+    background-color: #4ff0e6;
 }
 
-.orange {
-    background-color: #FF5052;
+.fair {
+    background-color: #51ccaa;
 }
 
-.brown {
-    background-color: #970033;
+.moderate {
+    background-color: #f0e641;
 }
 
-.green_one {
-    background-color: #50F1E7;
+.poor {
+    background-color: #ff5150;
 }
 
-.green_two {
-    background-color: #52CCAB;
+.very_poor {
+    background-color: #960132;
 }
 
-.yellow {
-    background-color: #F1E642;
-}
-
-.orange {
-    background-color: #FF5052;
-}
-
-.brown {
-    background-color: #970033;
+.extrely_poor {
+    background-color: #7d2181;
 }
 
 
@@ -211,4 +203,91 @@ width: 100%;
 max-width: 100%; 
 }
 
+
+.bordered-datepicker {
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px 8px 8px 8px;
+    width: 220px;
+    height: 40px;
+}
+
+.bordered-datepicker:hover {
+    border-color: #000;
+}
+
+.bordered-datepicker2.mud-picker-inline {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 40px;
+    padding: 2px 8px 8px 8px;
+}
+
+.bordered-datepicker2:hover {
+    border-color: #000;
+}
+
+.bordered-datepicker .mud-input > input.mud-input-root, div.mud-input-slot.mud-input-root,
+.bordered-datepicker2 .mud-input > input.mud-input-root, div.mud-input-slot.mud-input-root {
+    padding: 0px !important;
+}
+
+.bordered-datepicker:focus-within {
+    border: 2px solid #4240d2;
+}
+
+.bordered-datepicker2.mud-picker-inline:focus-within {
+    border: 2px solid #4240d2;
+}
+
+.bordered-datepicker .mud-input::before,
+.bordered-datepicker2 .mud-input::before {
+    border-bottom: 0px !important;
+}
+
+.bordered-datepicker .mud-input:focus-within.mud-input-underline:after,
+.bordered-datepicker2 .mud-input:focus-within.mud-input-underline:after {
+    transform: scaleX(0) !important;
+}
+
+.bordered-datepicker .mud-input-control > .mud-input-control-input-container > div.mud-input.mud-input-text,
+.bordered-datepicker2 .mud-input-control > .mud-input-control-input-container > div.mud-input.mud-input-text {
+    margin-top: 0px !important;
+}
+
+.photos_stan img {
+    width: 100%;
+    border-radius: 10px;
+    transition: transform 0.3s;
+    cursor: pointer;
+    display:flex;
+}
+
+.photos_stan img:hover {
+    transform: scale(1.1);
+}
+
+.photos_stan2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+/*    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;*/
+}
+
+.photos_stan2 img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.photos_stan2 .mud-dialog-content {
+    padding: 0px !important;
+}
+
+
+}
 

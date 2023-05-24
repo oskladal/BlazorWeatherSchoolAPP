@@ -7,10 +7,6 @@ using WeatherAPI;
 using DBConnect;
 using WeatherAPI.Models;
 using Radzen;
-using Blazorise;
-using Blazorise.Bootstrap;
-using Blazorise.Icons.FontAwesome;
-using Blazorise.Charts.DataLabels;
 using MudBlazor.Services;
 using BlazorWeatherSchoolAPP.Source;
 using Microsoft.Extensions.Configuration;
@@ -43,14 +39,6 @@ builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
 
-// Přidání Blazorise
-builder.Services
-    .AddBlazorise(options =>
-    {
-        options.Immediate = true;
-    })
-    .AddBootstrapProviders()
-    .AddFontAwesomeIcons();
 
 
 var app = builder.Build();

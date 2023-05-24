@@ -69,7 +69,7 @@ namespace DataProcessing
                 temp_ts_max = denidata.OrderByDescending(x => x.Quantities243.temp_in).First().Quantities243.ts,
                 hum_ts_min = denidata.OrderBy(x => x.Quantities243.hum_in).First().Quantities243.ts,
                 hum_ts_max = denidata.OrderByDescending(x => x.Quantities243.hum_in).First().Quantities243.ts,
-                dew_point_in = denidata[denidata.Count - 1].Quantities243.dew_point_in,
+                dew_point_in = AwgData(denidata.Select(x => x.Quantities243.dew_point_in).ToList()),
                 dew_point_in_min = denidata.OrderBy(x => x.Quantities243.dew_point_in).First().Quantities243.dew_point_in,
                 dew_point_in_max = denidata.OrderByDescending(x => x.Quantities243.dew_point_in).First().Quantities243.dew_point_in,
                 dewpoint_in_ts_min = denidata.OrderBy(x => x.Quantities243.dew_point_in).First().Quantities243.ts,
@@ -127,7 +127,7 @@ namespace DataProcessing
                 solarrad_ts_min = denidata.OrderBy(x => x.Quantities46.solar_rad).First().Quantities46.ts,
                 solarrad_ts_max = denidata.OrderByDescending(x => x.Quantities46.solar_rad).First().Quantities46.ts,
                 rainfall_daily_mm = denidata.Select(x => x.Quantities46.rainfall_daily_mm).ToList().Last(),
-                dew_point = denidata[denidata.Count - 1].Quantities46.dew_point,
+                dew_point = AwgData(denidata.Select(x => x.Quantities46.dew_point).ToList()),
                 dew_point_min = denidata.OrderBy(x => x.Quantities46.dew_point).First().Quantities46.dew_point,
                 dew_point_max = denidata.OrderByDescending(x => x.Quantities46.dew_point).First().Quantities46.dew_point,
                 dewpoint_ts_min = denidata.OrderBy(x => x.Quantities46.dew_point).First().Quantities46.ts,
@@ -144,7 +144,7 @@ namespace DataProcessing
                 windchill_ts_max = denidata.OrderByDescending(x => x.Quantities46.wind_chill).First().Quantities46.ts,
                 ts = denidata[denidata.Count - 1].Quantities46.ts.Date
 
-                //SumData(denidata.Select(x => x.Quantities46.rainfall_last_15_min_mm).ToList()),
+                
 
             };
 
@@ -217,12 +217,13 @@ namespace DataProcessing
 
             newdatetable_averages.Created = DateTime.Now;
 
-            var r = DateTime.Now.Hour - DateTime.Now.ToUniversalTime().Hour;
+            int Add = 0;
+            if (DateTime.Now.Hour < 2) { Add = 2; }
+
+            var r = DateTime.Now.AddHours(Add).Hour - DateTime.Now.ToUniversalTime().AddHours(Add).Hour;
            
-            newdatetable_averages.SensorFirstTime = denidata[denidata.Count - 1].Quantities243.ts.AddHours(r).Date;
+            newdatetable_averages.SensorFirstTime = denidata[denidata.Count - 1].Quantities243.ts.AddHours(-r).Date;
             
-
-
             return newdatetable_averages;
 
         }

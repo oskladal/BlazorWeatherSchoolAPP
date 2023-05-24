@@ -1,0 +1,22 @@
+﻿@page "/main"
+@layout MainLayout
+
+<MudDialog Class="photos_stan2">
+    <DialogContent>
+        <img src="@ImagePath" alt="image" />
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [Parameter]
+    public string ImagePath { get; set; }
+    public partial class ImageDialogs : MudDialog
+    {
+        protected override void OnInitialized()
+        {
+
+            base.OnInitialized();
+        }
+    }
+}
+

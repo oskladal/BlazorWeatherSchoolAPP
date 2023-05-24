@@ -13,13 +13,13 @@
         <ChildContent>
             <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H4">Venkovní hodnoty naměřených veličin</RadzenText>
             <p>
-                Grafy zobrazují hodnoty maxima, minima a průměru naměřených venkovních veličin. V základním nastavení zobrazují hodnoty jednoho týdne
-                ale rozsah výberu je možné si nastavit pomocí kalendáře.
+                Grafy zobrazují hodnoty maxima, minima a průměru naměřených venkovních veličin. V základním nastavení zobrazují hodnoty jednoho týdne,
+                ale rozsah výběru je možné si nastavit pomocí kalendáře.
             </p>
             <br />
             <RadzenRow>
                 <RadzenColumn SizeXS="12" SizeSM="12" SizeMD="6" SizeLG="6" SizeXL="6" Style="width: 100%; overflow-x:auto ">
-                    <div class="rz-p-4 rz-text-align-center">
+                    <div class="rz-text-align-center">
                         <RadzenSelectBar @bind-Value=@Velicina class="rz-background-color-base-100 rz-border-black rz-border-radius-1" Size="ButtonSize.Small">
                             <Items>
                                 <RadzenSelectBarItem Text="Teplota vzduchu" Value="1" />
@@ -33,14 +33,13 @@
                 </RadzenColumn>
                 <RadzenColumn>
                     <div class="rz-text-align-center">
-                        <MudDateRangePicker @ref="_picker" Label="Vyberte rozsah..." @bind-DateRange="@RozsahDat" AutoClose="@_autoClose" Color="MudBlazor.Color.Success" MinDate="MinMaxDate.Min" MaxDate="MinMaxDate.Max">
+                        <MudDateRangePicker Class="bordered-datepicker2" tabindex="123" @ref="_picker" @bind-DateRange="@RozsahDat" MinDate="MinMaxDate.Min" MaxDate="MinMaxDate.Max">
                             <PickerActions>
                                 <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Vymazat</MudButton>
                                 <MudButton OnClick="@(() => _picker.Close(false))">Zrušit</MudButton>
                                 <MudButton Color="MudBlazor.Color.Primary" OnClick="@(() => _picker.Close())">Potvrdit</MudButton>
                             </PickerActions>
                         </MudDateRangePicker>
-                        <MudSwitch @bind-Checked="@_autoClose" Color="MudBlazor.Color.Secondary">Automatické uzavření okna</MudSwitch>
                     </div>
                 </RadzenColumn>
             </RadzenRow>
@@ -49,7 +48,7 @@
     <br />
     <RadzenCard Style="width: 100%; ">
         <ChildContent>
-            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Venkovní veličiny:</RadzenText>
+            <RadzenText TextAlign="TextAlign.Left" TextStyle="TextStyle.H5">Venkovní senzory:</RadzenText>
             <RadzenRow>
                 <RadzenColumn SizeXS="12" SizeSM="12" SizeMD="6" SizeLG="6" SizeXL="6">
                     <RadzenCard>
@@ -58,7 +57,7 @@
                         </figure>
                     </RadzenCard>
                 </RadzenColumn>
-                <RadzenColumn SizeXS="12" SizeSM="6" SizeMD="6" SizeLG="6" SizeXL="6">
+                <RadzenColumn SizeXS="12" SizeSM="12" SizeMD="6" SizeLG="6" SizeXL="6">
                     <RadzenCard>
                         <figure class="highcharts-figure">
                             <div id=chart2></div>
@@ -91,42 +90,42 @@
     // Spouští JS funkci, která renderuje graf
     public async Task RenderCharts(List<Quantities> quantities, List<Quantities> quantitiesawg, int value)
     {
-        var chart1 = GraphsGeneratorOut.BasicGraphVenkovniTeplota(quantities);
-        var chart2 = GraphsGeneratorOutAwg.BasicGraphVenkovniTeplotaAwg(quantitiesawg);
-        var chart3 = GraphsGeneratorOut.BasicGraphVenkovniVitr(quantities);
-        var chart4 = GraphsGeneratorOutAwg.BasicGraphVenkovniVitrAwg(quantitiesawg);
-        var chart5 = GraphsGeneratorOut.BasicGraphVenkovniVlhkost(quantities);
-        var chart6 = GraphsGeneratorOutAwg.BasicGraphVenkovniVlhkostAwg(quantitiesawg);
-        var chart7 = GraphsGeneratorOut.BasicGraphVenkovniSrazky(quantities);
-        var chart8 = GraphsGeneratorOutAwg.BasicGraphVenkovniSrazkyAwg(quantitiesawg);
-        var chart9 = GraphsGeneratorOut.BasicGraphVenkovniSlunce(quantities);
-        var chart10 = GraphsGeneratorOutAwg.BasicGraphVenkovniSlunceAwg(quantitiesawg);
 
         if (value == 1)
         {
+            var chart1 = GraphsGeneratorOut.BasicGraphVenkovniTeplota(quantities);
+            var chart2 = GraphsGeneratorOutAwg.BasicGraphVenkovniTeplotaAwg(quantitiesawg);
             await JS.InvokeAsync<string>("RenderCharts", chart1, "chart1");
             await JS.InvokeAsync<string>("RenderChartsNew", chart2, "chart2");
         }
         else if (value == 2)
         {
+            var chart3 = GraphsGeneratorOut.BasicGraphVenkovniVitr(quantities);
+            var chart4 = GraphsGeneratorOutAwg.BasicGraphVenkovniVitrAwg(quantitiesawg);
             await JS.InvokeAsync<string>("RenderCharts", chart3, "chart1");
             await JS.InvokeAsync<string>("RenderChartsNew", chart4, "chart2");
         }
 
         else if (value == 3)
         {
+            var chart5 = GraphsGeneratorOut.BasicGraphVenkovniVlhkost(quantities);
+            var chart6 = GraphsGeneratorOutAwg.BasicGraphVenkovniVlhkostAwg(quantitiesawg);
             await JS.InvokeAsync<string>("RenderCharts", chart5, "chart1");
             await JS.InvokeAsync<string>("RenderChartsNew", chart6, "chart2");
         }
 
         else if (value == 4)
         {
+            var chart7 = GraphsGeneratorOut.BasicGraphVenkovniSrazky(quantities);
+            var chart8 = GraphsGeneratorOutAwg.BasicGraphVenkovniSrazkyAwg(quantitiesawg);
             await JS.InvokeAsync<string>("RenderCharts", chart7, "chart1");
             await JS.InvokeAsync<string>("RenderChartsNew", chart8, "chart2");
         }
 
         else if (value == 5)
         {
+            var chart9 = GraphsGeneratorOut.BasicGraphVenkovniSlunce(quantities);
+            var chart10 = GraphsGeneratorOutAwg.BasicGraphVenkovniSlunceAwg(quantitiesawg);
             await JS.InvokeAsync<string>("RenderCharts", chart9, "chart1");
             await JS.InvokeAsync<string>("RenderChartsNew", chart10, "chart2");
         }
@@ -136,39 +135,30 @@
     // Načítání dat
     protected override async Task OnInitializedAsync()
     {
+        // Minimální a maximílní datum pro volení rozsahu
+        MinMaxDate = await dataDB.GetMinMaxDate();
         // Načtení dat při prvním spuštění
-        timer = new System.Threading.Timer((_) =>
-        {
-
-            InvokeAsync(async () =>
-            {
-
-                await LoadData();
-            });
-        }, null, 0, 300000);
+        await LoadData();
     }
 
     public async Task LoadData()
     {
-        // Minimální a maximílní datum pro volení rozsahu
-        MinMaxDate = await dataDB.GetMinMaxDate();
-
-        if (rozsahdat == null) { rozsahdat = tyden; }
+        if (rozsahdat == null) { rozsahdat = tyden; StateHasChanged(); }
         DateTime start = rozsahdat.Start.Value;
-        DateTime end = rozsahdat.End.Value;
+        DateTime end = rozsahdat.End.Value.AddDays(1);
 
-        if (velicina == 0) { velicina = 1; }
-        int velicina1 = velicina;
+        if (velicina == 0) {
+            velicina = 1; StateHasChanged();
+        }
 
         // Záznami v rozsahu
         last_data_awg = await dataDB.GetSensorsDataAwg(start, end);
         last_data = await dataDB.GetSensorsData(start, end);
 
-        await RenderCharts(last_data, last_data_awg, velicina1);
+        await RenderCharts(last_data, last_data_awg, velicina);
 
-        StateHasChanged();
+
     }
     private MudDateRangePicker _picker;
-    private bool _autoClose;
 
 }

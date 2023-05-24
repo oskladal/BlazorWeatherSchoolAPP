@@ -52,6 +52,10 @@ namespace DataProcessing
 
         public double InchToHpa(string way)
         {
+            if (string.IsNullOrEmpty(way))
+            {
+                return 0; // Pokud je vstupní hodnota prázdná, vrátíme nulu.
+            }
             var newset = (double.Parse(way, CultureInfo.InvariantCulture)) * 33.86;
             return Math.Round(newset, 1);
         }
@@ -72,6 +76,7 @@ namespace DataProcessing
         {
             _logger.LogInformation("Sace mongoDB at:{time}", DateTimeOffset.Now);
 
+            
             // Načtení dat
             var apiData = await _Api.getstation();
 
@@ -144,7 +149,7 @@ namespace DataProcessing
             };
 
             // uložení do DB
-            try { await _Db.SaveSensorsData(quantities); } catch { }; ;
+            try { await _Db.SaveSensorsData(quantities); } catch { };
             return;
         }
 

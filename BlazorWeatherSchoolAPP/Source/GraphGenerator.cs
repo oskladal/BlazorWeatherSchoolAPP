@@ -45,9 +45,11 @@ namespace BlazorWeatherSchoolAPP.Source
                     X = ((DateTimeOffset)i.Quantities243.ts.ToLocalTime()).ToUnixTimeSeconds() * 1000
                 });
             }
-
+            
+            
             var chartOptions = new Highstock
             {
+               
                 Chart = new Chart()
                 {
                     Type = ChartType.Line
@@ -55,7 +57,8 @@ namespace BlazorWeatherSchoolAPP.Source
                 
                 Title = new Title
                 {
-                    Text = "Teplota vzduchu"
+                    Text = "Teplota vzduchu",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
                 },
                 Legend = new Legend
                 {
@@ -68,15 +71,7 @@ namespace BlazorWeatherSchoolAPP.Source
                     Title = new XAxisTitle
                     {
                         Text = "Datum a čas"
-                    },
-
-                    DateTimeLabelFormats = new Hashtable
-    {
-                        { "day", "%d.%m.%Y" },
-                        { "month", "%m.%Y" },
-                        { "year", "%Y" }
-                    },
-                    
+                    },                   
                 }
 
             },
@@ -94,7 +89,7 @@ namespace BlazorWeatherSchoolAPP.Source
             },
                 RangeSelector = new RangeSelector()
                 {
-                    Buttons = new List<RangeSelectorButton>() { new RangeSelectorButton { Type = "hours", Count = 12, Text = "12h" }, new RangeSelectorButton { Type = "day", Count = 1, Text = "1d" }, new RangeSelectorButton { Type = "day", Count = 2, Text = "2d" }, new RangeSelectorButton { Type = "all", Count = 1, Text = "vše" } },
+                    Buttons = new List<RangeSelectorButton>() { new RangeSelectorButton { Type = "hour", Count = 12, Text = "12h" }, new RangeSelectorButton { Type = "day", Count = 1, Text = "1d" }, new RangeSelectorButton { Type = "day", Count = 2, Text = "2d" }, new RangeSelectorButton { Type = "all", Count = 1, Text = "vše" } },
                     InputEnabled = false,
                     Selected = 1
                 },
@@ -105,7 +100,10 @@ namespace BlazorWeatherSchoolAPP.Source
                     XDateFormat = "%d.%m.%Y %H:%M",
                     ValueSuffix = " °" + "C",
                     ValueDecimals = 1,
+                    
+
                 },
+
 
                 PlotOptions = new PlotOptions()
                 {
@@ -157,11 +155,12 @@ namespace BlazorWeatherSchoolAPP.Source
                     }
 
 
-
                 }
+               
             };
+          
             chartOptions.ID = "chart1";
-
+           
             var renderer = new HighstockRenderer(chartOptions);
             string chart = renderer.GetJsonOptionsForBlazor();
             return chart;
@@ -207,7 +206,9 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "Množství částic"
+                    Text = "Množství částic",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
+
                 },
                 Legend = new Legend
                 {
@@ -223,12 +224,7 @@ namespace BlazorWeatherSchoolAPP.Source
                         Text = "Datum a čas"
                     },
 
-                    DateTimeLabelFormats = new Hashtable
-    {
-                        { "day", "%d.%m.%Y" },
-                        { "month", "%m.%Y" },
-                        { "year", "%Y" }
-                    },
+
 
                 }
 
@@ -240,14 +236,14 @@ namespace BlazorWeatherSchoolAPP.Source
                 {
                     Title = new YAxisTitle
                     {
-                        Text = "μg/m&sup3"
+                        Text = "Množství částic (μg/m&sup3)"
                     }
                 }
 
             },
                 RangeSelector = new RangeSelector()
                 {
-                    Buttons = new List<RangeSelectorButton>() { new RangeSelectorButton { Type = "hours", Count = 12, Text = "12h" }, new RangeSelectorButton { Type = "day", Count = 1, Text = "1d" }, new RangeSelectorButton { Type = "day", Count = 2, Text = "2d" }, new RangeSelectorButton { Type = "all", Count = 1, Text = "vše" } },
+                    Buttons = new List<RangeSelectorButton>() { new RangeSelectorButton { Type = "hour", Count = 12, Text = "12h" }, new RangeSelectorButton { Type = "day", Count = 1, Text = "1d" }, new RangeSelectorButton { Type = "day", Count = 2, Text = "2d" }, new RangeSelectorButton { Type = "all", Count = 1, Text = "vše" } },
                     InputEnabled = false,
                     Selected = 1
                 },
@@ -347,7 +343,8 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "AQI"
+                    Text = "AQI",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
                 },
                 Legend = new Legend
                 {
@@ -362,12 +359,6 @@ namespace BlazorWeatherSchoolAPP.Source
                         Text = "Datum a čas"
                     },
 
-                    DateTimeLabelFormats = new Hashtable
-    {
-                        { "day", "%d.%m.%Y" },
-                        { "month", "%m.%Y" },
-                        { "year", "%Y" }
-                    },
 
                 }
 
@@ -386,7 +377,7 @@ namespace BlazorWeatherSchoolAPP.Source
             },
                 RangeSelector = new RangeSelector()
                 {
-                    Buttons = new List<RangeSelectorButton>() { new RangeSelectorButton { Type = "hours", Count = 12, Text = "12h" }, new RangeSelectorButton { Type = "day", Count = 1, Text = "1d" }, new RangeSelectorButton { Type = "day", Count = 2, Text = "2d" }, new RangeSelectorButton { Type = "all", Count = 1, Text = "vše" } },
+                    Buttons = new List<RangeSelectorButton>() { new RangeSelectorButton { Type = "hour", Count = 12, Text = "12h" }, new RangeSelectorButton { Type = "day", Count = 1, Text = "1d" }, new RangeSelectorButton { Type = "day", Count = 2, Text = "2d" }, new RangeSelectorButton { Type = "all", Count = 1, Text = "vše" } },
                     InputEnabled = false,
                     Selected = 1
                 },
@@ -436,8 +427,6 @@ namespace BlazorWeatherSchoolAPP.Source
                         ShowInNavigator = true
                     },
 
-
-
                 }
             };
             chartOptions.ID = "chart12";
@@ -473,7 +462,8 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "Vlhkost vzduchu"
+                    Text = "Vlhkost vzduchu",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
                 },
                 Legend = new Legend
                 {
@@ -488,12 +478,7 @@ namespace BlazorWeatherSchoolAPP.Source
                         Text = "Datum a čas"
                     },
 
-                    DateTimeLabelFormats = new Hashtable
-    {
-                        { "day", "%d.%m.%Y" },
-                        { "month", "%m.%Y" },
-                        { "year", "%Y" }
-                    },
+
 
                 }
 
@@ -512,7 +497,7 @@ namespace BlazorWeatherSchoolAPP.Source
             },
                 RangeSelector = new RangeSelector()
                 {
-                    Buttons = new List<RangeSelectorButton>() { new RangeSelectorButton { Type = "hours", Count = 12, Text = "12h" }, new RangeSelectorButton { Type = "day", Count = 1, Text = "1d" }, new RangeSelectorButton { Type = "day", Count = 2, Text = "2d" }, new RangeSelectorButton { Type = "all", Count = 1, Text = "vše" } },
+                    Buttons = new List<RangeSelectorButton>() { new RangeSelectorButton { Type = "hour", Count = 12, Text = "12h" }, new RangeSelectorButton { Type = "day", Count = 1, Text = "1d" }, new RangeSelectorButton { Type = "day", Count = 2, Text = "2d" }, new RangeSelectorButton { Type = "all", Count = 1, Text = "vše" } },
                     InputEnabled = false,
                     Selected = 1
                 },
@@ -596,7 +581,8 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "Vlhkost vzduchu"
+                    Text = "Vlhkost vzduchu",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
                 },
                 Legend = new Legend
                 {
@@ -611,12 +597,7 @@ namespace BlazorWeatherSchoolAPP.Source
                         Text = "Datum a čas"
                     },
 
-                    DateTimeLabelFormats = new Hashtable
-    {
-                        { "day", "%d.%m.%Y" },
-                        { "month", "%m.%Y" },
-                        { "year", "%Y" }
-                    },
+
 
                 }
 
@@ -635,7 +616,7 @@ namespace BlazorWeatherSchoolAPP.Source
             },
                 RangeSelector = new RangeSelector()
                 {
-                    Buttons = new List<RangeSelectorButton>() { new RangeSelectorButton { Type = "hours", Count = 12, Text = "12h" }, new RangeSelectorButton { Type = "day", Count = 1, Text = "1d" }, new RangeSelectorButton { Type = "day", Count = 2, Text = "2d" }, new RangeSelectorButton { Type = "all", Count = 1, Text = "vše" } },
+                    Buttons = new List<RangeSelectorButton>() { new RangeSelectorButton { Type = "hour", Count = 12, Text = "12h" }, new RangeSelectorButton { Type = "day", Count = 1, Text = "1d" }, new RangeSelectorButton { Type = "day", Count = 2, Text = "2d" }, new RangeSelectorButton { Type = "all", Count = 1, Text = "vše" } },
                     InputEnabled = false,
                     Selected = 1
                 },
@@ -717,7 +698,8 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "Tlak vzduchu přepočtený na hladinu moře"
+                    Text = "Tlak vzduchu přepočtený na hladinu moře",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
                 },
                 Legend = new Legend
                 {
@@ -732,12 +714,6 @@ namespace BlazorWeatherSchoolAPP.Source
                         Text = "Datum a čas"
                     },
 
-                    DateTimeLabelFormats = new Hashtable
-    {
-                        { "day", "%d.%m.%Y" },
-                        { "month", "%m.%Y" },
-                        { "year", "%Y" }
-                    },
 
                 }
 
@@ -756,7 +732,7 @@ namespace BlazorWeatherSchoolAPP.Source
             },
                 RangeSelector = new RangeSelector()
                 {
-                    Buttons = new List<RangeSelectorButton>() { new RangeSelectorButton { Type = "hours", Count = 12, Text = "12h" }, new RangeSelectorButton { Type = "day", Count = 1, Text = "1d" }, new RangeSelectorButton { Type = "day", Count = 2, Text = "2d" }, new RangeSelectorButton { Type = "all", Count = 1, Text = "vše" } },
+                    Buttons = new List<RangeSelectorButton>() { new RangeSelectorButton { Type = "hour", Count = 12, Text = "12h" }, new RangeSelectorButton { Type = "day", Count = 1, Text = "1d" }, new RangeSelectorButton { Type = "day", Count = 2, Text = "2d" }, new RangeSelectorButton { Type = "all", Count = 1, Text = "vše" } },
                     InputEnabled = false,
                     Selected = 1
                 },
@@ -853,7 +829,9 @@ namespace BlazorWeatherSchoolAPP.Source
 
                 Title = new Title
                 {
-                    Text = "Teplota vzduchu"
+                    Text = "Teplota vzduchu",
+                    Style = new Hashtable { { "fontSize", "20px" }, { "fontWeight", "bold" }, { "color", "#3f3f3f" }, { "font-family", "Arial" }, },
+
                 },
                 Legend = new Legend
                 {
@@ -868,12 +846,6 @@ namespace BlazorWeatherSchoolAPP.Source
                         Text = "Datum a čas"
                     },
 
-                    DateTimeLabelFormats = new Hashtable
-    {
-                        { "day", "%d.%m.%Y" },
-                        { "month", "%m.%Y" },
-                        { "year", "%Y" }
-                    },
 
                 }
 
@@ -892,7 +864,7 @@ namespace BlazorWeatherSchoolAPP.Source
             },
                 RangeSelector = new RangeSelector()
                 {
-                    Buttons = new List<RangeSelectorButton>() { new RangeSelectorButton { Type = "hours", Count = 12, Text = "12h" }, new RangeSelectorButton { Type = "day", Count = 1, Text = "1d" }, new RangeSelectorButton { Type = "day", Count = 2, Text = "2d" }, new RangeSelectorButton { Type = "all", Count = 1, Text = "vše" } },
+                    Buttons = new List<RangeSelectorButton>() { new RangeSelectorButton { Type = "hour", Count = 12, Text = "12h" }, new RangeSelectorButton { Type = "day", Count = 1, Text = "1d" }, new RangeSelectorButton { Type = "day", Count = 2, Text = "2d" }, new RangeSelectorButton { Type = "all", Count = 1, Text = "vše" } },
                     InputEnabled = false,
                     Selected = 1
                 },
